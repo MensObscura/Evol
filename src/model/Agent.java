@@ -77,7 +77,7 @@ public class Agent {
 	 */
 	public boolean isNextCaseFree(){
 
-		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX > 0 && this.nextY > 0){
+		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
 
 			return this.environnement.getEspace()[this.nextX][this.nextY].isEmpty();
 
@@ -135,7 +135,7 @@ public class Agent {
 	 * prochiane case selon le dernier calcul
 	 */
 	public Cellule nextCase(){
-		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX > 0 && this.nextY > 0){
+		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
 
 			return this.environnement.getEspace()[this.nextX][this.nextY];
 
