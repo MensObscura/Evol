@@ -8,9 +8,11 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import model.Agent;
 import model.SMA;
@@ -59,8 +61,11 @@ public class Vue extends JPanel implements Observer{
 				
 				this.buttonTab[i][j].setPreferredSize(new Dimension(action.gettAgent(), action.gettAgent()));
 				
-				if(!action.isVisibleGrid())
-				this.buttonTab[i][j].setBorder(javax.swing.BorderFactory.createLineBorder(Color.white));
+				if(!action.isVisibleGrid()){
+					Border emptyBorder = BorderFactory.createEmptyBorder();
+					buttonTab[i][j].setBorder(emptyBorder);
+				}
+				
 				
 				this.add(buttonTab[i][j]);
 
@@ -80,12 +85,8 @@ public class Vue extends JPanel implements Observer{
 			for(int j = 0; j < this.buttonTab[i].length; j++){
 				if(action.getEnvironnement().getEspace()[i][j].isEmpty()){
 					buttonTab[i][j].setBackground(Color.WHITE);
-					if(!action.isVisibleGrid())
-					this.buttonTab[i][j].setBorder(javax.swing.BorderFactory.createLineBorder(Color.white));
 				}else{
 					buttonTab[i][j].setBackground(Color.BLACK);
-					if(!action.isVisibleGrid())
-					this.buttonTab[i][j].setBorder(javax.swing.BorderFactory.createLineBorder(Color.black));
 				}
 
 

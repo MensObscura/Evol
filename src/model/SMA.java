@@ -34,7 +34,7 @@ public class SMA  extends Observable{
 			if(this.isEquit())
 				Collections.shuffle(this.agents);
 
-			System.out.println("On fait parler les agent");
+			System.out.println("On fait parler les agents");
 			for(Agent a : agents){
 				a.doIt();
 			}
