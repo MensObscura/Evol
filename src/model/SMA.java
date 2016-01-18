@@ -14,11 +14,14 @@ public class SMA  extends Observable{
 	private boolean visibleGrid;
 	private boolean equit;
 	private int seed;
+	private boolean running = true;//tmp false 
+	private int taille ;
 
 	public SMA(int nbBilles, int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		this.agents = new ArrayList<Agent>();
-		this.environnement = new Environnement(taille,nbBilles, seed, torique, agents);
-
+		this.taille = taille;
+		this.launch(nbBilles, seed, torique, visibleGrid, equit);///tmp
+	
 		this.tAgent = tAgent;
 		this.vitesse = vitesse;
 		this.visibleGrid = visibleGrid;
@@ -30,11 +33,10 @@ public class SMA  extends Observable{
 	public void run(){
 
 		System.out.println("Début du run");
-		while (true){
+		while (running){
 			if(this.isEquit())
 				Collections.shuffle(this.agents);
 
-			System.out.println("On fait parler les agents");
 			for(Agent a : agents){
 				a.doIt();
 			}
@@ -47,7 +49,7 @@ public class SMA  extends Observable{
 			this.notifyObservers();
 
 		}
-
+		System.out.println("Fin du run");
 
 	}
 
@@ -88,7 +90,24 @@ public class SMA  extends Observable{
 	public int getSeed() {
 		return seed;
 	}
+	
+	public void changeRunning(){
+		this.running = !this.running;
+	}
 
+	public void clearAgent(){
 
+		this.environnement.getAgents().clear();
+		this.setChanged();
+		this.notifyObservers();
+	}
+
+	public void launch( int nbBilles, int seed, boolean torique, boolean grille,boolean equit){
+		
+		this.equit = equit;
+		this.visibleGrid = grille;
+		this.environnement = new Environnement(this.taille,nbBilles, seed, torique, agents);
+		
+	}
 
 }

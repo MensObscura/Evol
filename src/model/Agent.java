@@ -20,6 +20,7 @@ public class Agent {
 		this.posY = posY;
 		this.environnement = environnement;
 		this.dir = this.getRandomDirection(null);
+		
 
 	}
 
