@@ -59,9 +59,7 @@ public class Agent {
 	 * 
 	 */
 	public void doIt(){
-
-		this.calculateNextCase();
-
+		this.calculateNextCase(0);
 		this.environnement.getEspace()[this.posX][this.posY].removeAgent();;
 
 		this.setPosX(this.nextX);
@@ -91,8 +89,8 @@ public class Agent {
 	/**
 	 * On cherche la prochiane case, et on vérifie si elle est libre, sinon on change de direction et on recherche
 	 */
-	public void calculateNextCase(){
-
+	public void calculateNextCase(int tour){
+		tour ++;
 		switch(this.dir){
 
 		case EST : this.nextX = this.posX; this.nextY = posY + 1; break;
@@ -123,8 +121,12 @@ public class Agent {
 		}
 
 		if(!isNextCaseFree()){
-			this.setDir(this.getRandomDirection(this.dir));
-			calculateNextCase();
+			if(tour > 10){
+				this.setDir(this.getRandomDirection(this.dir));
+			}else{
+			this.setDir(this.getDirectionWithOpponentDirection(this.dir));
+			}
+			calculateNextCase(tour);
 		}
 
 
@@ -173,80 +175,77 @@ public class Agent {
 
 	public Direction getDirectionWithOpponentDirection(Direction origine){
 
-		Direction out =  null;
 		if(this.nextCase() != null && !this.nextCase().isEmpty()){
-
 			switch(this.nextCase().getAgent().getDir()){
 
-			case EST : out = Direction.OUEST; break;
-			case OUEST : out = Direction.EST; break;
-			case NORD :  out = Direction.SUD; break;
-			case SUD :  out = Direction.NORD; break;
-			case NORDEST :  out = Direction.SUDOUEST; break;
-			case SUDEST :  out = Direction.NORDOUEST; break;
-			case NORDOUEST :   out = Direction.SUDEST; break;
-			case SUDOUEST :  out = Direction.NORDEST; break;
+			case EST :  return  Direction.OUEST; 
+			case OUEST :  return  Direction.EST; 
+			case NORD :   return  Direction.SUD; 
+			case SUD :   return Direction.NORD; 
+			case NORDEST :   return  Direction.SUDOUEST; 
+			case SUDEST :   return  Direction.NORDOUEST; 
+			case NORDOUEST :   return  Direction.SUDEST;
+			case SUDOUEST :   return  Direction.NORDEST;
 			}
 		}
 
 		if(this.nextCase() == null ){
 
-
+			
 			switch(origine){
 
-			case EST : out = Direction.OUEST; break;
-			case OUEST : out = Direction.EST; break;
-			case NORD :  out = Direction.SUD; break;
-			case SUD :  out = Direction.NORD; break;
-			default : 
-				if(this.nextY > this.environnement.getEspace().length ){
+			case EST :  return Direction.OUEST; 
+			case OUEST : return Direction.EST;
+			case NORD :   return  Direction.SUD;
+			case SUD :   return  Direction.NORD; 
+			default :
+				if(this.nextY > (this.environnement.getEspace().length -1) && this.nextX  > (this.environnement.getEspace().length -1 )){
+					 return Direction.SUDOUEST;
+				}
+				
+				if(this.nextY > (this.environnement.getEspace().length -1) && this.nextX < 0 ){
+					 return  Direction.NORDOUEST;
+				}
+				
+				if( this.nextX  > (this.environnement.getEspace().length -1) &&  this.nextY < 0){
+					 return Direction.SUDEST;
+				}
+				
+				if(this.nextX < 0 && this.nextY < 0){
+					 return Direction.NORDEST;
+				}
+				
+				
+				if(this.nextY > this.environnement.getEspace()[0].length -1 ){
 					switch(origine){
-					case NORDEST :  out = Direction.NORDOUEST; break;
-					case SUDEST :  out = Direction.SUDOUEST; break;
+					case NORDEST :  return Direction.NORDOUEST; 
+					case SUDEST :  return Direction.SUDOUEST;
 					}
 				}
-				if(this.nextX  > this.environnement.getEspace().length ){
+				if(this.nextX  > this.environnement.getEspace().length -1 ){
 					switch(origine){
-					case NORDEST :  out = Direction.SUDEST; break;
-					case NORDOUEST :   out = Direction.SUDOUEST; break;
+					case NORDEST :  return Direction.SUDEST; 
+					case NORDOUEST :  return Direction.SUDOUEST;
 					}
 				}
 				if(this.nextX < 0 ){
 					switch(origine){
-					case SUDEST :  out = Direction.NORDEST; break;
-					case SUDOUEST :  out = Direction.NORDOUEST; break;
+					case SUDOUEST :  return Direction.NORDOUEST;  
+					case SUDEST :  return Direction.NORDEST;   
 					}
 				}
 				if( this.nextY < 0){
 					switch(origine){
-					case NORDOUEST :   out = Direction.NORDEST; break;
-					case SUDOUEST :  out = Direction.SUDEST; break;
+					case SUDOUEST :  return Direction.SUDEST; 
+					case NORDOUEST :  return Direction.NORDEST; 
 					}
 				}
 				
-				if(this.nextY > this.environnement.getEspace().length && this.nextX  > this.environnement.getEspace().length ){
-					 out = Direction.SUDOUEST;
-				}
-				
-				if(this.nextY > this.environnement.getEspace().length && this.nextX < 0 ){
-					 out = Direction.NORDOUEST;
-				}
-				
-				if( this.nextX  > this.environnement.getEspace().length &&  this.nextY < 0){
-					out = Direction.SUDEST;
-				}
-				
-				if(this.nextX > 0 && this.nextY > 0){
-					out = Direction.NORDEST;
-				}
+			
 			}
 		}
 
-		if(origine != null && out != null && origine.equals(out) ){
-			return this.getRandomDirection(origine);
-		}
-
-		return out;
+		return getRandomDirection(origine);
 	}
 
 

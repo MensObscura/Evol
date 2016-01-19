@@ -14,40 +14,43 @@ public class SMA  extends Observable{
 	private boolean visibleGrid;
 	private boolean equit;
 	private int seed;
-	private boolean running = true;//tmp false 
+	private boolean running = false;//tmp false 
 	private int taille ;
 
 	public SMA(int nbBilles, int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		this.agents = new ArrayList<Agent>();
 		this.taille = taille;
-		this.launch(nbBilles, seed, torique, visibleGrid, equit);///tmp
-	
-		this.tAgent = tAgent;
 		this.vitesse = vitesse;
 		this.visibleGrid = visibleGrid;
 		this.equit = equit;
 		this.seed = seed;
+		this.launch(nbBilles, seed,vitesse, torique, visibleGrid, equit);///tmp
+
+		this.tAgent = tAgent;
+
 	}
 
 
 	public void run(){
 
 		System.out.println("Début du run");
-		while (running){
-			if(this.isEquit())
-				Collections.shuffle(this.agents);
+		while (running || !running){
+			if(running){
+				if(this.isEquit())
+					Collections.shuffle(this.agents);
 
-			for(Agent a : agents){
-				a.doIt();
+				for(Agent a : agents){
+					a.doIt();
+				}
+
+				this.setChanged();
+				this.notifyObservers();
 			}
 			try {
 				Thread.sleep(this.vitesse);
 			} catch (InterruptedException e) {
 				System.out.println("Sleep fail : "+e);
 			}
-			this.setChanged();
-			this.notifyObservers();
-
 		}
 		System.out.println("Fin du run");
 
@@ -90,7 +93,7 @@ public class SMA  extends Observable{
 	public int getSeed() {
 		return seed;
 	}
-	
+
 	public void changeRunning(){
 		this.running = !this.running;
 	}
@@ -98,15 +101,35 @@ public class SMA  extends Observable{
 	public void clearAgent(){
 
 		this.environnement.getAgents().clear();
+		this.environnement.clearSpace();
 		this.setChanged();
 		this.notifyObservers();
 	}
 
-	public void launch( int nbBilles, int seed, boolean torique, boolean grille,boolean equit){
-		
+	public void launch( int nbBilles, int seed, int vitesse, boolean torique, boolean grille,boolean equit){
+
 		this.equit = equit;
 		this.visibleGrid = grille;
+		this.vitesse = vitesse;
 		this.environnement = new Environnement(this.taille,nbBilles, seed, torique, agents);
+
+	}
+
+
+	public void setTorique(boolean b) {
+		this.environnement.setTorique(b);
+		
+	}
+
+
+	public void setVisibleGrid(boolean b) {
+		this.visibleGrid = b;
+		
+	}
+
+
+	public void setEquitable(boolean b) {
+		this.equit=true;
 		
 	}
 

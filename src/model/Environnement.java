@@ -34,7 +34,7 @@ public class Environnement {
 					this.espace[i][j] = new Cellule();
 			}
 		}
-
+		if(this.taille > 0)
 		switch(seed){
 		case 0 : randomPut(); break;
 		default :randomPut();
@@ -105,6 +105,18 @@ public class Environnement {
 
 	public boolean isTorique() {
 		return torique;
+	}
+
+	public void clearSpace() {
+		this.taille = 0;
+		this.init(0);
+		
+		
+	}
+
+	public void setTorique(boolean b) {
+		this.torique =b;
+		
 	}
 
 }
