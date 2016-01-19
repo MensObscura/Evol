@@ -133,4 +133,10 @@ public class SMA  extends Observable{
 		
 	}
 
+
+	public void setVitesse(int i) {
+		this.vitesse=i;
+		
+	}
+
 }

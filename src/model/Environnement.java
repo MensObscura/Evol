@@ -37,6 +37,7 @@ public class Environnement {
 		if(this.taille > 0)
 		switch(seed){
 		case 0 : randomPut(); break;
+		case 1 : binaryPut(); break;
 		default :randomPut();
 
 		}
@@ -72,6 +73,31 @@ public class Environnement {
 		}
 	}
 
+
+	/**
+	 * on set les Agent au hasard
+	 */
+	public void  binaryPut(){
+
+		int x = 0;
+		int y = 0;
+				
+		for (int i = 0 ; i < this.nbBilles; i++){
+
+			
+			System.out.println(x +" : "+y);
+			Agent a = new Agent(x,y,this);
+
+			this.agents.add(a);
+			this.espace[x][y].setAgent(a);
+			
+			x =( (x+2 ) % (this.espace.length));
+			if( x == 0){
+				y ++;
+			}
+
+		}
+	}
 
 	public int getRandomCoord(int x){
 

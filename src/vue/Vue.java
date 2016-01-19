@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -105,10 +106,12 @@ public class Vue extends JPanel implements Observer{
 			public void keyReleased(KeyEvent e) {
 				if(vitesse.getText().length() >0 )
 					try{
-						Integer.parseInt(vitesse.getText());
+
+						action.setVitesse(Integer.parseInt(vitesse.getText()));
 					}catch(Exception ex){
 						vitesse.setText("0");
 					}
+
 
 
 			}
@@ -152,7 +155,7 @@ public class Vue extends JPanel implements Observer{
 		});
 		JCheckBox torique = new JCheckBox("Torique");
 		torique.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (torique.isSelected()){
@@ -160,13 +163,13 @@ public class Vue extends JPanel implements Observer{
 				}else{
 					action.setTorique(false);
 				}
-				
+
 			}
 		} );
-		
+
 		JCheckBox visibleGrid = new JCheckBox("Grille visible");
 		visibleGrid.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (visibleGrid.isSelected()){
@@ -176,12 +179,12 @@ public class Vue extends JPanel implements Observer{
 					action.setVisibleGrid(false);
 					resetGrid();
 				}
-				
+
 			}
 		} );
 		JCheckBox equitable = new JCheckBox("Equitable");
 		equitable.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (equitable.isSelected()){
@@ -189,10 +192,10 @@ public class Vue extends JPanel implements Observer{
 				}else{
 					action.setEquitable(false);
 				}
-				
+
 			}
 		} );
-		
+
 		JButton set = new JButton("set");
 		set.addActionListener(new ActionListener() {
 
@@ -202,7 +205,7 @@ public class Vue extends JPanel implements Observer{
 				resetGrid();
 				actualiseButton();			
 			}
-			
+
 		});
 
 		JButton start = new JButton("start");
@@ -216,7 +219,7 @@ public class Vue extends JPanel implements Observer{
 				if( text.equals("start")){
 					source.setText("stop");
 
-					
+
 					action.changeRunning();
 
 
@@ -299,7 +302,7 @@ public class Vue extends JPanel implements Observer{
 						action.getEnvironnement().getEspace()[x][y].setAgent(e);
 						action.getEnvironnement().getAgents().add(e);
 						buttonTab[x][y].setBackground(Color.BLACK);
-						
+
 
 
 					}
@@ -335,7 +338,7 @@ public class Vue extends JPanel implements Observer{
 				if(action.getEnvironnement().getEspace()[i][j].isEmpty()){
 					buttonTab[i][j].setBackground(Color.WHITE);
 				}else{
-					buttonTab[i][j].setBackground(Color.BLACK);
+					buttonTab[i][j].setBackground(getRandomColor());
 				}
 
 
@@ -343,6 +346,31 @@ public class Vue extends JPanel implements Observer{
 			}
 
 		}
+	}
+
+	private Color getRandomColor() {
+		
+		return Color.black;
+		/**Random r = new Random();
+
+		int color = r.nextInt(10);
+		switch(color){
+		case 0 : return Color.BLACK;
+		case 1 : return Color.RED;
+		case 2 : return Color.BLUE;
+		case 3 : return Color.CYAN;
+		case 4 : return Color.ORANGE;
+		case 5 : return Color.PINK;
+		case 6 : return Color.YELLOW;
+		case 7 : return Color.MAGENTA;
+		case 8 : return Color.GREEN;
+		case 9 : return Color.LIGHT_GRAY;
+		
+		default:
+			return Color.black;
+		}**/
+
+
 	}
 
 	public void resetGrid(){
@@ -352,13 +380,13 @@ public class Vue extends JPanel implements Observer{
 					Border emptyBorder = BorderFactory.createEmptyBorder();
 					buttonTab[i][j].setBorder(emptyBorder);
 				}else{
-					Border border = new LineBorder(Color.DARK_GRAY, 1);
+					Border border = new LineBorder(Color.GRAY, 1);
 					buttonTab[i][j].setBorder(border);
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 
