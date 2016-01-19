@@ -192,6 +192,18 @@ public class Vue extends JPanel implements Observer{
 				
 			}
 		} );
+		
+		JButton set = new JButton("set");
+		set.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				action.launch(Integer.parseInt(billes.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected());
+				resetGrid();
+				actualiseButton();			
+			}
+			
+		});
 
 		JButton start = new JButton("start");
 		start.addActionListener(new ActionListener() {
@@ -204,12 +216,8 @@ public class Vue extends JPanel implements Observer{
 				if( text.equals("start")){
 					source.setText("stop");
 
-					action.launch(Integer.parseInt(billes.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected());
-					resetGrid();
-					actualiseButton();
+					
 					action.changeRunning();
-
-
 
 
 				}
@@ -255,6 +263,7 @@ public class Vue extends JPanel implements Observer{
 		controle.add(torique);
 		controle.add(visibleGrid);	
 		controle.add(equitable);
+		controle.add(set);
 		controle.add(start);
 		controle.add(clean);
 
