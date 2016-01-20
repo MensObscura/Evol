@@ -64,7 +64,7 @@ public class Environnement {
 			int y =getRandomCoord(x);
 
 
-			Agent a = new Agent(x,y,this);
+			Agent a = new Bille(x,y,this);
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
@@ -81,12 +81,13 @@ public class Environnement {
 
 		int x = 0;
 		int y = 0;
+		
 				
 		for (int i = 0 ; i < this.nbBilles; i++){
 
 			
 			System.out.println(x +" : "+y);
-			Agent a = new Agent(x,y,this);
+			Agent a = AgentFactory.getInstance().getAgent("bille", this, x, y, null);
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
@@ -139,9 +140,18 @@ public class Environnement {
 		
 		
 	}
+	
+	public void addAgent(Agent a){
+		this.agents.add(a);
+	}
 
 	public void setTorique(boolean b) {
 		this.torique =b;
+		
+	}
+
+	public void removeAgent(Agent a) {
+		this.agents.remove(a);
 		
 	}
 

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.Observable;
 import java.util.Random;
 
@@ -39,8 +40,12 @@ public class SMA  extends Observable{
 				if(this.isEquit())
 					Collections.shuffle(this.agents);
 
-				for(Agent a : agents){
-					a.doIt();
+				try{
+					for(Agent a : agents){
+						a.doIt();
+					}
+				}catch(ConcurrentModificationException e){
+					System.out.println("Clique doucement ducon : "+e);
 				}
 
 				this.setChanged();
@@ -118,25 +123,25 @@ public class SMA  extends Observable{
 
 	public void setTorique(boolean b) {
 		this.environnement.setTorique(b);
-		
+
 	}
 
 
 	public void setVisibleGrid(boolean b) {
 		this.visibleGrid = b;
-		
+
 	}
 
 
 	public void setEquitable(boolean b) {
 		this.equit=true;
-		
+
 	}
 
 
 	public void setVitesse(int i) {
 		this.vitesse=i;
-		
+
 	}
 
 }

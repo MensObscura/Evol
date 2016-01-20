@@ -24,6 +24,8 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import model.Agent;
+import model.AgentFactory;
+import model.Bille;
 import model.SMA;
 
 public class Vue extends JPanel implements Observer{
@@ -62,7 +64,7 @@ public class Vue extends JPanel implements Observer{
 	public void initRuleButton(JPanel controle){
 
 		JLabel labBille = new JLabel("Nombre de billes");
-		JTextField billes = new JTextField("0");
+		JTextField billes = new JTextField(this.action.getEnvironnement().getNbBilles()+"");
 		billes.setPreferredSize(new Dimension(50,20));
 		billes.addKeyListener(new KeyListener() {
 
@@ -92,7 +94,7 @@ public class Vue extends JPanel implements Observer{
 		});
 
 		JLabel labVite = new JLabel("vitesse");
-		JTextField vitesse = new JTextField("0");
+		JTextField vitesse = new JTextField(this.action.getVitesse()+"");
 		vitesse.setPreferredSize(new Dimension(50,20));
 		vitesse.addKeyListener(new KeyListener() {
 
@@ -125,7 +127,7 @@ public class Vue extends JPanel implements Observer{
 
 
 		JLabel labSeed = new JLabel("Seed");
-		JTextField seed = new JTextField("0");
+		JTextField seed = new JTextField(this.action.getSeed()+"");
 		seed.setPreferredSize(new Dimension(50,20));
 		seed.addKeyListener(new KeyListener() {
 
@@ -154,6 +156,7 @@ public class Vue extends JPanel implements Observer{
 			}
 		});
 		JCheckBox torique = new JCheckBox("Torique");
+		torique.setSelected(this.action.getEnvironnement().isTorique());
 		torique.addActionListener(new ActionListener() {
 
 			@Override
@@ -168,6 +171,7 @@ public class Vue extends JPanel implements Observer{
 		} );
 
 		JCheckBox visibleGrid = new JCheckBox("Grille visible");
+		visibleGrid.setSelected(this.action.isVisibleGrid());
 		visibleGrid.addActionListener(new ActionListener() {
 
 			@Override
@@ -183,6 +187,7 @@ public class Vue extends JPanel implements Observer{
 			}
 		} );
 		JCheckBox equitable = new JCheckBox("Equitable");
+		equitable.setSelected(this.action.isEquit());
 		equitable.addActionListener(new ActionListener() {
 
 			@Override
@@ -298,10 +303,10 @@ public class Vue extends JPanel implements Observer{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						Agent e = new Agent(x,y,action.getEnvironnement());
+						Agent e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,null);
 						action.getEnvironnement().getEspace()[x][y].setAgent(e);
 						action.getEnvironnement().getAgents().add(e);
-						buttonTab[x][y].setBackground(Color.BLACK);
+						buttonTab[x][y].setBackground(e.getColor());
 
 
 
@@ -338,7 +343,7 @@ public class Vue extends JPanel implements Observer{
 				if(action.getEnvironnement().getEspace()[i][j].isEmpty()){
 					buttonTab[i][j].setBackground(Color.WHITE);
 				}else{
-					buttonTab[i][j].setBackground(getRandomColor());
+					buttonTab[i][j].setBackground(action.getEnvironnement().getEspace()[i][j].getAgent().getColor());
 				}
 
 
@@ -348,30 +353,6 @@ public class Vue extends JPanel implements Observer{
 		}
 	}
 
-	private Color getRandomColor() {
-		
-		return Color.black;
-		/**Random r = new Random();
-
-		int color = r.nextInt(10);
-		switch(color){
-		case 0 : return Color.BLACK;
-		case 1 : return Color.RED;
-		case 2 : return Color.BLUE;
-		case 3 : return Color.CYAN;
-		case 4 : return Color.ORANGE;
-		case 5 : return Color.PINK;
-		case 6 : return Color.YELLOW;
-		case 7 : return Color.MAGENTA;
-		case 8 : return Color.GREEN;
-		case 9 : return Color.LIGHT_GRAY;
-		
-		default:
-			return Color.black;
-		}**/
-
-
-	}
 
 	public void resetGrid(){
 		for(int i = 0 ; i < this.buttonTab.length; i++){
