@@ -3,15 +3,26 @@ package model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import agents.Agent;
+import agents.Bille;
+import agents.Nemo;
+import agents.Requin;
+
 public class Environnement {
 
 	private Cellule espace [][];
 	private ArrayList<Agent> agents;
 	private int taille;
-	private int nbBilles;
+	private int nbAgents;
 	private boolean torique;
 
-
+	private int nbRequins;
+	private int nbNemos;
+	
+	private int reproductionNemo;
+	private int reproductionRequin;
+	private int faimRequin;
+	
 
 	public Environnement(int taille, int nbBilles, int seed,boolean torique, ArrayList<Agent> agents){
 
@@ -19,8 +30,31 @@ public class Environnement {
 
 		this.agents =agents;
 		this.taille = taille;
-		this.nbBilles =nbBilles;
+		this.nbAgents =nbBilles;
 		this.torique = torique;
+
+		this.nbNemos= 0;
+		this.nbRequins = 0;
+		
+		this.init(seed);
+
+	}
+	
+	public Environnement(int taille, int nbNemos, int nbRequins, int seed,boolean torique, ArrayList<Agent> agents, int reproductionNemo, int reproductionRequin, int faimRequin){
+
+		this.espace= new Cellule [taille][taille];
+
+		this.agents =agents;
+		this.taille = taille;
+		this.nbAgents =nbNemos+nbRequins;
+		this.torique = torique;
+		
+		this.nbNemos= nbNemos;
+		this.nbRequins = nbRequins;
+		
+		this.reproductionNemo = reproductionNemo;
+		this.reproductionRequin = reproductionRequin;
+		this.faimRequin = faimRequin;
 
 		this.init(seed);
 
@@ -57,14 +91,25 @@ public class Environnement {
 	public void  randomPut(){
 
 
-		System.out.println("Ajout des billes");
-		for (int i = 0 ; i < this.nbBilles; i++){
+		System.out.println("Ajout d'agents");
+		for (int i = 0 ; i < this.nbAgents; i++){
 
 			int x =getRandomCoord(-1);
 			int y =getRandomCoord(x);
 
-
-			Agent a = new Bille(x,y,this);
+			Agent a;
+			
+			if (!this.isWator()) {
+				a = new Bille(x,y,this);
+			}
+			else {
+				if (i < this.nbNemos) {
+					a = new Nemo(x,y,this,this.reproductionNemo);
+				}
+				else {
+					a = new Requin(x,y,this,this.reproductionRequin,this.faimRequin);
+				}
+			}
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
@@ -83,11 +128,21 @@ public class Environnement {
 		int y = 0;
 		
 				
-		for (int i = 0 ; i < this.nbBilles; i++){
+		for (int i = 0 ; i < this.nbAgents; i++){
 
+			Agent a;
 			
-			System.out.println(x +" : "+y);
-			Agent a = AgentFactory.getInstance().getAgent("bille", this, x, y, null);
+			if (!this.isWator()) {
+				a = new Bille(x,y,this);
+			}
+			else {
+				if (i < this.nbNemos) {
+					a = new Nemo(x,y,this,this.reproductionNemo);
+				}
+				else {
+					a = new Requin(x,y,this,this.reproductionRequin,this.faimRequin);
+				}
+			}
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
@@ -126,8 +181,20 @@ public class Environnement {
 		return taille;
 	}
 
-	public int getNbBilles() {
-		return nbBilles;
+	public int getNbNemos() {
+		return nbNemos;
+	}
+	
+	public int getNbRequins() {
+		return nbRequins;
+	}
+	
+	public boolean isWator() {
+		return nbRequins != 0 && nbNemos != 0;
+	}
+	
+	public int getNbAgents() {
+		return nbAgents;
 	}
 
 	public boolean isTorique() {

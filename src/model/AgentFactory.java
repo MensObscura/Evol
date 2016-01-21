@@ -1,5 +1,10 @@
 package model;
 
+import agents.Agent;
+import agents.Bille;
+import agents.Nemo;
+import agents.Requin;
+
 public class AgentFactory {
 
 	public static AgentFactory factory;

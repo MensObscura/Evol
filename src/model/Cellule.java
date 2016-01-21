@@ -1,5 +1,7 @@
 package model;
 
+import agents.Agent;
+
 public class Cellule {
 
 	private Agent agent;

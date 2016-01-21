@@ -1,37 +1,37 @@
-package model;
+package sma;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Observable;
-import java.util.Random;
 
-public class SMA  extends Observable{
+import agents.Agent;
+import model.Environnement;
 
-	private Environnement environnement;
-	private ArrayList<Agent> agents;
-	private int tAgent; 
-	private int vitesse;
-	private boolean visibleGrid;
-	private boolean equit;
-	private int seed;
-	private boolean running = false;//tmp false 
-	private int taille ;
+public abstract class AbstractSMA extends Observable{
 
-	public SMA(int nbBilles, int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
+	protected Environnement environnement;
+	protected ArrayList<Agent> agents;
+	protected int tAgent; 
+	protected int vitesse;
+	protected boolean visibleGrid;
+	protected boolean equit;
+	protected int seed;
+	protected boolean running = false;//tmp false 
+	protected int taille ;
+
+	public AbstractSMA(int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		this.agents = new ArrayList<Agent>();
 		this.taille = taille;
 		this.vitesse = vitesse;
 		this.visibleGrid = visibleGrid;
 		this.equit = equit;
 		this.seed = seed;
-		this.launch(nbBilles, seed,vitesse, torique, visibleGrid, equit);///tmp
 
 		this.tAgent = tAgent;
 
 	}
-
-
+	
 	public void run(){
 
 		System.out.println("Début du run");
@@ -82,9 +82,6 @@ public class SMA  extends Observable{
 	}
 
 
-
-
-
 	public boolean isVisibleGrid() {
 		return visibleGrid;
 	}
@@ -110,16 +107,6 @@ public class SMA  extends Observable{
 		this.setChanged();
 		this.notifyObservers();
 	}
-
-	public void launch( int nbBilles, int seed, int vitesse, boolean torique, boolean grille,boolean equit){
-
-		this.equit = equit;
-		this.visibleGrid = grille;
-		this.vitesse = vitesse;
-		this.environnement = new Environnement(this.taille,nbBilles, seed, torique, agents);
-
-	}
-
 
 	public void setTorique(boolean b) {
 		this.environnement.setTorique(b);

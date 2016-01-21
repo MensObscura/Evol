@@ -23,23 +23,21 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import model.Agent;
+import agents.Agent;
+import agents.Bille;
 import model.AgentFactory;
-import model.Bille;
-import model.SMA;
+import sma.AbstractSMA;
 
 public class Vue extends JPanel implements Observer{
 
 	private JButton[][] buttonTab;
-	private SMA action;	
+	private AbstractSMA action;	
 	private JPanel glob;
 
-	public Vue (SMA action){
+	public Vue(AbstractSMA action){
 
 		this.action = action;
 		action.addObserver(this);
-
-
 
 		JPanel controle = new JPanel();
 		initRuleButton(controle);
@@ -64,7 +62,7 @@ public class Vue extends JPanel implements Observer{
 	public void initRuleButton(JPanel controle){
 
 		JLabel labBille = new JLabel("Nombre de billes");
-		JTextField billes = new JTextField(this.action.getEnvironnement().getNbBilles()+"");
+		JTextField billes = new JTextField(this.action.getEnvironnement().getNbAgents()+"");
 		billes.setPreferredSize(new Dimension(50,20));
 		billes.addKeyListener(new KeyListener() {
 

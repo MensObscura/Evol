@@ -1,68 +1,100 @@
-package model;
+package agents;
 
 import java.awt.Color;
 import java.util.Random;
 
-public class Bille extends Agent {
+import model.Cellule;
+import model.Direction;
+import model.Environnement;
 
+public abstract class Agent {
 
+	protected int posX;
+	protected  int posY;
+	protected Color color;
 
+	protected  Environnement environnement;
+	
 	private int nextX;
 	private int nextY;
-
+	
 	private Direction dir;
 
 
-	public Bille(int posX, int posY,Environnement environnement) {
-		super( posX,  posY, environnement);
-
-
+	public Agent(int posX, int posY,Environnement environnement) {
+		super();
+		this.posX = posX;
+		this.posY = posY;
+		this.environnement = environnement;
+		this.color = this.getRandomColor();
+		
 		this.dir = this.getRandomDirection(null);
+	}
+
+
+	public int getPosX() {
+		return posX;
+	}
+
+
+	protected void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+
+	public int getPosY() {
+		return posY;
+	}
+
+
+	protected void setPosY(int posY) {
+		this.posY = posY;
+	}
+
+
+
+
+	public Color getColor() {
+		return this.color;
+		
+	}
+	
+	private Color getRandomColor() {
+		
+	
+		Random r = new Random();
+		int color = r.nextInt(10);
+		switch(color){
+		case 0 : return Color.BLACK;
+		case 1 : return Color.RED;
+		case 2 : return Color.BLUE;
+		case 3 : return Color.CYAN;
+		case 4 : return Color.ORANGE;
+		case 5 : return Color.PINK;
+		case 6 : return Color.YELLOW;
+		case 7 : return Color.MAGENTA;
+		case 8 : return Color.GREEN;
+		case 9 : return Color.LIGHT_GRAY;
+		
+		default:
+			return Color.black;
+		}
 
 
 	}
 
-
-	private void setDir(Direction dir) {
-		this.dir = dir;
-	}
-
-	public Direction getDir() {
-		return this.dir;
-	}
-
-
-	/**
-	 * 
-	 */
 	public void doIt(){
 		this.calculateNextCase(0);
 		this.environnement.getEspace()[this.posX][this.posY].removeAgent();;
-
+	
 		this.setPosX(this.nextX);
 		this.setPosY(this.nextY);
-
+	
 		this.environnement.getEspace()[this.posX][this.posY].setAgent(this);
-
-
+	
+	
 	}
-
-	/**
-	 * On regarde l'état de la case suivante
-	 * @return
-	 */
-	public boolean isNextCaseFree(){
-
-		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
-
-			return this.environnement.getEspace()[this.nextX][this.nextY].isEmpty();
-
-		}
-		return false;
-
-
-	}
-
+	
 	/**
 	 * On cherche la prochiane case, et on vérifie si elle est libre, sinon on change de direction et on recherche
 	 */
@@ -106,10 +138,34 @@ public class Bille extends Agent {
 			calculateNextCase(tour);
 		}
 
+	}
+	
+	private void setDir(Direction dir) {
+		this.dir = dir;
+	}
 
+	public Direction getDir() {
+		return this.dir;
+	}
+
+
+
+	/**
+	 * On regarde l'état de la case suivante
+	 * @return
+	 */
+	public boolean isNextCaseFree(){
+
+		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
+
+			return this.environnement.getEspace()[this.nextX][this.nextY].isEmpty();
+
+		}
+		return false;
 
 
 	}
+
 
 	/**
 	 * prochiane case selon le dernier calcul
@@ -224,9 +280,6 @@ public class Bille extends Agent {
 
 		return getRandomDirection(origine);
 	}
-
-
-	
 
 
 }
