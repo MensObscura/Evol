@@ -2,7 +2,7 @@ package sma;
 
 import model.Environnement;
 
-public class SMABille  extends AbstractSMA {
+public class SMABille  extends SMA {
 
 	public SMABille(int nbBilles, int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		super(taille, tAgent, vitesse, torique, visibleGrid, equit, seed);

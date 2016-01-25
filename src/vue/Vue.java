@@ -26,15 +26,15 @@ import javax.swing.border.LineBorder;
 import agents.Agent;
 import agents.Bille;
 import model.AgentFactory;
-import sma.AbstractSMA;
+import sma.SMABille;
 
 public class Vue extends JPanel implements Observer{
 
 	private JButton[][] buttonTab;
-	private AbstractSMA action;	
+	private SMABille action;	
 	private JPanel glob;
 
-	public Vue(AbstractSMA action){
+	public Vue(SMABille action){
 
 		this.action = action;
 		action.addObserver(this);

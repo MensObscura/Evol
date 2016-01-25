@@ -8,7 +8,7 @@ import java.util.Observable;
 import agents.Agent;
 import model.Environnement;
 
-public abstract class AbstractSMA extends Observable{
+public class SMA extends Observable{
 
 	protected Environnement environnement;
 	protected ArrayList<Agent> agents;
@@ -20,7 +20,7 @@ public abstract class AbstractSMA extends Observable{
 	protected boolean running = false;//tmp false 
 	protected int taille ;
 
-	public AbstractSMA(int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
+	public SMA(int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		this.agents = new ArrayList<Agent>();
 		this.taille = taille;
 		this.vitesse = vitesse;

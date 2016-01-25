@@ -1,6 +1,5 @@
 package agents;
 
-import java.util.Random;
 
 import model.Cellule;
 import model.Environnement;
@@ -47,84 +46,21 @@ public class Requin extends Agent {
 	private void eatThatNemo() {
 		Cellule[][] cels = this.environnement.getEspace();
 		
-
-		if  (cels[this.posX-1][this.posY].getAgent() instanceof Nemo) {
+		int[] c = getNemoCellule();
+		
+		if (c != null) {
 			cels[this.posX][this.posY].removeAgent();
-			this.posX = this.posX-1;
+			this.posX = c[0];
+			this.posY = c[1];
 			
-			cels[this.posX-1][this.posY].setAgent(this);
-		}
-		else if (cels[this.posX-1][this.posY-1].isEmpty()) {
-			cels[this.posX-1][this.posY-1].removeAgent();
-			this.posX = this.posX-1;
-			this.posY = this.posY-1;
-			
-			cels[this.posX-1][this.posY-1].setAgent(this);
-		}
-		else if (cels[this.posX][this.posY-1].isEmpty()) {
-			cels[this.posX][this.posY].removeAgent();
-			this.posY = this.posY-1;
-			
-			cels[this.posX][this.posY-1].setAgent(this);
-		}
-		else if (cels[this.posX-1][this.posY+1].isEmpty()) {
-			cels[this.posX-1][this.posY+1].removeAgent();
-			this.posX = this.posX-1;
-			this.posY = this.posY+1;
-			
-			cels[this.posX-1][this.posY+1].setAgent(this);
-		}
-		else if (cels[this.posX+1][this.posY+1].isEmpty()) {
-			this.posX = this.posX+1;
-			this.posY = this.posY+1;
-			
-			cels[this.posX+1][this.posY+1].setAgent(this);
-		}
-		else if (cels[this.posX+1][this.posY-1].isEmpty()) {
-			this.posX = this.posX+1;
-			this.posY = this.posY-1;
-			
-			cels[this.posX+1][this.posY-1].setAgent(this);
-		}
-		else if (cels[this.posX][this.posY+1].isEmpty()) {
-			this.posY = this.posY+1;
-			
-			cels[this.posX][this.posY+1].setAgent(this);
-		}
-		else {
-			this.posX = this.posX+1;
-			
-			cels[this.posX+1][this.posY].setAgent(this);
+			cels[this.posX][this.posY].setAgent(this);
 		}
 		
 	}
 
-
-
 	private boolean canIeat() {
-		Cellule[][] cels = this.environnement.getEspace();
-		return cels[this.posX-1][this.posY].getAgent() instanceof Nemo
-				|| cels[this.posX-1][this.posY-1].getAgent() instanceof Nemo
-				|| cels[this.posX][this.posY-1].getAgent() instanceof Nemo
-				|| cels[this.posX-1][this.posY+1].getAgent() instanceof Nemo
-				|| cels[this.posX+1][this.posY+1].getAgent() instanceof Nemo
-				|| cels[this.posX+1][this.posY-1].getAgent() instanceof Nemo
-				|| cels[this.posX][this.posY+1].getAgent() instanceof Nemo
-				|| cels[this.posX+1][this.posY].getAgent() instanceof Nemo;
+		return getNemoCellule() != null;
 	}
-
-	private boolean canImove() {
-		Cellule[][] cels = this.environnement.getEspace();
-		return cels[this.posX-1][this.posY].isEmpty()
-				|| cels[this.posX-1][this.posY-1].isEmpty()
-				|| cels[this.posX][this.posY-1].isEmpty()
-				|| cels[this.posX-1][this.posY+1].isEmpty()
-				|| cels[this.posX+1][this.posY+1].isEmpty()
-				|| cels[this.posX+1][this.posY-1].isEmpty()
-				|| cels[this.posX][this.posY+1].isEmpty()
-				|| cels[this.posX+1][this.posY].isEmpty();
-	}
-
 
 	private boolean timeToHaveChild() {
 
@@ -136,48 +72,234 @@ public class Requin extends Agent {
 		return manger > lastMeal;
 	}
 	
-	private void popBaby() {
+	private int[] getNemoCellule() {
 		Cellule[][] cels = this.environnement.getEspace();
-		Agent baby = new Requin(0,0,this.environnement, this.reproduction, this.manger);
-		if  (cels[this.posX-1][this.posY].isEmpty()) {
-			baby.setPosX(this.posX-1);
-			baby.setPosY(this.posY);
-			cels[this.posX-1][this.posY].setAgent(baby);
-		}
-		else if (cels[this.posX-1][this.posY-1].isEmpty()) {
-			baby.setPosX(this.posX-1);
-			baby.setPosY(this.posY-1);
-			cels[this.posX-1][this.posY-1].setAgent(baby);
-		}
-		else if (cels[this.posX][this.posY-1].isEmpty()) {
-			baby.setPosX(this.posX);
-			baby.setPosY(this.posY-1);
-			cels[this.posX][this.posY-1].setAgent(baby);
-		}
-		else if (cels[this.posX-1][this.posY+1].isEmpty()) {
-			baby.setPosX(this.posX-1);
-			baby.setPosY(this.posY+1);
-			cels[this.posX-1][this.posY+1].setAgent(baby);
-		}
-		else if (cels[this.posX+1][this.posY+1].isEmpty()) {
-			baby.setPosX(this.posX+1);
-			baby.setPosY(this.posY+1);
-			cels[this.posX+1][this.posY+1].setAgent(baby);
-		}
-		else if (cels[this.posX+1][this.posY-1].isEmpty()) {
-			baby.setPosX(this.posX+1);
-			baby.setPosY(this.posY);
-			cels[this.posX+1][this.posY-1].setAgent(baby);
-		}
-		else if (cels[this.posX][this.posY+1].isEmpty()) {
-			baby.setPosX(this.posX);
-			baby.setPosY(this.posY+1);
-			cels[this.posX][this.posY+1].setAgent(baby);
+		
+		int x;
+		int y;
+		
+		if (this.environnement.isTorique()) {
+
+			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][this.posY].getAgent() instanceof Nemo) {
+				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
+				y = this.posY;
+				return new int[]{x, y};
+			}
+			
+			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].getAgent() instanceof Nemo) {
+				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
+				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
+				return new int[]{x, y};
+			}
+			
+			if (cels[this.posX][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].getAgent() instanceof Nemo) {
+				x = this.posX;
+				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
+				return new int[]{x, y};
+			}
+			
+			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY+1)%this.environnement.getTaille()].getAgent() instanceof Nemo) {
+				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
+				y = (this.posY+1)%this.environnement.getTaille();
+				return new int[]{x, y};
+			}
+			
+			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY+1)%this.environnement.getTaille()].getAgent() instanceof Nemo) {
+				x = (this.posX+1)%this.environnement.getTaille();
+				y = (this.posY+1)%this.environnement.getTaille();
+				return new int[]{x, y};
+			}
+
+			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].getAgent() instanceof Nemo) {
+				x = (this.posX+1)%this.environnement.getTaille();
+				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
+				return new int[]{x, y};
+			}
+				
+				
+			if (cels[this.posX][(this.posY+1)%this.environnement.getTaille()].getAgent() instanceof Nemo) {
+				x = this.posX;
+				y = (this.posY+1)%this.environnement.getTaille();
+				return new int[]{x, y};
+			}
+				
+			if (cels[(this.posX+1)%this.environnement.getTaille()][this.posY].getAgent() instanceof Nemo) {
+				x = (this.posX+1)%this.environnement.getTaille();
+				y = this.posY;
+				return new int[]{x, y};
+			}
+				
+			return null;
+
 		}
 		else {
-			baby.setPosX(this.posX+1);
-			baby.setPosY(this.posY);
-			cels[this.posX+1][this.posY].setAgent(baby);
+			if (this.posX != 0 && cels[this.posX-1][this.posY].getAgent() instanceof Nemo) {
+				x = this.posX-1;
+				y = this.posY-1;
+				return new int[]{x, y};
+			}
+			
+			if (this.posY != 0 && cels[this.posX][this.posY-1].getAgent() instanceof Nemo) {
+				x = this.posX;
+				y = this.posY-1;
+				return new int[]{x, y};
+			}
+
+			if (this.posX != 0 && this.posY != this.environnement.getTaille()-1 && cels[this.posX-1][this.posY+1].getAgent() instanceof Nemo) {
+				x = this.posX-1;
+				y = this.posY+1;
+				return new int[]{x, y};
+			}
+			
+			if (this.posY != this.environnement.getTaille()-1 && this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY+1].getAgent() instanceof Nemo) {
+				x = this.posX+1;
+				y = this.posY+1;
+				return new int[]{x, y};
+			}
+			
+			if (this.posX != this.environnement.getTaille()-1 && this.posY != 0 && cels[this.posX+1][this.posY-1].getAgent() instanceof Nemo) {
+				x = this.posX+1;
+				y = this.posY-1;
+				return new int[]{x, y};
+			}
+				
+			if (this.posY != this.environnement.getTaille()-1 && cels[this.posX][this.posY+1].getAgent() instanceof Nemo) {
+				x = this.posX;
+				y = this.posY+1;
+				return new int[]{x, y};
+			}
+				
+			if (this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY].getAgent() instanceof Nemo) {
+				x = this.posX+1;
+				y = this.posY;
+				return new int[]{x, y};
+			}
+				
+			return null;
+	
+		}
+	}
+	
+	private int[] getFreeCellule() {
+		Cellule[][] cels = this.environnement.getEspace();
+		
+		int x;
+		int y;
+		
+		if (this.environnement.isTorique()) {
+
+			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][this.posY].isEmpty()) {
+				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
+				y = this.posY;
+				return new int[]{x, y};
+			}
+			
+			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
+				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
+				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
+				return new int[]{x, y};
+			}
+			
+			if (cels[this.posX][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
+				x = this.posX;
+				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
+				return new int[]{x, y};
+			}
+			
+			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
+				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
+				y = (this.posY+1)%this.environnement.getTaille();
+				return new int[]{x, y};
+			}
+			
+			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
+				x = (this.posX+1)%this.environnement.getTaille();
+				y = (this.posY+1)%this.environnement.getTaille();
+				return new int[]{x, y};
+			}
+
+			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
+				x = (this.posX+1)%this.environnement.getTaille();
+				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
+				return new int[]{x, y};
+			}
+				
+				
+			if (cels[this.posX][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
+				x = this.posX;
+				y = (this.posY+1)%this.environnement.getTaille();
+				return new int[]{x, y};
+			}
+				
+			if (cels[(this.posX+1)%this.environnement.getTaille()][this.posY].isEmpty()) {
+				x = (this.posX+1)%this.environnement.getTaille();
+				y = this.posY;
+				return new int[]{x, y};
+			}
+				
+			return null;
+
+		}
+		else {
+			if (this.posX != 0 && cels[this.posX-1][this.posY].isEmpty()) {
+				x = this.posX-1;
+				y = this.posY-1;
+				return new int[]{x, y};
+			}
+			
+			if (this.posY != 0 && cels[this.posX][this.posY-1].isEmpty()) {
+				x = this.posX;
+				y = this.posY-1;
+				return new int[]{x, y};
+			}
+
+			if (this.posX != 0 && this.posY != this.environnement.getTaille()-1 && cels[this.posX-1][this.posY+1].isEmpty()) {
+				x = this.posX-1;
+				y = this.posY+1;
+				return new int[]{x, y};
+			}
+			
+			if (this.posY != this.environnement.getTaille()-1 && this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY+1].isEmpty()) {
+				x = this.posX+1;
+				y = this.posY+1;
+				return new int[]{x, y};
+			}
+			
+			if (this.posX != this.environnement.getTaille()-1 && this.posY != 0 && cels[this.posX+1][this.posY-1].isEmpty()) {
+				x = this.posX+1;
+				y = this.posY-1;
+				return new int[]{x, y};
+			}
+				
+			if (this.posY != this.environnement.getTaille()-1 && cels[this.posX][this.posY+1].isEmpty()) {
+				x = this.posX;
+				y = this.posY+1;
+				return new int[]{x, y};
+			}
+				
+			if (this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY].isEmpty()) {
+				x = this.posX+1;
+				y = this.posY;
+				return new int[]{x, y};
+			}
+				
+			return null;
+	
+		}
+	}
+	
+	private boolean canImove() {
+		return getFreeCellule() != null;
+	}
+	
+	private void popBaby() {
+		int[] c = getFreeCellule();
+		Agent baby = new Nemo(0,0,this.environnement, this.reproduction);
+		
+		if (c != null) {
+			baby.setPosX(c[0]);
+			baby.setPosY(c[1]);
+			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
 		}
 	}
 

@@ -7,7 +7,7 @@ import model.Cellule;
 import model.Direction;
 import model.Environnement;
 
-public abstract class Agent {
+public class Agent {
 
 	protected int posX;
 	protected  int posY;
