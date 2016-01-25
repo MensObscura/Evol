@@ -3,6 +3,8 @@ package vue;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,14 +29,15 @@ import agents.Agent;
 import agents.Bille;
 import model.AgentFactory;
 import sma.AbstractSMA;
+import sma.SMAWator;
 
 public class Vue extends JPanel implements Observer{
 
 	private JButton[][] buttonTab;
-	private AbstractSMA action;	
+	private SMAWator action;	
 	private JPanel glob;
 
-	public Vue(AbstractSMA action){
+	public Vue(SMAWator action){
 
 		this.action = action;
 		action.addObserver(this);
@@ -48,7 +51,12 @@ public class Vue extends JPanel implements Observer{
 		glob = new JPanel();
 		initButton();
 
-		glob.setLayout(new BoxLayout(glob, BoxLayout.Y_AXIS));
+		glob.setLayout( new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		//natural height, maximum width
+		c.fill = GridBagConstraints.VERTICAL;
+		
 		glob.add(this);
 		glob.add(controle);
 		f.add(glob);
@@ -61,10 +69,10 @@ public class Vue extends JPanel implements Observer{
 
 	public void initRuleButton(JPanel controle){
 
-		JLabel labBille = new JLabel("Nombre de billes");
-		JTextField billes = new JTextField(this.action.getEnvironnement().getNbAgents()+"");
-		billes.setPreferredSize(new Dimension(50,20));
-		billes.addKeyListener(new KeyListener() {
+		JLabel labNemo = new JLabel("Nombre de nemos");
+		JTextField nemo = new JTextField(this.action.getEnvironnement().getNbNemos()+"");
+		nemo.setPreferredSize(new Dimension(50,20));
+		nemo.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -74,11 +82,11 @@ public class Vue extends JPanel implements Observer{
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(billes.getText().length() >0 )
+				if(nemo.getText().length() >0 )
 					try{
-						Integer.parseInt(billes.getText());
+						Integer.parseInt(nemo.getText());
 					}catch(Exception ex){
-						billes.setText("0");
+						nemo.setText("0");
 					}
 
 
@@ -90,6 +98,134 @@ public class Vue extends JPanel implements Observer{
 
 			}
 		});
+		
+		JLabel labNemoRepro = new JLabel("Maturité des nemos");
+		JTextField nemoRepro = new JTextField(this.action.getEnvironnement().getReproductionNemo()+"");
+		nemoRepro.setPreferredSize(new Dimension(50,20));
+		nemoRepro.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(nemoRepro.getText().length() >0 )
+					try{
+						
+					action.getEnvironnement().setReproductionNemo(Integer.parseInt(nemoRepro.getText()));
+						
+					}catch(Exception ex){
+						nemoRepro.setText("0");
+					}
+
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		JLabel labRequin = new JLabel("Nombre de requins");
+		JTextField requin = new JTextField(this.action.getEnvironnement().getNbRequins()+"");
+		requin.setPreferredSize(new Dimension(50,20));
+		requin.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(requin.getText().length() >0 )
+					try{
+						Integer.parseInt(requin.getText());
+					}catch(Exception ex){
+						requin.setText("0");
+					}
+
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+		JLabel labRequinRepro = new JLabel("Maturité des requins");
+		JTextField requinRepro = new JTextField(this.action.getEnvironnement().getReproductionRequin()+"");
+		requinRepro.setPreferredSize(new Dimension(50,20));
+		requinRepro.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(requinRepro.getText().length() >0 )
+					try{
+						
+					action.getEnvironnement().setReproductionRequin(Integer.parseInt(requinRepro.getText()));
+						
+					}catch(Exception ex){
+						requinRepro.setText("0");
+					}
+
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+		
+		JLabel labRequinFaim= new JLabel("Faim des requins");
+		JTextField requinFaim = new JTextField(this.action.getEnvironnement().getFaimRequin());
+		requinFaim.setPreferredSize(new Dimension(50,20));
+		requinFaim.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(requinFaim.getText().length() >0 )
+					try{
+						
+					action.getEnvironnement().setFaimRequin(Integer.parseInt(requinFaim.getText()));
+						
+					}catch(Exception ex){
+						requinFaim.setText("0");
+					}
+
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
 
 		JLabel labVite = new JLabel("vitesse");
 		JTextField vitesse = new JTextField(this.action.getVitesse()+"");
@@ -204,7 +340,7 @@ public class Vue extends JPanel implements Observer{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				action.launch(Integer.parseInt(billes.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected());
+				action.launch(Integer.parseInt(nemo.getText()),Integer.parseInt(requin.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected(), Integer.parseInt(nemoRepro.getText()), Integer.parseInt(requinRepro.getText()), Integer.parseInt(requinFaim.getText()));
 				resetGrid();
 				actualiseButton();			
 			}
@@ -258,10 +394,18 @@ public class Vue extends JPanel implements Observer{
 
 
 
-		controle.setLayout(new FlowLayout());
+		controle.setLayout(new GridLayout(10,2));
 
-		controle.add(labBille);
-		controle.add(billes);
+		controle.add(labNemo);
+		controle.add(nemo);
+		controle.add(labNemoRepro);
+		controle.add(nemoRepro);
+		controle.add(labRequin);
+		controle.add(requin);
+		controle.add(labRequinRepro);
+		controle.add(requinRepro);
+		controle.add(labRequinFaim);
+		controle.add(requinFaim);
 		controle.add(labVite);
 		controle.add(vitesse);
 		controle.add(labSeed);

@@ -18,11 +18,11 @@ public class Environnement {
 
 	private int nbRequins;
 	private int nbNemos;
-	
+
 	private int reproductionNemo;
 	private int reproductionRequin;
 	private int faimRequin;
-	
+
 
 	public Environnement(int taille, int nbBilles, int seed,boolean torique, ArrayList<Agent> agents){
 
@@ -35,11 +35,11 @@ public class Environnement {
 
 		this.nbNemos= 0;
 		this.nbRequins = 0;
-		
+
 		this.init(seed);
 
 	}
-	
+
 	public Environnement(int taille, int nbNemos, int nbRequins, int seed,boolean torique, ArrayList<Agent> agents, int reproductionNemo, int reproductionRequin, int faimRequin){
 
 		this.espace= new Cellule [taille][taille];
@@ -48,10 +48,10 @@ public class Environnement {
 		this.taille = taille;
 		this.nbAgents =nbNemos+nbRequins;
 		this.torique = torique;
-		
+
 		this.nbNemos= nbNemos;
 		this.nbRequins = nbRequins;
-		
+
 		this.reproductionNemo = reproductionNemo;
 		this.reproductionRequin = reproductionRequin;
 		this.faimRequin = faimRequin;
@@ -65,16 +65,16 @@ public class Environnement {
 
 		for(int i = 0 ; i < this.espace.length; i++){
 			for(int j = 0; j < this.espace[i].length; j++){
-					this.espace[i][j] = new Cellule();
+				this.espace[i][j] = new Cellule();
 			}
 		}
 		if(this.taille > 0)
-		switch(seed){
-		case 0 : randomPut(); break;
-		case 1 : binaryPut(); break;
-		default :randomPut();
+			switch(seed){
+			case 0 : randomPut(); break;
+			case 1 : binaryPut(); break;
+			default :randomPut();
 
-		}
+			}
 
 	}
 
@@ -98,7 +98,7 @@ public class Environnement {
 			int y =getRandomCoord(x);
 
 			Agent a;
-			
+
 			if (!this.isWator()) {
 				a = new Bille(x,y,this);
 			}
@@ -126,12 +126,12 @@ public class Environnement {
 
 		int x = 0;
 		int y = 0;
-		
-				
+
+
 		for (int i = 0 ; i < this.nbAgents; i++){
 
 			Agent a;
-			
+
 			if (!this.isWator()) {
 				a = new Bille(x,y,this);
 			}
@@ -146,7 +146,7 @@ public class Environnement {
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
-			
+
 			x =( (x+2 ) % (this.espace.length));
 			if( x == 0){
 				y ++;
@@ -184,15 +184,15 @@ public class Environnement {
 	public int getNbNemos() {
 		return nbNemos;
 	}
-	
+
 	public int getNbRequins() {
 		return nbRequins;
 	}
-	
+
 	public boolean isWator() {
 		return nbRequins != 0 && nbNemos != 0;
 	}
-	
+
 	public int getNbAgents() {
 		return nbAgents;
 	}
@@ -204,22 +204,69 @@ public class Environnement {
 	public void clearSpace() {
 		this.taille = 0;
 		this.init(0);
-		
-		
+
+
 	}
-	
+
 	public void addAgent(Agent a){
 		this.agents.add(a);
 	}
 
 	public void setTorique(boolean b) {
 		this.torique =b;
-		
+
 	}
 
 	public void removeAgent(Agent a) {
 		this.agents.remove(a);
-		
+
 	}
+
+	public int getReproductionNemo() {
+		return reproductionNemo;
+	}
+
+	public void setReproductionNemo(int reproductionNemo) {
+		this.reproductionNemo = reproductionNemo;
+		for (Agent a : this.agents){
+
+			if(a instanceof Nemo ){
+				((Nemo)a).setReproduction(reproductionNemo);
+			}
+
+		}
+	}
+
+	public int getReproductionRequin() {
+		return reproductionRequin;
+	}
+
+	public void setReproductionRequin(int reproductionRequin) {
+		this.reproductionRequin = reproductionRequin;
+		for (Agent a : this.agents){
+
+			if(a instanceof Requin ){
+				((Requin)a).setReproduction(reproductionRequin);
+			}
+
+		}
+	}
+
+	public int getFaimRequin() {
+		return faimRequin;
+	}
+
+	public void setFaimRequin(int faimRequin) {
+		this.faimRequin = faimRequin;
+
+		for (Agent a : this.agents){
+
+			if(a instanceof Requin ){
+				((Requin)a).setManger(faimRequin);
+			}
+
+		}
+	}
+
 
 }

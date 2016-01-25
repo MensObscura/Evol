@@ -1,5 +1,7 @@
 package agents;
 
+import java.awt.Color;
+
 import model.Cellule;
 import model.Environnement;
 
@@ -12,6 +14,7 @@ public class Nemo extends Agent {
 		super(posX, posY, environnement);
 		this.age = 0;
 		this.reproduction = reproduction;
+		this.color = Color.ORANGE;
 	}
 
 
@@ -87,6 +90,12 @@ public class Nemo extends Agent {
 			baby.setPosY(this.posY);
 			cels[this.posX+1][this.posY].setAgent(baby);
 		}
+	}
+
+
+
+	public void setReproduction(int reproduction) {
+		this.reproduction = reproduction;
 	}
 
 }

@@ -1,5 +1,6 @@
 package agents;
 
+import java.awt.Color;
 import java.util.Random;
 
 import model.Cellule;
@@ -18,6 +19,7 @@ public class Requin extends Agent {
 		this.lastMeal = 0;
 		this.age = 0;
 		this.reproduction = reproduction;
+		this.color = Color.DARK_GRAY;
 	}
 
 
@@ -131,6 +133,18 @@ public class Requin extends Agent {
 		return reproduction >= age;
 	}
 
+	public void setReproduction(int reproduction) {
+		this.reproduction = reproduction;
+	}
+
+
+
+	public void setManger(int manger) {
+		this.manger = manger;
+	}
+
+
+
 	private boolean starve() {
 
 		return manger > lastMeal;
@@ -180,5 +194,6 @@ public class Requin extends Agent {
 			cels[this.posX+1][this.posY].setAgent(baby);
 		}
 	}
+
 
 }
