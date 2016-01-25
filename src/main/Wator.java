@@ -1,6 +1,6 @@
 package main;
 
-import sma.AbstractSMA;
+import sma.SMA;
 import sma.SMAWator;
 import vue.Vue;
 
@@ -11,8 +11,9 @@ public class Wator {
 		
 		if( args.length == 12){
 			System.out.println("Début du main");
-		AbstractSMA action = new SMAWator(Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]),Integer.parseInt(args[3]),Integer.parseInt(args[4]),Boolean.parseBoolean(args[5]),Boolean.parseBoolean(args[6]),Boolean.parseBoolean(args[7]),Integer.parseInt(args[8]),Integer.parseInt(args[9]),Integer.parseInt(args[10]),Integer.parseInt(args[11]));
-		Vue vue = new Vue(((SMAWator)action));
+
+		SMAWator action = new SMAWator(Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]),Integer.parseInt(args[3]),Integer.parseInt(args[4]),Boolean.parseBoolean(args[5]),Boolean.parseBoolean(args[6]),Boolean.parseBoolean(args[7]),Integer.parseInt(args[8]),Integer.parseInt(args[9]),Integer.parseInt(args[10]),Integer.parseInt(args[11]));
+		Vue vue = new Vue (action);
 		action.run();
 		}else{
 			System.out.println("Error nb argument : main  nbNemos	nbRequins  taille  tAgent vitesse torique visibleGrid equit seed	ageReproductionNemo	ageReproductionNemo	faimRequin");

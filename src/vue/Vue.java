@@ -28,12 +28,13 @@ import javax.swing.border.LineBorder;
 import agents.Agent;
 import agents.Bille;
 import model.AgentFactory;
-import sma.AbstractSMA;
+
 import sma.SMAWator;
 
 public class Vue extends JPanel implements Observer{
 
 	private JButton[][] buttonTab;
+
 	private SMAWator action;	
 	private JPanel glob;
 

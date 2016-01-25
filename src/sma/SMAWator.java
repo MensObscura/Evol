@@ -2,7 +2,7 @@ package sma;
 
 import model.Environnement;
 
-public class SMAWator extends AbstractSMA {
+public class SMAWator extends SMA {
 
 	public SMAWator(int nbNemos, int nbRequins, int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed, int reproNemo, int reproRequin, int faimRequin){
 		super(taille, tAgent, vitesse, torique, visibleGrid, equit, seed);
