@@ -3,9 +3,12 @@ package sma;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.Observable;
 
 import agents.Agent;
+import agents.Nemo;
+import agents.Requin;
 import model.Environnement;
 
 public class SMA extends Observable{
@@ -35,21 +38,35 @@ public class SMA extends Observable{
 	public void run(){
 
 		System.out.println("Début du run");
+		int nemo = 0;
+		int requin = 0;
 		while (running || !running){
+			nemo = 0;
+			requin = 0;
 			if(running){
 				if(this.isEquit())
 					Collections.shuffle(this.agents);
 
 				try{
-					for(Agent a : agents){
+					ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
+					for(Agent a : agentBis){
+						if(a instanceof Nemo){
+							nemo ++;
+						}
+						
+						if(a instanceof Requin){
+							requin ++;
+						}
 						a.doIt();
 					}
 				}catch(ConcurrentModificationException e){
 					System.out.println("Clique doucement ducon : "+e);
 				}
-
+				
 				this.setChanged();
 				this.notifyObservers();
+				System.out.println("Nemos :" + nemo );
+				System.out.println("Requins : "+ requin);
 			}
 			try {
 				Thread.sleep(this.vitesse);

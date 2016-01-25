@@ -32,15 +32,15 @@ public class Nemo extends Agent {
 
 
 	private boolean timeToHaveChild() {
-		return reproduction >= age;
+		return reproduction <= age;
 	}
-	
+
 	private int[] getFreeCellule() {
 		Cellule[][] cels = this.environnement.getEspace();
-		
+
 		int x;
 		int y;
-		
+
 		if (this.environnement.isTorique()) {
 
 			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][this.posY].isEmpty()) {
@@ -48,25 +48,25 @@ public class Nemo extends Agent {
 				y = this.posY;
 				return new int[]{x, y};
 			}
-			
+
 			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
 				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
 				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
 				return new int[]{x, y};
 			}
-			
+
 			if (cels[this.posX][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
 				x = this.posX;
 				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
 				return new int[]{x, y};
 			}
-			
+
 			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
 				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
 				y = (this.posY+1)%this.environnement.getTaille();
 				return new int[]{x, y};
 			}
-			
+
 			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
 				x = (this.posX+1)%this.environnement.getTaille();
 				y = (this.posY+1)%this.environnement.getTaille();
@@ -78,30 +78,30 @@ public class Nemo extends Agent {
 				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
 				return new int[]{x, y};
 			}
-				
-				
+
+
 			if (cels[this.posX][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
 				x = this.posX;
 				y = (this.posY+1)%this.environnement.getTaille();
 				return new int[]{x, y};
 			}
-				
+
 			if (cels[(this.posX+1)%this.environnement.getTaille()][this.posY].isEmpty()) {
 				x = (this.posX+1)%this.environnement.getTaille();
 				y = this.posY;
 				return new int[]{x, y};
 			}
-				
+
 			return null;
 
 		}
 		else {
 			if (this.posX != 0 && cels[this.posX-1][this.posY].isEmpty()) {
 				x = this.posX-1;
-				y = this.posY-1;
+				y = this.posY;
 				return new int[]{x, y};
 			}
-			
+
 			if (this.posY != 0 && cels[this.posX][this.posY-1].isEmpty()) {
 				x = this.posX;
 				y = this.posY-1;
@@ -113,48 +113,50 @@ public class Nemo extends Agent {
 				y = this.posY+1;
 				return new int[]{x, y};
 			}
-			
+
 			if (this.posY != this.environnement.getTaille()-1 && this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY+1].isEmpty()) {
 				x = this.posX+1;
 				y = this.posY+1;
 				return new int[]{x, y};
 			}
-			
+
 			if (this.posX != this.environnement.getTaille()-1 && this.posY != 0 && cels[this.posX+1][this.posY-1].isEmpty()) {
 				x = this.posX+1;
 				y = this.posY-1;
 				return new int[]{x, y};
 			}
-				
+
 			if (this.posY != this.environnement.getTaille()-1 && cels[this.posX][this.posY+1].isEmpty()) {
 				x = this.posX;
 				y = this.posY+1;
 				return new int[]{x, y};
 			}
-				
+
 			if (this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY].isEmpty()) {
 				x = this.posX+1;
 				y = this.posY;
 				return new int[]{x, y};
 			}
-				
+
 			return null;
-	
+
 		}
 	}
-	
+
 	private boolean canImove() {
 		return getFreeCellule() != null;
 	}
-	
+
 	private void popBaby() {
 		int[] c = getFreeCellule();
 		Agent baby = new Nemo(0,0,this.environnement, this.reproduction);
+
 		
 		if (c != null) {
 			baby.setPosX(c[0]);
 			baby.setPosY(c[1]);
 			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
+			this.environnement.addAgent(baby);
 		}
 	}
 

@@ -12,7 +12,7 @@ public class Agent {
 	protected int posX;
 	protected  int posY;
 	protected Color color;
-
+	protected Random r = new Random();
 	protected  Environnement environnement;
 	
 	private int nextX;
@@ -130,12 +130,14 @@ public class Agent {
 		}
 
 		if(!isNextCaseFree()){
-			if(tour > 10){
-				this.setDir(this.getRandomDirection(this.dir));
+			if(tour > 50){
+				 this.nextX = this.posX ; 
+				 this.nextY = this.posY ;
 			}else{
 				this.setDir(this.getDirectionWithOpponentDirection(this.dir));
+				calculateNextCase(tour);
 			}
-			calculateNextCase(tour);
+			
 		}
 
 	}
@@ -184,7 +186,7 @@ public class Agent {
 	 * @return une direction
 	 */
 	public Direction getRandomDirection(Direction origine){
-		Random r = new Random();
+		
 		int rand = r.nextInt(8);
 		Direction out =  null;
 		switch(rand){
@@ -209,7 +211,7 @@ public class Agent {
 	public Direction getDirectionWithOpponentDirection(Direction origine){
 
 		if(this.nextCase() != null && !this.nextCase().isEmpty()){
-			switch(((Bille)this.nextCase().getAgent()).getDir()){
+			switch((this.nextCase().getAgent()).getDir()){
 
 			case EST :  return  Direction.OUEST; 
 			case OUEST :  return  Direction.EST; 

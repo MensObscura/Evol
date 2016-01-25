@@ -1,11 +1,13 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -54,12 +56,19 @@ public class Vue extends JPanel implements Observer{
 
 		glob.setLayout( new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		
+		glob.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		//natural height, maximum width
-		c.fill = GridBagConstraints.VERTICAL;
+		c.fill = GridBagConstraints.BOTH;
 		
-		glob.add(this);
-		glob.add(controle);
+		c.weightx =1.0;
+		c.insets = new Insets(0,0,0,0); 
+		c.weighty = 1.0;
+		glob.add(this,c);
+		
+		c.weightx = 0;
+		c.weighty = 0;
+		glob.add(controle,c);
+		
 		f.add(glob);
 		f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -196,7 +205,7 @@ public class Vue extends JPanel implements Observer{
 		
 		
 		JLabel labRequinFaim= new JLabel("Faim des requins");
-		JTextField requinFaim = new JTextField(this.action.getEnvironnement().getFaimRequin());
+		JTextField requinFaim = new JTextField(this.action.getEnvironnement().getFaimRequin()+"");
 		requinFaim.setPreferredSize(new Dimension(50,20));
 		requinFaim.addKeyListener(new KeyListener() {
 
@@ -446,7 +455,7 @@ public class Vue extends JPanel implements Observer{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						Agent e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,null);
+						Agent e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {action.getEnvironnement().getReproductionRequin()+"",action.getEnvironnement().getFaimRequin()+""});
 						action.getEnvironnement().getEspace()[x][y].setAgent(e);
 						action.getEnvironnement().getAgents().add(e);
 						buttonTab[x][y].setBackground(e.getColor());
@@ -484,7 +493,7 @@ public class Vue extends JPanel implements Observer{
 		for(int i = 0 ; i < this.buttonTab.length; i++){
 			for(int j = 0; j < this.buttonTab[i].length; j++){
 				if(action.getEnvironnement().getEspace()[i][j].isEmpty()){
-					buttonTab[i][j].setBackground(Color.WHITE);
+					buttonTab[i][j].setBackground(Color.cyan);
 				}else{
 					buttonTab[i][j].setBackground(action.getEnvironnement().getEspace()[i][j].getAgent().getColor());
 				}

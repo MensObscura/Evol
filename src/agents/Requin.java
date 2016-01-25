@@ -55,7 +55,7 @@ public class Requin extends Agent {
 			cels[this.posX][this.posY].removeAgent();
 			this.posX = c[0];
 			this.posY = c[1];
-			
+			this.environnement.removeAgent(cels[this.posX][this.posY].getAgent());
 			cels[this.posX][this.posY].setAgent(this);
 		}
 		
@@ -67,7 +67,7 @@ public class Requin extends Agent {
 
 	private boolean timeToHaveChild() {
 
-		return reproduction >= age;
+		return reproduction <= age;
 	}
 
 	public void setReproduction(int reproduction) {
@@ -112,7 +112,6 @@ public class Requin extends Agent {
 				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
 				return new int[]{x, y};
 			}
-			
 			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY+1)%this.environnement.getTaille()].getAgent() instanceof Nemo) {
 				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
 				y = (this.posY+1)%this.environnement.getTaille();
@@ -150,7 +149,7 @@ public class Requin extends Agent {
 		else {
 			if (this.posX != 0 && cels[this.posX-1][this.posY].getAgent() instanceof Nemo) {
 				x = this.posX-1;
-				y = this.posY-1;
+				y = this.posY;
 				return new int[]{x, y};
 			}
 			
@@ -309,12 +308,13 @@ public class Requin extends Agent {
 	
 	private void popBaby() {
 		int[] c = getFreeCellule();
-		Agent baby = new Nemo(0,0,this.environnement, this.reproduction);
+		Agent baby = new Requin(0,0,this.environnement, this.reproduction, this.manger);
 		
 		if (c != null) {
 			baby.setPosX(c[0]);
 			baby.setPosY(c[1]);
 			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
+			this.environnement.addAgent(baby);
 		}
 	}
 

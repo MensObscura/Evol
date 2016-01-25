@@ -19,6 +19,7 @@ public class Environnement {
 	private int nbRequins;
 	private int nbNemos;
 
+	
 	private int reproductionNemo;
 	private int reproductionRequin;
 	private int faimRequin;
@@ -55,7 +56,6 @@ public class Environnement {
 		this.reproductionNemo = reproductionNemo;
 		this.reproductionRequin = reproductionRequin;
 		this.faimRequin = faimRequin;
-
 		this.init(seed);
 
 	}
@@ -68,7 +68,7 @@ public class Environnement {
 				this.espace[i][j] = new Cellule();
 			}
 		}
-		if(this.taille > 0)
+		if( this.nbAgents > 0)
 			switch(seed){
 			case 0 : randomPut(); break;
 			case 1 : binaryPut(); break;
@@ -202,7 +202,8 @@ public class Environnement {
 	}
 
 	public void clearSpace() {
-		this.taille = 0;
+		this.agents.clear();
+		 this.nbAgents =0;
 		this.init(0);
 
 
@@ -218,7 +219,9 @@ public class Environnement {
 	}
 
 	public void removeAgent(Agent a) {
+		this.espace[a.getPosX()][a.getPosY()].setAgent(null);
 		this.agents.remove(a);
+
 
 	}
 
@@ -253,10 +256,12 @@ public class Environnement {
 	}
 
 	public int getFaimRequin() {
+		System.out.println(this.faimRequin);
 		return faimRequin;
 	}
 
 	public void setFaimRequin(int faimRequin) {
+		System.out.println("setté");
 		this.faimRequin = faimRequin;
 
 		for (Agent a : this.agents){
