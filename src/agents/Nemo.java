@@ -2,6 +2,7 @@ package agents;
 
 import java.awt.Color;
 
+import javafx.scene.shape.Circle;
 import model.Cellule;
 import model.Environnement;
 
@@ -15,6 +16,8 @@ public class Nemo extends Agent {
 		this.age = 0;
 		this.reproduction = reproduction;
 		this.color = Color.ORANGE;
+		this.shape = new Circle(2.5, javafx.scene.paint.Color.ORANGE);
+		this.shape.relocate(posX , posY );
 	}
 
 
@@ -28,6 +31,7 @@ public class Nemo extends Agent {
 			}
 		}
 		age ++;
+		this.shape.relocate(posX, posY);
 	}
 
 
@@ -151,7 +155,7 @@ public class Nemo extends Agent {
 		int[] c = getFreeCellule();
 		Agent baby = new Nemo(0,0,this.environnement, this.reproduction);
 
-		
+
 		if (c != null) {
 			baby.setPosX(c[0]);
 			baby.setPosY(c[1]);

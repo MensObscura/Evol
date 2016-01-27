@@ -38,11 +38,22 @@ public class SMA extends Observable{
 	public void run(){
 
 		System.out.println("Début du run");
+		
+		while (running || !running){
+		 this.round();
+			try {
+				Thread.sleep(this.vitesse);
+			} catch (InterruptedException e) {
+				System.out.println("Sleep fail : "+e);
+			}
+		}
+		System.out.println("Fin du run");
+
+	}
+
+	public void round(){
 		int nemo = 0;
 		int requin = 0;
-		while (running || !running){
-			nemo = 0;
-			requin = 0;
 			if(running){
 				if(this.isEquit())
 					Collections.shuffle(this.agents);
@@ -68,16 +79,8 @@ public class SMA extends Observable{
 				System.out.println("Nemos :" + nemo );
 				System.out.println("Requins : "+ requin);
 			}
-			try {
-				Thread.sleep(this.vitesse);
-			} catch (InterruptedException e) {
-				System.out.println("Sleep fail : "+e);
-			}
-		}
-		System.out.println("Fin du run");
-
+		
 	}
-
 
 	public Environnement getEnvironnement() {
 		return environnement;

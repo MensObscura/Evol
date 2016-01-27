@@ -3,7 +3,6 @@ package vue;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -14,10 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -28,7 +25,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import agents.Agent;
-import agents.Bille;
+import javafx.embed.swing.JFXPanel;
 import model.AgentFactory;
 
 import sma.SMAWator;
@@ -39,9 +36,13 @@ public class Vue extends JPanel implements Observer{
 
 	private SMAWator action;	
 	private JPanel glob;
+	private boolean isFx;
+	private JFrame f;
+	private VueFx vueFx;
 
-	public Vue(SMAWator action){
+	public Vue(SMAWator action, boolean isFx){
 
+		this.isFx=isFx;
 		this.action = action;
 		action.addObserver(this);
 
@@ -50,8 +51,10 @@ public class Vue extends JPanel implements Observer{
 
 
 		System.out.println("On lance la fenêtre");
-		JFrame f= new JFrame("Evol");
+		this.f= new JFrame("Evol");
 		glob = new JPanel();
+		
+		if(!this.isFx)
 		initButton();
 
 		glob.setLayout( new GridBagLayout());
@@ -69,12 +72,18 @@ public class Vue extends JPanel implements Observer{
 		c.weighty = 0;
 		glob.add(controle,c);
 		
-		f.add(glob);
-		f.pack();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
+		this.f.add(glob);
+		this.f.pack();
+		this.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.f.setVisible(true);
 
 
+	}
+	
+	public void setVueFx(VueFx vue){
+		
+		this.vueFx=vue;
+		
 	}
 
 	public void initRuleButton(JPanel controle){
@@ -254,7 +263,11 @@ public class Vue extends JPanel implements Observer{
 					try{
 
 						action.setVitesse(Integer.parseInt(vitesse.getText()));
+						if(isFx && vueFx != null){
+							vueFx.loop();
+						}
 					}catch(Exception ex){
+						System.out.println(ex);
 						vitesse.setText("0");
 					}
 
@@ -315,6 +328,8 @@ public class Vue extends JPanel implements Observer{
 		} );
 
 		JCheckBox visibleGrid = new JCheckBox("Grille visible");
+		if(this.isFx)
+			visibleGrid.setEnabled(false);
 		visibleGrid.setSelected(this.action.isVisibleGrid());
 		visibleGrid.addActionListener(new ActionListener() {
 
@@ -351,8 +366,10 @@ public class Vue extends JPanel implements Observer{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				action.launch(Integer.parseInt(nemo.getText()),Integer.parseInt(requin.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected(), Integer.parseInt(nemoRepro.getText()), Integer.parseInt(requinRepro.getText()), Integer.parseInt(requinFaim.getText()));
+				if(!isFx){
 				resetGrid();
 				actualiseButton();			
+				}
 			}
 
 		});
@@ -523,6 +540,7 @@ public class Vue extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 
+		if(!this.isFx)
 		this.actualiseButton();
 		repaint();
 	}

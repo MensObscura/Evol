@@ -6,6 +6,8 @@ import java.util.Random;
 import model.Cellule;
 import model.Direction;
 import model.Environnement;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 
 public class Agent {
 
@@ -14,11 +16,13 @@ public class Agent {
 	protected Color color;
 	protected Random r = new Random();
 	protected  Environnement environnement;
-	
+
 	private int nextX;
 	private int nextY;
-	
+
 	private Direction dir;
+
+	protected Shape shape;
 
 
 	public Agent(int posX, int posY,Environnement environnement) {
@@ -27,7 +31,8 @@ public class Agent {
 		this.posY = posY;
 		this.environnement = environnement;
 		this.color = this.getRandomColor();
-		
+		this.shape = new Circle(2.5, javafx.scene.paint.Color.BLACK);
+		this.shape.relocate(posX / 5, posY / 5);
 		this.dir = this.getRandomDirection(null);
 	}
 
@@ -56,12 +61,20 @@ public class Agent {
 
 	public Color getColor() {
 		return this.color;
-		
+
 	}
-	
+
+	public Shape getRepresentation(){
+
+
+
+		return this.shape;
+
+	}
+
 	private Color getRandomColor() {
-		
-	
+
+
 		Random r = new Random();
 		int color = r.nextInt(10);
 		switch(color){
@@ -75,7 +88,7 @@ public class Agent {
 		case 7 : return Color.MAGENTA;
 		case 8 : return Color.GREEN;
 		case 9 : return Color.LIGHT_GRAY;
-		
+
 		default:
 			return Color.black;
 		}
@@ -86,15 +99,15 @@ public class Agent {
 	public void doIt(){
 		this.calculateNextCase(0);
 		this.environnement.getEspace()[this.posX][this.posY].removeAgent();;
-	
+
 		this.setPosX(this.nextX);
 		this.setPosY(this.nextY);
-	
+
 		this.environnement.getEspace()[this.posX][this.posY].setAgent(this);
-	
-	
+
+
 	}
-	
+
 	/**
 	 * On cherche la prochiane case, et on vérifie si elle est libre, sinon on change de direction et on recherche
 	 */
@@ -131,17 +144,17 @@ public class Agent {
 
 		if(!isNextCaseFree()){
 			if(tour > 50){
-				 this.nextX = this.posX ; 
-				 this.nextY = this.posY ;
+				this.nextX = this.posX ; 
+				this.nextY = this.posY ;
 			}else{
 				this.setDir(this.getDirectionWithOpponentDirection(this.dir));
 				calculateNextCase(tour);
 			}
-			
+
 		}
 
 	}
-	
+
 	private void setDir(Direction dir) {
 		this.dir = dir;
 	}
@@ -186,7 +199,7 @@ public class Agent {
 	 * @return une direction
 	 */
 	public Direction getRandomDirection(Direction origine){
-		
+
 		int rand = r.nextInt(8);
 		Direction out =  null;
 		switch(rand){

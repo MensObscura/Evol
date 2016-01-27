@@ -2,7 +2,7 @@ package agents;
 
 import java.awt.Color;
 
-
+import javafx.scene.shape.Circle;
 import model.Cellule;
 import model.Environnement;
 
@@ -20,6 +20,8 @@ public class Requin extends Agent {
 		this.age = 0;
 		this.reproduction = reproduction;
 		this.color = Color.DARK_GRAY;
+		this.shape = new Circle(2.5, javafx.scene.paint.Color.BLACK);
+		this.shape.relocate(posX , posY );
 	}
 
 
@@ -42,6 +44,7 @@ public class Requin extends Agent {
 		}
 		lastMeal ++;
 		age ++;
+		this.shape.relocate(posX, posY);
 	}
 
 
@@ -257,7 +260,7 @@ public class Requin extends Agent {
 		else {
 			if (this.posX != 0 && cels[this.posX-1][this.posY].isEmpty()) {
 				x = this.posX-1;
-				y = this.posY-1;
+				y = this.posY;
 				return new int[]{x, y};
 			}
 			

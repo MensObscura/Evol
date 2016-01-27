@@ -90,7 +90,7 @@ public class Environnement {
 	 */
 	public void  randomPut(){
 
-
+		this.agents.clear();
 		System.out.println("Ajout d'agents");
 		for (int i = 0 ; i < this.nbAgents; i++){
 
@@ -211,6 +211,7 @@ public class Environnement {
 
 	public void addAgent(Agent a){
 		this.agents.add(a);
+		this.espace[a.getPosX()][a.getPosY()].setAgent(a);
 	}
 
 	public void setTorique(boolean b) {
