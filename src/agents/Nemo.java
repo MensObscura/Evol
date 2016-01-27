@@ -16,14 +16,15 @@ public class Nemo extends Agent {
 		this.age = 0;
 		this.reproduction = reproduction;
 		this.color = Color.ORANGE;
-		this.shape = new Circle(2.5, javafx.scene.paint.Color.ORANGE);
-		this.shape.relocate(posX , posY );
+		this.shape = new Circle(3, javafx.scene.paint.Color.ORANGE);
+		this.shape.relocate(posX*10 , posY*10 );
 	}
 
 
 
 	public void doIt(){
-		if(this.timeToHaveChild() && this.canImove()){
+		int repro= r.nextInt(2);
+		if(this.timeToHaveChild() && this.canImove() && repro == 0 ) {
 			this.popBaby();
 		}else{
 			if (this.canImove()) {
@@ -31,7 +32,7 @@ public class Nemo extends Agent {
 			}
 		}
 		age ++;
-		this.shape.relocate(posX, posY);
+		this.shape.relocate(posX*10, posY*10);
 	}
 
 

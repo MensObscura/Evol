@@ -50,7 +50,6 @@ public class Vue extends JPanel implements Observer{
 		initRuleButton(controle);
 
 
-		System.out.println("On lance la fenêtre");
 		this.f= new JFrame("Evol");
 		glob = new JPanel();
 		

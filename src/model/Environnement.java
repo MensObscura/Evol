@@ -91,7 +91,6 @@ public class Environnement {
 	public void  randomPut(){
 
 		this.agents.clear();
-		System.out.println("Ajout d'agents");
 		for (int i = 0 ; i < this.nbAgents; i++){
 
 			int x =getRandomCoord(-1);
@@ -257,7 +256,6 @@ public class Environnement {
 	}
 
 	public int getFaimRequin() {
-		System.out.println(this.faimRequin);
 		return faimRequin;
 	}
 

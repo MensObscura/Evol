@@ -22,6 +22,7 @@ public class SMA extends Observable{
 	protected int seed;
 	protected boolean running = false;//tmp false 
 	protected int taille ;
+	private int tour;
 
 	public SMA(int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		this.agents = new ArrayList<Agent>();
@@ -30,14 +31,12 @@ public class SMA extends Observable{
 		this.visibleGrid = visibleGrid;
 		this.equit = equit;
 		this.seed = seed;
-
+		this.tour = 1;
 		this.tAgent = tAgent;
 
 	}
 	
 	public void run(){
-
-		System.out.println("Début du run");
 		
 		while (running || !running){
 		 this.round();
@@ -47,8 +46,6 @@ public class SMA extends Observable{
 				System.out.println("Sleep fail : "+e);
 			}
 		}
-		System.out.println("Fin du run");
-
 	}
 
 	public void round(){
@@ -71,13 +68,14 @@ public class SMA extends Observable{
 						a.doIt();
 					}
 				}catch(ConcurrentModificationException e){
-					System.out.println("Clique doucement ducon : "+e);
+					//System.out.println("Clique doucement ducon : "+e);
 				}
 				
 				this.setChanged();
 				this.notifyObservers();
-				System.out.println("Nemos :" + nemo );
-				System.out.println("Requins : "+ requin);
+				System.out.println(tour+"\t"+nemo+"\t"+requin);
+				tour++;
+
 			}
 		
 	}

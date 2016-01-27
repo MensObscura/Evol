@@ -10,10 +10,8 @@ import agents.Agent;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -57,13 +55,13 @@ public class VueFx extends Application {
 		canvas = new Pane();
 		canvas.setStyle("-fx-background-color: #B0F1FE ");
 
-		final Scene scene = new Scene(canvas, this.action.getEnvironnement().getTaille() , this.action.getEnvironnement().getTaille() );
+		final Scene scene = new Scene(canvas, this.action.getEnvironnement().getTaille() *10, this.action.getEnvironnement().getTaille()*10 );
 		primaryStage.setTitle("Battle");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
 		canvas.setOnMouseClicked(event -> {
-			int x = (int) event.getX(); int y = (int) event.getY();
+			int x = (int) event.getX()/10; int y = (int) event.getY()/10;
 			Agent e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {action.getEnvironnement().getReproductionRequin()+"",action.getEnvironnement().getFaimRequin()+""});
 			action.getEnvironnement().getEspace()[x][y].setAgent(e);
 			action.getEnvironnement().getAgents().add(e);
@@ -156,7 +154,6 @@ public class VueFx extends Application {
 		
 						canvas.getChildren().addAll(circleObservable);
 						
-						System.out.println("fin loop fx");
 					}
 		
 		
