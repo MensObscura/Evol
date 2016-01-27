@@ -260,7 +260,6 @@ public class Environnement {
 	}
 
 	public void setFaimRequin(int faimRequin) {
-		System.out.println("setté");
 		this.faimRequin = faimRequin;
 
 		for (Agent a : this.agents){
