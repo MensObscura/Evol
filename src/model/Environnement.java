@@ -7,6 +7,7 @@ import agents.Agent;
 import agents.Bille;
 import agents.Nemo;
 import agents.Requin;
+import sma.SMA;
 
 public class Environnement {
 
@@ -15,48 +16,20 @@ public class Environnement {
 	private int taille;
 	private int nbAgents;
 	private boolean torique;
-
-	private int nbRequins;
-	private int nbNemos;
-
+	private SMA sma;
 	
-	private int reproductionNemo;
-	private int reproductionRequin;
-	private int faimRequin;
 
 
-	public Environnement(int taille, int nbBilles, int seed,boolean torique, ArrayList<Agent> agents){
 
-		this.espace= new Cellule [taille][taille];
 
-		this.agents =agents;
-		this.taille = taille;
-		this.nbAgents =nbBilles;
-		this.torique = torique;
-
-		this.nbNemos= 0;
-		this.nbRequins = 0;
-
-		this.init(seed);
-
-	}
-
-	public Environnement(int taille, int nbNemos, int nbRequins, int seed,boolean torique, ArrayList<Agent> agents, int reproductionNemo, int reproductionRequin, int faimRequin){
+	public Environnement(SMA sma,int taille, boolean torique, ArrayList<Agent> agents){
 
 		this.espace= new Cellule [taille][taille];
-
+		this.sma = sma;
 		this.agents =agents;
 		this.taille = taille;
-		this.nbAgents =nbNemos+nbRequins;
+		this.nbAgents =sma.getNbAgent();
 		this.torique = torique;
-
-		this.nbNemos= nbNemos;
-		this.nbRequins = nbRequins;
-
-		this.reproductionNemo = reproductionNemo;
-		this.reproductionRequin = reproductionRequin;
-		this.faimRequin = faimRequin;
-		this.init(seed);
 
 	}
 
@@ -95,20 +68,11 @@ public class Environnement {
 
 			int x =getRandomCoord(-1);
 			int y =getRandomCoord(x);
+			Agent a = this.sma.getNewAgent(i);
+			a.setPosX(x);
+			a.setPosY(y);
 
-			Agent a;
-
-			if (!this.isWator()) {
-				a = new Bille(x,y,this);
-			}
-			else {
-				if (i < this.nbNemos) {
-					a = new Nemo(x,y,this,this.reproductionNemo);
-				}
-				else {
-					a = new Requin(x,y,this,this.reproductionRequin,this.faimRequin);
-				}
-			}
+		
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
@@ -129,19 +93,10 @@ public class Environnement {
 
 		for (int i = 0 ; i < this.nbAgents; i++){
 
-			Agent a;
-
-			if (!this.isWator()) {
-				a = new Bille(x,y,this);
-			}
-			else {
-				if (i < this.nbNemos) {
-					a = new Nemo(x,y,this,this.reproductionNemo);
-				}
-				else {
-					a = new Requin(x,y,this,this.reproductionRequin,this.faimRequin);
-				}
-			}
+		
+			Agent a = this.sma.getNewAgent(i);
+			a.setPosX(x);
+			a.setPosY(y);
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);
@@ -180,17 +135,6 @@ public class Environnement {
 		return taille;
 	}
 
-	public int getNbNemos() {
-		return nbNemos;
-	}
-
-	public int getNbRequins() {
-		return nbRequins;
-	}
-
-	public boolean isWator() {
-		return nbRequins != 0 && nbNemos != 0;
-	}
 
 	public int getNbAgents() {
 		return nbAgents;
@@ -219,57 +163,14 @@ public class Environnement {
 	}
 
 	public void removeAgent(Agent a) {
-		this.espace[a.getPosX()][a.getPosY()].setAgent(null);
+		
 		this.agents.remove(a);
+		this.espace[a.getPosX()][a.getPosY()].setAgent(null);
 
 
 	}
 
-	public int getReproductionNemo() {
-		return reproductionNemo;
-	}
 
-	public void setReproductionNemo(int reproductionNemo) {
-		this.reproductionNemo = reproductionNemo;
-		for (Agent a : this.agents){
-
-			if(a instanceof Nemo ){
-				((Nemo)a).setReproduction(reproductionNemo);
-			}
-
-		}
-	}
-
-	public int getReproductionRequin() {
-		return reproductionRequin;
-	}
-
-	public void setReproductionRequin(int reproductionRequin) {
-		this.reproductionRequin = reproductionRequin;
-		for (Agent a : this.agents){
-
-			if(a instanceof Requin ){
-				((Requin)a).setReproduction(reproductionRequin);
-			}
-
-		}
-	}
-
-	public int getFaimRequin() {
-		return faimRequin;
-	}
-
-	public void setFaimRequin(int faimRequin) {
-		this.faimRequin = faimRequin;
-
-		for (Agent a : this.agents){
-
-			if(a instanceof Requin ){
-				((Requin)a).setManger(faimRequin);
-			}
-
-		}
-	}
 
 
 }

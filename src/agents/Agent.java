@@ -6,6 +6,7 @@ import java.util.Random;
 import model.Cellule;
 import model.Direction;
 import model.Environnement;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
@@ -16,7 +17,7 @@ public class Agent {
 	protected Color color;
 	protected Random r = new Random();
 	protected  Environnement environnement;
-
+	protected boolean checkTour;
 	private int nextX;
 	private int nextY;
 
@@ -31,8 +32,8 @@ public class Agent {
 		this.posY = posY;
 		this.environnement = environnement;
 		this.color = this.getRandomColor();
-		this.shape = new Circle(2.5, javafx.scene.paint.Color.BLACK);
-		this.shape.relocate(posX / 5, posY / 5);
+		this.shape = new Circle(3, getRandomFxColor());
+		this.shape.relocate(posX * 10, posY *10);
 		this.dir = this.getRandomDirection(null);
 	}
 
@@ -42,8 +43,9 @@ public class Agent {
 	}
 
 
-	protected void setPosX(int posX) {
+	public void setPosX(int posX) {
 		this.posX = posX;
+		this.shape.relocate(posX *10, posY *10);
 	}
 
 
@@ -52,8 +54,9 @@ public class Agent {
 	}
 
 
-	protected void setPosY(int posY) {
+	public void setPosY(int posY) {
 		this.posY = posY;
+		this.shape.relocate(posX *10, posY *10);
 	}
 
 
@@ -94,6 +97,27 @@ public class Agent {
 		}
 
 
+	}
+	
+
+	private Paint getRandomFxColor() {
+		Random r = new Random();
+		int color = r.nextInt(10);
+		switch(color){
+		case 0 : return javafx.scene.paint.Color.BLACK;
+		case 1 : return javafx.scene.paint.Color.RED;
+		case 2 : return javafx.scene.paint.Color.BLUE;
+		case 3 : return javafx.scene.paint.Color.CYAN;
+		case 4 : return javafx.scene.paint.Color.ORANGE;
+		case 5 : return javafx.scene.paint.Color.PINK;
+		case 6 : return javafx.scene.paint.Color.YELLOW;
+		case 7 : return javafx.scene.paint.Color.MAGENTA;
+		case 8 : return javafx.scene.paint.Color.GREEN;
+		case 9 : return javafx.scene.paint.Color.GRAY;
+
+		default:
+			return javafx.scene.paint.Color.BLACK;
+		}
 	}
 
 	public void doIt(){
@@ -143,9 +167,11 @@ public class Agent {
 		}
 
 		if(!isNextCaseFree()){
-			if(tour > 50){
+			if(tour > 50  && checkTour == true){
 				this.nextX = this.posX ; 
 				this.nextY = this.posY ;
+			}else if(tour > 50  && checkTour == false){
+				this.setDir(this.getRandomDirection(this.dir));
 			}else{
 				this.setDir(this.getDirectionWithOpponentDirection(this.dir));
 				calculateNextCase(tour);

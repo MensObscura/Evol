@@ -11,7 +11,7 @@ import agents.Nemo;
 import agents.Requin;
 import model.Environnement;
 
-public class SMA extends Observable{
+public abstract class SMA extends Observable{
 
 	protected Environnement environnement;
 	protected ArrayList<Agent> agents;
@@ -149,4 +149,7 @@ public class SMA extends Observable{
 
 	}
 
+	public abstract int getNbAgent();
+
+	public abstract Agent getNewAgent(int i) ;
 }

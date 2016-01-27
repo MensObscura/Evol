@@ -15,6 +15,7 @@ public class Nemo extends Agent {
 		super(posX, posY, environnement);
 		this.age = 0;
 		this.reproduction = reproduction;
+		this.checkTour = true;
 		this.color = Color.ORANGE;
 		this.shape = new Circle(3, javafx.scene.paint.Color.ORANGE);
 		this.shape.relocate(posX*10 , posY*10 );
@@ -42,6 +43,7 @@ public class Nemo extends Agent {
 
 	private int[] getFreeCellule() {
 		Cellule[][] cels = this.environnement.getEspace();
+		
 
 		int x;
 		int y;

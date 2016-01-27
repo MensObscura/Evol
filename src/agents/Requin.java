@@ -23,6 +23,7 @@ public class Requin extends Agent {
 		this.lastMeal = 0;
 		this.age = 0;
 		this.reproduction = reproduction;
+		this.checkTour = true;
 		this.color = Color.DARK_GRAY;
 		this.shape = new Circle(4, javafx.scene.paint.Color.BLACK);
 		this.shape.relocate(posX *10, posY *10);
@@ -229,7 +230,7 @@ public class Requin extends Agent {
 					break;
 				case 7 :
 
-					if (this.posX != 0 && this.posY != this.environnement.getTaille()-1 && cels[this.posX-1][this.posY-1].getAgent() instanceof Nemo) {
+					if (this.posX != 0 && this.posY !=  0 && cels[this.posX-1][this.posY-1].getAgent() instanceof Nemo) {
 						x = this.posX-1;
 						y = this.posY-1;
 						return new int[]{x, y};
