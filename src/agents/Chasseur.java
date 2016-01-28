@@ -79,7 +79,7 @@ public class Chasseur extends Agent {
 			}
 		}
 
-		
+		return coord;
 	}
 	
 }
