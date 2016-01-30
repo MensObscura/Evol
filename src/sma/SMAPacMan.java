@@ -16,7 +16,6 @@ public class SMAPacMan extends SMA{
 
 	public SMAPacMan(int nbChasseurs, int nbMurs, int taille, int tAgent, boolean torique, int seed) {
 		super(taille, tAgent, torique, seed);
-
 		this.launch(nbChasseurs, nbMurs, torique, seed);
 	}
 
@@ -45,9 +44,17 @@ public class SMAPacMan extends SMA{
 
 	@Override
 	public void run(){
-		
-		while (running || !running){
-			//TODO attendre que le joueur est touché une touche de déplacement
+		int x = ((PacManEnvironnement)this.environnement).avatar.getPosX();
+		int y = ((PacManEnvironnement)this.environnement).avatar.getPosY();
+		boolean stop = !((PacManEnvironnement)this.environnement).getFinish();
+		while (running || !running && stop){
+			while (((PacManEnvironnement)this.environnement).avatar.getPosX() == x && ((PacManEnvironnement)this.environnement).avatar.getPosY() == y) {
+				// Attendre que la position de l'avatar change
+			}
+			
+			x = ((PacManEnvironnement)this.environnement).avatar.getPosX();
+			y = ((PacManEnvironnement)this.environnement).avatar.getPosY();
+			
 			this.round();
 		}
 	}

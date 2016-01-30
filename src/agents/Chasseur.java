@@ -1,5 +1,7 @@
 package agents;
 
+import java.awt.Color;
+
 import model.PacManEnvironnement;
 
 public class Chasseur extends Agent {
@@ -7,6 +9,7 @@ public class Chasseur extends Agent {
 	public Chasseur(int posX, int posY, PacManEnvironnement environnement) {
 		super(posX, posY, environnement);
 		this.checkTour = false;
+		this.color = Color.RED;
 	}
 	
 	public void doIt(){

@@ -1,5 +1,8 @@
 package agents;
 
+import java.awt.Color;
+
+import model.Direction;
 import model.Environnement;
 import model.PacManEnvironnement;
 
@@ -8,10 +11,24 @@ public class Avatar extends Agent {
 	public Avatar(int posX, int posY, Environnement environnement) {
 		super(posX, posY, environnement);
 		this.checkTour = false;
+		this.color = Color.GREEN;
+		this.setDirection(null);
 	}
 	
+	public void setDirection(Direction dir) {
+		switch (dir) {
+		case SUD: if (canMoveontheBottom()) {this.setDirection(dir);} break;
+		case NORD: if (canMoveontheTop()) {this.setDirection(dir);} break;
+		case OUEST: if (canMoveontheRight()) {this.setDirection(dir);} break;
+		case EST: if (canMoveontheLeft()) {this.setDirection(dir);} break;
+			default: break;
+		}
+	}
+	
+	
 	public void doIt(){
-		//TODO Maj de la Direction selon la touche (si possible)
+		if (this.getDir() != null)
+			this.calculateNextCase(0);
 		
 		// Maj de l'avatar dans l'environnement
 		((PacManEnvironnement)this.environnement).avatar.setPosX(posX);
@@ -19,8 +36,16 @@ public class Avatar extends Agent {
 		
 		// Recalcul des distances
 		((PacManEnvironnement)this.environnement).calculDistances();
+		if (isFinish()) {
+			((PacManEnvironnement)this.environnement).setToFinish();
+		}
 	}
 	
+	private boolean isFinish() {
+		//TODO
+		return false;
+	}
+
 	public boolean canMoveontheLeft() {
 		if (this.environnement.isTorique()) {
 			if (this.posX == 0) {

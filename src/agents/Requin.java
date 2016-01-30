@@ -247,7 +247,7 @@ public class Requin extends AgentReproductible {
 			baby.setPosY(c[1]);
 			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
 			this.environnement.addAgent(baby);
-			this.repos = 3;
+			this.repos = 2;
 			
 			return baby;
 		}

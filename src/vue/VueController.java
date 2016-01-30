@@ -593,8 +593,6 @@ public class VueController extends JPanel implements Observer{
 					buttonTab[i][j].setBackground(action.getEnvironnement().getEspace()[i][j].getAgent().getColor());
 				}
 
-
-
 			}
 
 		}

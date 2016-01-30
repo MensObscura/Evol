@@ -11,6 +11,7 @@ public class PacManEnvironnement extends Environnement {
 	
 	private int distances [][];
 	public Avatar avatar;
+	private boolean finish;
 
 	public PacManEnvironnement(SMA sma, int taille, boolean torique, ArrayList<Agent> chasseurs) {
 		// Init environnement, place les chasseurs et les murs :
@@ -23,6 +24,8 @@ public class PacManEnvironnement extends Environnement {
 		avatar = new Avatar(x,y,this);
 		this.agents.add(avatar);
 		this.espace[x][y].setAgent(avatar);
+		
+		this.finish = false;
 		
 		// Init tableau des distances
 		this.distances = new int[taille][taille];
@@ -114,6 +117,14 @@ public class PacManEnvironnement extends Environnement {
 	
 	public Avatar getAvatar() {
 		return avatar;
+	}
+
+	public boolean getFinish() {
+		return finish;
+	}
+	
+	public void setToFinish() {
+		finish = true;
 	}
 
 }
