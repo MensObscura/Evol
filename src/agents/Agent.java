@@ -167,17 +167,22 @@ public class Agent {
 		}
 
 		if(!isNextCaseFree()){
-			if(tour > 50  && checkTour == true){
+			if(tour > 25  && checkTour == true){	
 				this.nextX = this.posX ; 
-				this.nextY = this.posY ;
-			}else if(tour > 50  && checkTour == false){
+				this.nextY = this.posY ;				
+			}else if(tour > 25  && checkTour == false ){
 				this.setDir(this.getRandomDirection(this.dir));
+				calculateNextCase(tour);
+			}else  if(tour > 2  && tour < 25 ){
+				this.setDir(this.getRandomDirection(this.dir));
+				calculateNextCase(tour);
 			}else{
 				this.setDir(this.getDirectionWithOpponentDirection(this.dir));
 				calculateNextCase(tour);
 			}
-
+			
 		}
+		
 
 	}
 
