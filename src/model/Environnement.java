@@ -4,24 +4,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import agents.Agent;
-import agents.Bille;
-import agents.Nemo;
-import agents.Requin;
 import sma.SMA;
 
 public class Environnement {
 
-	private Cellule espace [][];
-	private ArrayList<Agent> agents;
+	protected Cellule espace [][];
+	protected ArrayList<Agent> agents;
 	private int taille;
 	private int nbAgents;
 	private boolean torique;
 	private SMA sma;
 	
-
-
-
-
+	
 	public Environnement(SMA sma,int taille, boolean torique, ArrayList<Agent> agents){
 
 		this.espace= new Cellule [taille][taille];
@@ -71,8 +65,6 @@ public class Environnement {
 			Agent a = this.sma.getNewAgent(i);
 			a.setPosX(x);
 			a.setPosY(y);
-
-		
 
 			this.agents.add(a);
 			this.espace[x][y].setAgent(a);

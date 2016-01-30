@@ -25,17 +25,16 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import agents.Agent;
-import javafx.embed.swing.JFXPanel;
 import model.AgentFactory;
-import sma.SMA;
 import sma.SMAWator;
 import sma.SMABille;
+import sma.SMASimulation;
 
 public class VueController extends JPanel implements Observer{
 
 	private JButton[][] buttonTab;
 
-	private SMA action;	
+	private SMASimulation action;	
 	private JPanel glob;
 	private boolean isFx;
 	private JFrame f;
@@ -48,7 +47,7 @@ public class VueController extends JPanel implements Observer{
 	private JCheckBox equitable;
 	private String mode;
 
-	public VueController(SMA action, boolean isFx,String mode){
+	public VueController(SMASimulation action, boolean isFx,String mode){
 
 		this.mode=mode;
 		this.isFx=isFx;
@@ -99,7 +98,7 @@ public class VueController extends JPanel implements Observer{
 		set = new JButton("set");
 		
 		if(this.mode.equals("-wator"))
-		initButtonWator(controle);
+			initButtonWator(controle);
 
 		if(this.mode.equals("-billes"))
 			initButtonBilles(controle);

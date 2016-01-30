@@ -1,11 +1,10 @@
 package agents;
 
-import model.Cellule;
-import model.Environnement;
+import model.PacManEnvironnement;
 
 public class Chasseur extends Agent {
 
-	public Chasseur(int posX, int posY, Environnement environnement) {
+	public Chasseur(int posX, int posY, PacManEnvironnement environnement) {
 		super(posX, posY, environnement);
 		this.checkTour = false;
 	}
@@ -23,59 +22,60 @@ public class Chasseur extends Agent {
 	
 	private int[] chooseBestWay() {
 		int[] coord = new int[2];
-		Cellule[][] espace = this.environnement.getEspace();
+				
+		int[][] espace = ((PacManEnvironnement)this.environnement).getDistances();
 		
-		int dmin = espace[this.posX][this.posY].getDistance();
+		int dmin = espace[this.posX][this.posY];
 		
 		if (this.posX == 0) {
-			if (this.environnement.isTorique() && dmin > espace[espace.length-1][this.posY].getDistance()) {
-				dmin = espace[espace.length-1][this.posY].getDistance();
+			if (this.environnement.isTorique() && dmin > espace[espace.length-1][this.posY] && espace[espace.length-1][this.posY] != -1) {
+				dmin = espace[espace.length-1][this.posY];
 				coord = new int[]{espace.length-1, this.posY};
 			}
 		}
 		else {
-			if (dmin > espace[this.posX-1][this.posY].getDistance()) {
-				dmin = espace[this.posX-1][this.posY].getDistance();
+			if (dmin > espace[this.posX-1][this.posY] && espace[this.posX-1][this.posY] != -1) {
+				dmin = espace[this.posX-1][this.posY];
 				coord = new int[]{this.posX-1, this.posY};
 			}
 		}
 		
 		if (this.posX == espace.length-1) {
-			if (this.environnement.isTorique() && dmin > espace[0][this.posY].getDistance()) {
-				dmin = espace[0][this.posY].getDistance();
+			if (this.environnement.isTorique() && dmin > espace[0][this.posY] && espace[0][this.posY] != -1) {
+				dmin = espace[0][this.posY] ;
 				coord = new int[]{0, this.posY};
 			}
 		}
 		else {
-			if (dmin > espace[this.posX+1][this.posY].getDistance()) {
-				dmin = espace[this.posX+1][this.posY].getDistance();
+			if (dmin > espace[this.posX+1][this.posY] && espace[this.posX+1][this.posY] != -1) {
+				dmin = espace[this.posX+1][this.posY] ;
 				coord = new int[]{this.posX+1, this.posY};
 			}
 		}
 		
 		if (this.posY == 0) {
-			if (this.environnement.isTorique() && dmin > espace[this.posX][espace.length-1].getDistance()) {
-				dmin = espace[this.posX][espace.length-1].getDistance();
+			if (this.environnement.isTorique() && dmin > espace[this.posX][espace.length-1] && espace[this.posX][espace.length-1] != -1) {
+				dmin = espace[this.posX][espace.length-1] ;
 				coord = new int[]{this.posX, espace.length-1};
 			}
 		}
 		else {
-			if (dmin > espace[this.posX][espace.length-1].getDistance()) {
-				dmin = espace[this.posX][espace.length-1].getDistance();
-				coord = new int[]{this.posX, espace.length-1};
+			if (dmin > espace[this.posX][this.posY-1] && espace[this.posX][this.posY-1] != -1) {
+				dmin = espace[this.posX][this.posY-1] ;
+				coord = new int[]{this.posX, this.posY-1};
 			}
 		}
 		
 		if (this.posY == espace.length-1) {
-			if (this.environnement.isTorique() && dmin > espace[this.posX][0].getDistance()) {
-				dmin = espace[this.posX][0].getDistance();
+			if (this.environnement.isTorique() && dmin > espace[this.posX][0] && espace[this.posX][0] != -1) {
+				dmin = espace[this.posX][0] ;
 				coord = new int[]{this.posX, 0};
 			}
 		}
 		else {
-			if (dmin > espace[this.posX][0].getDistance()) {
-				dmin = espace[this.posX][0].getDistance();
-				coord = new int[]{this.posX, 0};
+			if (dmin > espace[this.posX][this.posY+1] && espace[this.posX][this.posY+1] != -1) {
+				dmin = espace[this.posX][this.posY+1] ;
+				coord = new int[]{this.posX, this.posY+1};
 			}
 		}
 

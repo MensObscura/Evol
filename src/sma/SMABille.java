@@ -1,10 +1,14 @@
 package sma;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
+
 import agents.Agent;
 import agents.Bille;
 import model.Environnement;
 
-public class SMABille  extends SMA {
+public class SMABille  extends SMASimulation {
 	
 	private int nbBilles;
 
@@ -38,6 +42,28 @@ public class SMABille  extends SMA {
 
 	public int getNbBilles() {
 		return this.nbBilles;
+	}
+
+	@Override
+	public void round(){
+			if(running){
+				if(this.isEquit())
+					Collections.shuffle(this.agents);
+
+				try{
+					ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
+					for(Agent a : agentBis){
+						a.doIt();
+					}
+				}catch(ConcurrentModificationException e){
+				
+				}
+				
+				this.setChanged();
+				this.notifyObservers();
+				tour++;
+
+			}
 	}
 
 }

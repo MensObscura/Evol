@@ -1,12 +1,15 @@
 package sma;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
+
 import agents.Agent;
-import agents.Bille;
 import agents.Nemo;
 import agents.Requin;
 import model.Environnement;
 
-public class SMAWator extends SMA {
+public class SMAWator extends SMASimulation {
 
 	private int nbRequins;
 	private int nbNemos;
@@ -18,7 +21,6 @@ public class SMAWator extends SMA {
 
 	public SMAWator(int nbNemos, int nbRequins, int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed, int reproNemo, int reproRequin, int faimRequin){
 		super(taille, tAgent, vitesse, torique, visibleGrid, equit, seed);
-
 
 		this.launch(nbNemos, nbRequins, seed,vitesse, torique, visibleGrid, equit,reproNemo, reproRequin, faimRequin);
 
@@ -95,16 +97,13 @@ public class SMAWator extends SMA {
 		return nbRequins;
 	}
 
-	public boolean isWator() {
-		return nbRequins != 0 && nbNemos != 0;
-	}
-
 	@Override
 	public int getNbAgent() {
 
 		return nbRequins + nbNemos;
 	}
 
+	@Override
 	public Agent getNewAgent(int i){
 
 		if (i < this.nbNemos) {
@@ -113,6 +112,38 @@ public class SMAWator extends SMA {
 		else {
 			return new Requin(0,0,this.environnement,this.reproductionRequin,this.faimRequin);
 		}
+	}
+
+	@Override
+	public void round(){
+		int nemo = 0;
+		int requin = 0;
+			if(running){
+				if(this.isEquit())
+					Collections.shuffle(this.agents);
+
+				try{
+					ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
+					for(Agent a : agentBis){
+						if(a instanceof Nemo){
+							nemo ++;
+						}
+						
+						if(a instanceof Requin){
+							requin ++;
+						}
+						a.doIt();
+					}
+				}catch(ConcurrentModificationException e){
+				
+				}
+				
+				this.setChanged();
+				this.notifyObservers();
+				System.out.println(tour+"\t"+nemo+"\t"+requin);
+				tour++;
+
+			}
 	}
 
 }

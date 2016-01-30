@@ -10,7 +10,7 @@ public class Avatar extends Agent {
 	}
 	
 	public void doIt(){
-		//TODO Ajouter un listener de touches
+		//TODO Direction de la touche si possible
 	}
 	
 	public boolean canMoveontheLeft() {

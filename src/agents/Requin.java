@@ -9,20 +9,16 @@ import javafx.scene.shape.Circle;
 import model.Cellule;
 import model.Environnement;
 
-public class Requin extends Agent {
+public class Requin extends AgentReproductible {
 
-	private int reproduction;
 	private int manger;
 	private int lastMeal;
-	private int age ;
 	private Nemo toEat;
 
 	public Requin(int posX, int posY, Environnement environnement, int reproduction, int manger) {
-		super(posX, posY, environnement);
+		super(posX, posY, environnement, reproduction);
 		this.manger = manger;
 		this.lastMeal = 0;
-		this.age = 0;
-		this.reproduction = reproduction;
 		this.checkTour = true;
 		this.color = Color.DARK_GRAY;
 		this.shape = new Circle(4, javafx.scene.paint.Color.BLACK);
@@ -84,17 +80,6 @@ public class Requin extends Agent {
 		return i != null && this.toEat != null;
 	}
 
-	private boolean timeToHaveChild() {
-
-		return reproduction <= age;
-	}
-
-	public void setReproduction(int reproduction) {
-		this.reproduction = reproduction;
-	}
-
-
-
 	public void setManger(int manger) {
 		this.manger = manger;
 	}
@@ -102,7 +87,6 @@ public class Requin extends Agent {
 
 
 	private boolean starve() {
-
 		return manger > lastMeal;
 	}
 
@@ -246,119 +230,7 @@ public class Requin extends Agent {
 		return null;
 	}
 
-	private int[] getFreeCellule() {
-		Cellule[][] cels = this.environnement.getEspace();
-
-		int x;
-		int y;
-
-		if (this.environnement.isTorique()) {
-
-			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][this.posY].isEmpty()) {
-				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
-				y = this.posY;
-				return new int[]{x, y};
-			}
-
-			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
-				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
-				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
-				return new int[]{x, y};
-			}
-
-			if (cels[this.posX][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
-				x = this.posX;
-				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
-				return new int[]{x, y};
-			}
-
-			if (cels[(this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1)][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
-				x = (this.posX == 0)?(this.environnement.getTaille()-1):(this.posX-1);
-				y = (this.posY+1)%this.environnement.getTaille();
-				return new int[]{x, y};
-			}
-
-			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
-				x = (this.posX+1)%this.environnement.getTaille();
-				y = (this.posY+1)%this.environnement.getTaille();
-				return new int[]{x, y};
-			}
-
-			if (cels[(this.posX+1)%this.environnement.getTaille()][(this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1)].isEmpty()) {
-				x = (this.posX+1)%this.environnement.getTaille();
-				y = (this.posY == 0)?(this.environnement.getTaille()-1):(this.posY-1);
-				return new int[]{x, y};
-			}
-
-
-			if (cels[this.posX][(this.posY+1)%this.environnement.getTaille()].isEmpty()) {
-				x = this.posX;
-				y = (this.posY+1)%this.environnement.getTaille();
-				return new int[]{x, y};
-			}
-
-			if (cels[(this.posX+1)%this.environnement.getTaille()][this.posY].isEmpty()) {
-				x = (this.posX+1)%this.environnement.getTaille();
-				y = this.posY;
-				return new int[]{x, y};
-			}
-
-			return null;
-
-		}
-		else {
-			if (this.posX != 0 && cels[this.posX-1][this.posY].isEmpty()) {
-				x = this.posX-1;
-				y = this.posY;
-				return new int[]{x, y};
-			}
-
-			if (this.posY != 0 && cels[this.posX][this.posY-1].isEmpty()) {
-				x = this.posX;
-				y = this.posY-1;
-				return new int[]{x, y};
-			}
-
-			if (this.posX != 0 && this.posY != this.environnement.getTaille()-1 && cels[this.posX-1][this.posY+1].isEmpty()) {
-				x = this.posX-1;
-				y = this.posY+1;
-				return new int[]{x, y};
-			}
-
-			if (this.posY != this.environnement.getTaille()-1 && this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY+1].isEmpty()) {
-				x = this.posX+1;
-				y = this.posY+1;
-				return new int[]{x, y};
-			}
-
-			if (this.posX != this.environnement.getTaille()-1 && this.posY != 0 && cels[this.posX+1][this.posY-1].isEmpty()) {
-				x = this.posX+1;
-				y = this.posY-1;
-				return new int[]{x, y};
-			}
-
-			if (this.posY != this.environnement.getTaille()-1 && cels[this.posX][this.posY+1].isEmpty()) {
-				x = this.posX;
-				y = this.posY+1;
-				return new int[]{x, y};
-			}
-
-			if (this.posX != this.environnement.getTaille()-1 && cels[this.posX+1][this.posY].isEmpty()) {
-				x = this.posX+1;
-				y = this.posY;
-				return new int[]{x, y};
-			}
-
-			return null;
-
-		}
-	}
-
-	private boolean canImove() {
-		return getFreeCellule() != null;
-	}
-
-	private void popBaby() {
+	protected void popBaby() {
 		int[] c = getFreeCellule();
 		Agent baby = new Requin(0,0,this.environnement, this.reproduction, this.manger);
 
