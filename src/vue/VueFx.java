@@ -40,13 +40,12 @@ public class VueFx extends Application {
 		Parameters list =getParameters();
 		Object args [] =list.getRaw().toArray();
 
-		if(((String)args[1]).equals("-wator")){
-			this.action = new SMAWator(Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Integer.parseInt((String)args[5]),Integer.parseInt((String)args[6]),Boolean.parseBoolean((String)args[7]),Boolean.parseBoolean((String)args[8]),Boolean.parseBoolean((String)args[9]),Integer.parseInt((String)args[10]),Integer.parseInt((String)args[11]),Integer.parseInt((String)args[12]),Integer.parseInt((String)args[13]));
-		}else if(((String)args[1]).equals("-billes")){
-			this.action =  new SMABille(Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Integer.parseInt((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Boolean.parseBoolean((String)args[8]),Integer.parseInt((String)args[9]));
+		if(((String)args[0]).equals("-wator")){
+			this.action = new SMAWator(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Integer.parseInt((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Boolean.parseBoolean((String)args[8]),Integer.parseInt((String)args[9]),Integer.parseInt((String)args[10]),Integer.parseInt((String)args[11]),Integer.parseInt((String)args[12]));
+		}else if(((String)args[0]).equals("-billes")){
+			this.action =  new SMABille(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Integer.parseInt((String)args[8]));
 		}
 		circleAgent = new ArrayList<Shape>();
-
 
 		canvas = new Pane();
 		canvas.setStyle("-fx-background-color: #B0F1FE ");
@@ -59,11 +58,10 @@ public class VueFx extends Application {
 		canvas.setOnMouseClicked(event -> {
 			int x = (int) event.getX()/10; int y = (int) event.getY()/10;
 			Agent e = null;
-			if(((String)args[1]).equals("-wator")){
+			if(((String)args[0]).equals("-wator")){
 				e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {((SMAWator)action).getReproductionRequin()+"",((SMAWator)action).getFaimRequin()+""});
-			}else if(((String)args[1]).equals("-billes")){
+			}else if(((String)args[0]).equals("-billes")){
 				e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
-
 			}
 
 			if(e != null){
@@ -88,7 +86,7 @@ public class VueFx extends Application {
 		circleObservable = FXCollections.observableArrayList(circleAgent);
 
 
-		VueController vue = new VueController(this.action, true, ((String)args[1]));
+		VueController vue = new VueController(this.action, true, ((String)args[0]));
 		vue.setVueFx(this);
 
 		this.loop();
@@ -97,6 +95,7 @@ public class VueFx extends Application {
 	}
 
 	public void loop() {
+
 		if(loop != null)
 			loop.stop();
 
@@ -107,18 +106,15 @@ public class VueFx extends Application {
 			public void handle(final ActionEvent t) {
 
 				action.round();
+
 				circleAgent.clear();
 				canvas.getChildren().clear();
-				//			         Ajout des agents
+				//	Ajout des agents
 				for (int i = 0; i < action.getAgents().size(); i++) {
 
 					circleAgent.add(action.getAgents().get(i).getRepresentation());
 
-
-
 				}
-
-
 
 				circleObservable = FXCollections.observableArrayList(circleAgent);
 

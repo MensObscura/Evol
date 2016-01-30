@@ -5,9 +5,8 @@ import vue.VueFx;
 public class Main {
 
 	public static void main(String args[]){
-		//System.out.println(args.length);
 		
-		if( args.length == 14 ||args.length == 10){
+		if( args.length == 13 ||args.length == 9){
 
 		VueFx fx = new VueFx();
 		fx.run(args);

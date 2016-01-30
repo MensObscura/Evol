@@ -7,7 +7,6 @@ public abstract class SMASimulation extends SMA {
 	protected int vitesse;
 	protected boolean visibleGrid;
 	protected boolean equit;
-	protected boolean running = false;//tmp false 
 
 	public SMASimulation(int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
 		super(taille, tAgent, torique, seed);

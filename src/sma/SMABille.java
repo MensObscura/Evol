@@ -46,17 +46,19 @@ public class SMABille  extends SMASimulation {
 
 	@Override
 	public void round(){
+
 			if(running){
 				if(this.isEquit())
 					Collections.shuffle(this.agents);
 
 				try{
 					ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
+					
 					for(Agent a : agentBis){
 						a.doIt();
 					}
 				}catch(ConcurrentModificationException e){
-				
+					e.printStackTrace();
 				}
 				
 				this.setChanged();

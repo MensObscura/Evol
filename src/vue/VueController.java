@@ -231,7 +231,6 @@ public class VueController extends JPanel implements Observer{
 				if( text.equals("start")){
 					source.setText("stop");
 
-
 					action.changeRunning();
 
 
@@ -239,6 +238,7 @@ public class VueController extends JPanel implements Observer{
 
 				if( text.equals("stop")){
 					source.setText("start");
+					
 					action.changeRunning();
 
 				}

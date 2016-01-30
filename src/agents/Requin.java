@@ -28,23 +28,31 @@ public class Requin extends AgentReproductible {
 
 
 	public void doIt(){
-		int repro= r.nextInt(10);
+
 		if(!this.starve()){
 			this.environnement.removeAgent(this);
 			return;
 		}
-		if(this.canIeat() && repro > 0 ){
+		if(this.canIeat()){
 			this.eatThatNemo();
 			this.lastMeal = 0;
-		}else{
-			if(this.timeToHaveChild() && this.canImove() ){
-				this.popBaby();
-			}else{
-				if(this.canIeat()  ){
-					this.eatThatNemo();
-				}else if (this.canImove()) {
+		}
+		else{
+			if(this.timeToHaveChild() && this.canImove()){
+				if (this.popBaby() == null) {
+					if (this.canImove()) {
+						super.doIt();
+					}
+					if (repos != 0)
+						repos--;
+				}
+			}
+			else{
+				if (this.canImove()) {
 					super.doIt();
 				}
+				if (repos != 0)
+					repos--;
 			}
 		}
 		lastMeal ++;
@@ -230,7 +238,7 @@ public class Requin extends AgentReproductible {
 		return null;
 	}
 
-	protected void popBaby() {
+	protected Agent popBaby() {
 		int[] c = getFreeCellule();
 		Agent baby = new Requin(0,0,this.environnement, this.reproduction, this.manger);
 
@@ -239,6 +247,12 @@ public class Requin extends AgentReproductible {
 			baby.setPosY(c[1]);
 			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
 			this.environnement.addAgent(baby);
+			this.repos = 3;
+			
+			return baby;
+		}
+		else {
+			return null;
 		}
 	}
 

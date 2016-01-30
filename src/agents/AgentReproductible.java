@@ -7,15 +7,17 @@ public abstract class AgentReproductible extends Agent {
 	
 	protected int reproduction;
 	protected int age ;
+	protected int repos;
 
 	public AgentReproductible(int posX, int posY, Environnement environnement, int reproduction) {
 		super(posX, posY, environnement);
 		this.age = 0;
+		this.repos = 0;
 		this.reproduction = reproduction;
 	}
 	
 	protected boolean timeToHaveChild() {
-		return reproduction <= age;
+		return reproduction <= age && repos == 0;
 	}
 	
 	public void setReproduction(int reproduction) {
@@ -135,6 +137,6 @@ public abstract class AgentReproductible extends Agent {
 		return getFreeCellule() != null;
 	}
 	
-	protected abstract void popBaby();
+	protected abstract Agent popBaby();
 
 }
