@@ -10,7 +10,7 @@ import sma.SMA;
 public class PacManEnvironnement extends Environnement {
 	
 	private int distances [][];
-	private Avatar avatar;
+	public Avatar avatar;
 
 	public PacManEnvironnement(SMA sma, int taille, boolean torique, ArrayList<Agent> chasseurs) {
 		// Init environnement, place les chasseurs et les murs :
@@ -110,6 +110,10 @@ public class PacManEnvironnement extends Environnement {
 				calculDistancesVoisines(x, y+1);
 			}
 		}
+	}
+	
+	public Avatar getAvatar() {
+		return avatar;
 	}
 
 }

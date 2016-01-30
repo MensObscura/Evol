@@ -1,6 +1,7 @@
 package agents;
 
 import model.Environnement;
+import model.PacManEnvironnement;
 
 public class Avatar extends Agent {
 
@@ -10,7 +11,14 @@ public class Avatar extends Agent {
 	}
 	
 	public void doIt(){
-		//TODO Direction de la touche si possible
+		//TODO Maj de la Direction selon la touche (si possible)
+		
+		// Maj de l'avatar dans l'environnement
+		((PacManEnvironnement)this.environnement).avatar.setPosX(posX);
+		((PacManEnvironnement)this.environnement).avatar.setPosY(posY);
+		
+		// Recalcul des distances
+		((PacManEnvironnement)this.environnement).calculDistances();
 	}
 	
 	public boolean canMoveontheLeft() {
