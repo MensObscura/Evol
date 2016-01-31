@@ -29,7 +29,7 @@ public class SMAWator extends SMASimulation {
 	public void launch(int nbNemos, int nbRequins, int seed, int vitesse, boolean torique, boolean grille,boolean equit,int reproNemo,int reproRequin,int faimRequin){
 		this.nbNemos= nbNemos;
 		this.nbRequins = nbRequins;
-
+		this.seed = seed;
 		this.reproductionNemo = reproNemo;
 		this.reproductionRequin = reproRequin;
 		this.faimRequin = faimRequin;

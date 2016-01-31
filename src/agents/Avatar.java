@@ -5,7 +5,6 @@ import java.awt.Color;
 import javafx.scene.shape.Circle;
 import model.Direction;
 import model.Environnement;
-import model.PacManEnvironnement;
 
 public class Avatar extends Agent {
 
@@ -15,28 +14,11 @@ public class Avatar extends Agent {
 		this.color = Color.GREEN;
 		this.shape = new Circle(this.environnement.getSMA().gettAgent()+1, javafx.scene.paint.Color.LIMEGREEN);
 		this.shape.relocate(posX*10 , posY*10 );
-		
-		// ça plante ici
-		//this.setDirection(null);
-		
-		
+		this.setDir(Direction.NORD);
 		
 	}
 	
-/*	public void setDirection(Direction dir) {*/
-		/** lool dat recusivité !! t'appelle setDirection(dir) dans setDirection(dir) ! je créé changeDirectionTemporairement**/
-	/*	switch (dir) {
-		case SUD: if (canMoveontheBottom()) {this.setDirection(dir);} break;
-		case NORD: if (canMoveontheTop()) {this.setDirection(dir);} break;
-		case OUEST: if (canMoveontheRight()) {this.setDirection(dir);} break;
-		case EST: if (canMoveontheLeft()) {this.setDirection(dir);} break;
-			default: break;
-		}
-	}*/
-	
-	
 	public void changeDirection(Direction dir) {
-		/** lool dat recusivité !! t'appelle setDirection(dir) dans setDirection(dir) ! je créé ChangeDirectionTemporairement**/
 		switch (dir) {
 		case SUD: if (canMoveontheBottom()) {this.setDir(dir);} break;
 		case NORD: if (canMoveontheTop()) {this.setDir(dir);} break;
@@ -47,27 +29,13 @@ public class Avatar extends Agent {
 	}
 	
 	public void doIt(){
-		if (this.getDir() != null)
-			this.calculateNextCase(0);
-		
-		/** Maj de l'avatar dans l'environnement // l'avatar ne doit pas être dans l'environnement mais dans le sma sinon ça plante MAis je rend ça possible le temps de tes reglages**/
-	//	((PacManEnvironnement)this.environnement).avatar.setPosX(posX);
-		//((PacManEnvironnement)this.environnement).avatar.setPosY(posY);
-		/** ce que tu fait est bizzare car l'avatar dans l'environement est le meme que partout puisque c'est un pointeur...*/
+		this.calculateNextCase(0); 
 		
 		this.setPosX(this.nextX);
 		this.setPosY(this.nextY);
-		// Recalcul des distances
-		((PacManEnvironnement)this.environnement).calculDistances();
-		if (isFinish()) {
-			((PacManEnvironnement)this.environnement).setToFinish();
-		}
+		
 	}
-	
-	private boolean isFinish() {
-		//TODO
-		return false;
-	}
+
 
 	public boolean canMoveontheLeft() {
 		if (this.environnement.isTorique()) {

@@ -5,14 +5,12 @@ import agents.Agent;
 public abstract class SMASimulation extends SMA {
 
 	protected int vitesse;
-	protected boolean visibleGrid;
 	protected boolean equit;
 
 	public SMASimulation(int taille, int tAgent, int vitesse, boolean torique, boolean visibleGrid, boolean equit, int seed){
-		super(taille, tAgent, torique, seed);
+		super(taille, tAgent, torique, seed, visibleGrid);
 		
 		this.vitesse = vitesse;
-		this.visibleGrid = visibleGrid;
 		this.equit = equit;
 		this.tAgent = tAgent;
 

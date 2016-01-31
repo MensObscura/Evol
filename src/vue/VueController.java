@@ -381,7 +381,7 @@ public class VueController extends JPanel implements Observer{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), Integer.parseInt(seed.getText()));
+				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), Integer.parseInt(seed.getText()), true);
 				if(!isFx){
 					resetGrid();
 					actualiseButton();			

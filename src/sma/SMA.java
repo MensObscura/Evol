@@ -15,14 +15,15 @@ public abstract class SMA extends Observable{
 	protected int taille ;
 	protected int tour;
 	protected int seed;
+	protected boolean visibleGrid;
 
-	public SMA(int taille, int tAgent, boolean torique, int seed){
+	public SMA(int taille, int tAgent, boolean torique, int seed, boolean visibleGrid){
 		this.agents = new ArrayList<Agent>();
 		this.taille = taille;
 		this.tour = 1;
 		this.tAgent = tAgent;
 		this.seed = seed;
-
+		this.visibleGrid = visibleGrid;
 	}
 	
 	public abstract void run();

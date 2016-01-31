@@ -22,6 +22,7 @@ public class SMABille  extends SMASimulation {
 		this.nbBilles=nbBilles;
 		this.equit = equit;
 		this.visibleGrid = grille;
+		this.seed = seed;
 		this.vitesse = vitesse;
 		this.environnement = new Environnement(this,this.taille, torique, agents);
 		this.environnement.init(seed);

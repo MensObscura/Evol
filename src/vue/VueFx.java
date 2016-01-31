@@ -3,11 +3,8 @@ package vue;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.*;
-import javafx.scene.image.*;
 import javafx.scene.input.KeyEvent;
 import agents.Agent;
-import agents.Nemo;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -53,7 +50,7 @@ public class VueFx extends Application {
 		}else if(((String)args[0]).equals("-billes")){
 			this.action =  new SMABille(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Integer.parseInt((String)args[8]));
 		}else if(((String)args[0]).equals("-pacman")){
-			this.action =  new SMAPacMan(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Integer.parseInt((String)args[6]));
+			this.action =  new SMAPacMan(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Integer.parseInt((String)args[7]), Boolean.parseBoolean((String)args[6]));
 
 		}
 		circleAgent = new ArrayList<Shape>();
@@ -196,7 +193,7 @@ public class VueFx extends Application {
 				case DOWN:  ((SMAPacMan)action).getAvatar().changeDirection(Direction.EST);System.out.println("down"); break;
 				case LEFT: ((SMAPacMan)action).getAvatar().changeDirection(Direction.NORD); System.out.println("left");break;
 				case RIGHT:((SMAPacMan)action).getAvatar().changeDirection(Direction.SUD);System.out.println("right"); break;
-
+				default: break;
 				}
 			}
 		});
