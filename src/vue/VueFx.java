@@ -50,7 +50,7 @@ public class VueFx extends Application {
 		}else if(((String)args[0]).equals("-billes")){
 			this.action =  new SMABille(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Integer.parseInt((String)args[8]));
 		}else if(((String)args[0]).equals("-pacman")){
-			this.action =  new SMAPacMan(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Integer.parseInt((String)args[7]), Boolean.parseBoolean((String)args[6]));
+			this.action =  new SMAPacMan(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]), Boolean.parseBoolean((String)args[6]),Integer.parseInt((String)args[7]));
 
 		}
 		circleAgent = new ArrayList<Shape>();
@@ -127,7 +127,8 @@ public class VueFx extends Application {
 				}
 
 				circleObservable = FXCollections.observableArrayList(circleAgent);
-
+				if(action.isVisibleGrid())
+					drawGrid();
 				canvas.getChildren().addAll(circleObservable);
 
 			}
@@ -166,7 +167,7 @@ public class VueFx extends Application {
 				}
 
 				circleObservable = FXCollections.observableArrayList(circleAgent);
-				if(((SMASimulation)action).isVisibleGrid())
+				if(action.isVisibleGrid())
 				drawGrid();
 				canvas.getChildren().addAll(circleObservable);
 

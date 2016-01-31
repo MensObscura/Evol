@@ -36,19 +36,10 @@ public abstract class SMASimulation extends SMA {
 	}
 
 
-	public boolean isVisibleGrid() {
-		return visibleGrid;
-	}
-
-
 	public boolean isEquit() {
 		return equit;
 	}
 
-	public void setVisibleGrid(boolean b) {
-		this.visibleGrid = b;
-
-	}
 
 
 	public void setEquitable(boolean b) {

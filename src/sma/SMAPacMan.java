@@ -18,7 +18,7 @@ public class SMAPacMan extends SMA{
 	
 	private int distances [][];
 
-	public SMAPacMan(int nbChasseurs, int nbMurs, int taille, int tAgent, boolean torique, int seed, boolean grille) {
+	public SMAPacMan(int nbChasseurs, int nbMurs, int taille, int tAgent, boolean torique, boolean grille, int seed) {
 		super(taille, tAgent, torique, seed, grille);
 		this.launch(nbChasseurs, nbMurs, torique, seed, grille);
 	}
@@ -194,5 +194,6 @@ public class SMAPacMan extends SMA{
 		}
 	}
 	
+
 
 }

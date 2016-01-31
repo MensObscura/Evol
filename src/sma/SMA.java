@@ -66,7 +66,16 @@ public abstract class SMA extends Observable{
 	}
 
 
+	public boolean isVisibleGrid() {
+		return visibleGrid;
+	}
 	public abstract int getNbAgent();
 
 	public abstract Agent getNewAgent(int i) ;
+
+	
+	public void setVisibleGrid(boolean b) {
+		this.visibleGrid = b;
+
+	}
 }

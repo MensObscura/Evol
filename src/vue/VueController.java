@@ -200,21 +200,17 @@ public class VueController extends JPanel implements Observer{
 
 		this.visibleGrid = new JCheckBox("Grille visible");
 	
-		if(!this.mode.equals("-pacman")){
-		this.visibleGrid.setSelected(((SMASimulation)this.action).isVisibleGrid());
-		}else{
-			this.visibleGrid.setSelected(false);
-			this.visibleGrid.setEnabled(false);
-		}
+		this.visibleGrid.setSelected(this.action.isVisibleGrid());
+	
 		this.visibleGrid.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (visibleGrid.isSelected()){
-					((SMASimulation)action).setVisibleGrid(true);
+					action.setVisibleGrid(true);
 					resetGrid();
 				}else{
-					((SMASimulation)action).setVisibleGrid(false);
+					action.setVisibleGrid(false);
 					resetGrid();
 				}
 
@@ -381,7 +377,7 @@ public class VueController extends JPanel implements Observer{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), Integer.parseInt(seed.getText()), true);
+				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), Integer.parseInt(seed.getText()), visibleGrid.isSelected());
 				if(!isFx){
 					resetGrid();
 					actualiseButton();			
