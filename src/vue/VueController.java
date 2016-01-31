@@ -26,7 +26,10 @@ import javax.swing.border.LineBorder;
 
 import agents.Agent;
 import model.AgentFactory;
+import model.Direction;
 import sma.SMAWator;
+import sma.SMA;
+import sma.SMAPacMan;
 import sma.SMABille;
 import sma.SMASimulation;
 
@@ -34,7 +37,7 @@ public class VueController extends JPanel implements Observer{
 
 	private JButton[][] buttonTab;
 
-	private SMASimulation action;	
+	private SMA action;	
 	private JPanel glob;
 	private boolean isFx;
 	private JFrame f;
@@ -47,7 +50,7 @@ public class VueController extends JPanel implements Observer{
 	private JCheckBox equitable;
 	private String mode;
 
-	public VueController(SMASimulation action, boolean isFx,String mode){
+	public VueController(SMA action, boolean isFx,String mode){
 
 		this.mode=mode;
 		this.isFx=isFx;
@@ -79,6 +82,7 @@ public class VueController extends JPanel implements Observer{
 		c.weighty = 0;
 		glob.add(controle,c);
 
+	
 		this.f.add(glob);
 		this.f.pack();
 		this.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,6 +90,7 @@ public class VueController extends JPanel implements Observer{
 
 
 	}
+
 
 	public void setVueFx(VueFx vue){
 
@@ -96,15 +101,22 @@ public class VueController extends JPanel implements Observer{
 	public void initRuleButton(JPanel controle){
 
 		set = new JButton("set");
-		
+
 		if(this.mode.equals("-wator"))
 			initButtonWator(controle);
 
 		if(this.mode.equals("-billes"))
 			initButtonBilles(controle);
 
+		if(this.mode.equals("-pacman"))
+			initButtonPacMan(controle);
+		
 		JLabel labVite = new JLabel("vitesse");
-		this.vitesse = new JTextField(this.action.getVitesse()+"");
+		if(!this.mode.equals("-pacman")){
+			this.vitesse = new JTextField(((SMASimulation)this.action).getVitesse()+"");
+		}else{
+			this.vitesse = new JTextField("");
+		}
 		this.vitesse.setPreferredSize(new Dimension(50,20));
 		this.vitesse.addKeyListener(new KeyListener() {
 
@@ -119,7 +131,9 @@ public class VueController extends JPanel implements Observer{
 				if(vitesse.getText().length() >0 )
 					try{
 
-						action.setVitesse(Integer.parseInt(vitesse.getText()));
+						int nbVitesse = Integer.parseInt(vitesse.getText());
+					
+						((SMASimulation)action).setVitesse(nbVitesse);
 						if(isFx && vueFx != null){
 							vueFx.loop();
 						}
@@ -185,40 +199,48 @@ public class VueController extends JPanel implements Observer{
 		} );
 
 		this.visibleGrid = new JCheckBox("Grille visible");
-		if(this.isFx)
+	
+		if(!this.mode.equals("-pacman")){
+		this.visibleGrid.setSelected(((SMASimulation)this.action).isVisibleGrid());
+		}else{
+			this.visibleGrid.setSelected(false);
 			this.visibleGrid.setEnabled(false);
-		this.visibleGrid.setSelected(this.action.isVisibleGrid());
+		}
 		this.visibleGrid.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (visibleGrid.isSelected()){
-					action.setVisibleGrid(true);
+					((SMASimulation)action).setVisibleGrid(true);
 					resetGrid();
 				}else{
-					action.setVisibleGrid(false);
+					((SMASimulation)action).setVisibleGrid(false);
 					resetGrid();
 				}
 
 			}
 		} );
 		this.equitable = new JCheckBox("Equitable");
-		this.equitable.setSelected(this.action.isEquit());
+		if(!this.mode.equals("-pacman")){
+		this.equitable.setSelected(((SMASimulation)this.action).isEquit());
+		}else{
+			this.equitable.setSelected(false);
+		}
 		this.equitable.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (equitable.isSelected()){
-					action.setEquitable(true);
+					((SMASimulation)action).setEquitable(true);
 				}else{
-					action.setEquitable(false);
+					((SMASimulation)action).setEquitable(false);
 				}
 
 			}
 		} );
 
-		
-		
+
+
 
 		JButton start = new JButton("start");
 		start.addActionListener(new ActionListener() {
@@ -238,7 +260,7 @@ public class VueController extends JPanel implements Observer{
 
 				if( text.equals("stop")){
 					source.setText("start");
-					
+
 					action.changeRunning();
 
 				}
@@ -270,8 +292,11 @@ public class VueController extends JPanel implements Observer{
 		controle.setLayout(new GridLayout(10,2));
 
 
-		controle.add(labVite);
-		controle.add(this.vitesse);
+		if(!this.mode.equals("-pacman")){
+			controle.add(labVite);
+			controle.add(this.vitesse);
+		}
+
 		controle.add(labSeed);
 		controle.add(this.seed);
 		controle.add(this.torique);
@@ -290,6 +315,87 @@ public class VueController extends JPanel implements Observer{
 	}
 
 
+	private void initButtonPacMan(JPanel controle) {
+		JLabel labChasseur = new JLabel("Nombre de Chasseurs");
+		JTextField chasseur = new JTextField(((SMAPacMan)this.action).getNbChasseurs()+"");
+		chasseur.setPreferredSize(new Dimension(50,20));
+		chasseur.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(chasseur.getText().length() >0 )
+					try{
+						Integer.parseInt(chasseur.getText());
+					}catch(Exception ex){
+						chasseur.setText("0");
+					}
+
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+
+		JLabel labMur = new JLabel("Nombre de murs");
+		JTextField mur = new JTextField(((SMAPacMan)this.action).getNbMurs()+"");
+		mur.setPreferredSize(new Dimension(50,20));
+		mur.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if( mur.getText().length() >0 )
+					try{
+						Integer.parseInt( mur.getText());
+					}catch(Exception ex){
+						mur.setText("0");
+					}
+
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		set.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), Integer.parseInt(seed.getText()));
+				if(!isFx){
+					resetGrid();
+					actualiseButton();			
+				}
+			}
+
+		});
+
+		controle.add(labChasseur);
+		controle.add(chasseur);
+		controle.add(labMur);
+		controle.add(mur);
+	}
+
 	private void initButtonBilles(JPanel controle){
 		JLabel labBille = new JLabel("Nombre de billes");
 		JTextField billes = new JTextField(((SMABille)this.action).getNbBilles()+"");
@@ -306,7 +412,10 @@ public class VueController extends JPanel implements Observer{
 			public void keyReleased(KeyEvent e) {
 				if(billes.getText().length() >0 )
 					try{
-						Integer.parseInt(billes.getText());
+						int nbBille=	Integer.parseInt(billes.getText());
+						if(nbBille > 2000){
+							billes.setText("2000");
+						}
 					}catch(Exception ex){
 						billes.setText("0");
 					}
@@ -333,7 +442,7 @@ public class VueController extends JPanel implements Observer{
 			}
 
 		});
-		
+
 		controle.add(labBille);
 		controle.add(billes);
 	}
@@ -497,7 +606,7 @@ public class VueController extends JPanel implements Observer{
 			}
 		});
 
-		
+
 		set.addActionListener(new ActionListener() {
 
 			@Override
@@ -510,7 +619,7 @@ public class VueController extends JPanel implements Observer{
 			}
 
 		});
-		
+
 		controle.add(labNemo);
 		controle.add(nemo);
 		controle.add(labNemoRepro);
@@ -545,9 +654,9 @@ public class VueController extends JPanel implements Observer{
 					public void actionPerformed(ActionEvent arg0) {
 						Agent e = null;
 						if(mode.equals("-wator"))
-						e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {((SMAWator)action).getReproductionRequin()+"",((SMAWator)action).getFaimRequin()+""});
+							e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {((SMAWator)action).getReproductionRequin()+"",((SMAWator)action).getFaimRequin()+""});
 						if(mode.equals("-billes"))
-						e= AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
+							e= AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
 
 						if(e!= null){
 							action.getEnvironnement().getEspace()[x][y].setAgent(e);
@@ -563,7 +672,7 @@ public class VueController extends JPanel implements Observer{
 
 				this.buttonTab[i][j].setPreferredSize(new Dimension(action.gettAgent(), action.gettAgent()));
 
-				if(!action.isVisibleGrid()){
+				if(!((SMASimulation)action).isVisibleGrid()){
 					Border emptyBorder = BorderFactory.createEmptyBorder();
 					buttonTab[i][j].setBorder(emptyBorder);
 				}
@@ -602,7 +711,7 @@ public class VueController extends JPanel implements Observer{
 	public void resetGrid(){
 		for(int i = 0 ; i < this.buttonTab.length; i++){
 			for(int j = 0; j < this.buttonTab[i].length; j++){
-				if(!action.isVisibleGrid()){
+				if(!((SMASimulation)action).isVisibleGrid()){
 					Border emptyBorder = BorderFactory.createEmptyBorder();
 					buttonTab[i][j].setBorder(emptyBorder);
 				}else{
@@ -612,12 +721,23 @@ public class VueController extends JPanel implements Observer{
 			}
 		}
 	}
+	
+	
+	
+
+
+		
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
 
 		if(!this.isFx)
 			this.actualiseButton();
+		
+		if(this.mode.equals("-pacman")){
+			vueFx.pacManLoop();
+		}
 		repaint();
 	}
 

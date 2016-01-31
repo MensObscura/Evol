@@ -2,14 +2,18 @@ package agents;
 
 import java.awt.Color;
 
+import javafx.scene.shape.Circle;
+import model.Environnement;
 import model.PacManEnvironnement;
 
 public class Chasseur extends Agent {
 
-	public Chasseur(int posX, int posY, PacManEnvironnement environnement) {
+	public Chasseur(int posX, int posY, Environnement environnement) {
 		super(posX, posY, environnement);
 		this.checkTour = false;
 		this.color = Color.RED;
+		this.shape = new Circle(this.environnement.getSMA().gettAgent(), javafx.scene.paint.Color.RED);
+		this.shape.relocate(posX*10 , posY*10 );
 	}
 	
 	public void doIt(){
@@ -25,7 +29,7 @@ public class Chasseur extends Agent {
 	
 	private int[] chooseBestWay() {
 		int[] coord = new int[2];
-				
+				//il aime pas le cast parce que tu fait un .this dans le contructeur,dans la methode ramdomn put qui est placé dans
 		int[][] espace = ((PacManEnvironnement)this.environnement).getDistances();
 		
 		int dmin = espace[this.posX][this.posY];

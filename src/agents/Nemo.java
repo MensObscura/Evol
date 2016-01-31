@@ -11,7 +11,7 @@ public class Nemo extends AgentReproductible {
 		super(posX, posY, environnement, reproduction);
 		this.checkTour = true;
 		this.color = Color.ORANGE;
-		this.shape = new Circle(3, javafx.scene.paint.Color.ORANGE);
+		this.shape = new Circle(this.environnement.getSMA().gettAgent(), javafx.scene.paint.Color.ORANGE);
 		this.shape.relocate(posX*10 , posY*10 );
 	}
 

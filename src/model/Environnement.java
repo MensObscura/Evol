@@ -162,6 +162,11 @@ public class Environnement {
 
 	}
 
+	public SMA getSMA(){
+		return this.sma;
+	}
+
+	
 
 
 

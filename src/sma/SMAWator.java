@@ -146,4 +146,10 @@ public class SMAWator extends SMASimulation {
 			}
 	}
 
+	@Override
+	public void setVitesse(int i){
+		if(i < 75)
+			i=75;
+		super.setVitesse(i);
+	}
 }

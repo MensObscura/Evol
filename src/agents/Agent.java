@@ -18,8 +18,8 @@ public class Agent {
 	protected Random r = new Random();
 	protected  Environnement environnement;
 	protected boolean checkTour;
-	private int nextX;
-	private int nextY;
+	protected int nextX;
+	protected int nextY;
 
 	private Direction dir;
 
@@ -32,7 +32,7 @@ public class Agent {
 		this.posY = posY;
 		this.environnement = environnement;
 		this.color = this.getRandomColor();
-		this.shape = new Circle(3, getRandomFxColor());
+		this.shape = new Circle(this.environnement.getSMA().gettAgent(), getRandomFxColor());
 		this.shape.relocate(posX * 10, posY *10);
 		this.dir = this.getRandomDirection(null);
 	}
@@ -68,8 +68,6 @@ public class Agent {
 	}
 
 	public Shape getRepresentation(){
-
-
 
 		return this.shape;
 
@@ -186,7 +184,7 @@ public class Agent {
 
 	}
 
-	private void setDir(Direction dir) {
+	protected void setDir(Direction dir) {
 		this.dir = dir;
 	}
 

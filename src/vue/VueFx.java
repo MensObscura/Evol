@@ -1,9 +1,13 @@
 package vue;
 
+
 import java.util.ArrayList;
 import java.util.List;
-
+import javafx.scene.*;
+import javafx.scene.image.*;
+import javafx.scene.input.KeyEvent;
 import agents.Agent;
+import agents.Nemo;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -13,11 +17,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.AgentFactory;
+import model.Direction;
+import sma.SMA;
 import sma.SMABille;
+import sma.SMAPacMan;
 import sma.SMASimulation;
 import sma.SMAWator;
 
@@ -28,7 +36,7 @@ public class VueFx extends Application {
 	public static ObservableList<Shape> circleObservable;
 	public static Pane canvas;
 
-	public SMASimulation action;
+	public SMA action;
 	private Timeline loop;
 	public VueFx(){
 
@@ -44,15 +52,33 @@ public class VueFx extends Application {
 			this.action = new SMAWator(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Integer.parseInt((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Boolean.parseBoolean((String)args[8]),Integer.parseInt((String)args[9]),Integer.parseInt((String)args[10]),Integer.parseInt((String)args[11]),Integer.parseInt((String)args[12]));
 		}else if(((String)args[0]).equals("-billes")){
 			this.action =  new SMABille(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Integer.parseInt((String)args[8]));
+		}else if(((String)args[0]).equals("-pacman")){
+			this.action =  new SMAPacMan(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Integer.parseInt((String)args[6]));
+
 		}
 		circleAgent = new ArrayList<Shape>();
 
 		canvas = new Pane();
-		canvas.setStyle("-fx-background-color: #B0F1FE ");
+		if(((String)args[0]).equals("-pacman")){
+			canvas.setStyle("-fx-background-color: #E0CDA9 ");
+		}else if(((String)args[0]).equals("-wator")){
+			canvas.setStyle("-fx-background-color: #B0F1FE ");
+		}else if(((String)args[0]).equals("-billes")){
+			canvas.setStyle("-fx-background-color: #A5DB92 ");
+		}
 
 		final Scene scene = new Scene(canvas, this.action.getEnvironnement().getTaille() *10, this.action.getEnvironnement().getTaille()*10 );
-		primaryStage.setTitle("Battle");
+		
+		if(((String)args[0]).equals("-wator")){
+		primaryStage.setTitle("Battle !");
+		}else if(((String)args[0]).equals("-billes")){
+			primaryStage.setTitle("Chambre à particule");
+		}else if(((String)args[0]).equals("-pacman")){
+			primaryStage.setTitle("Run forest, run !");
+		}
 		primaryStage.setScene(scene);
+		if(((String)args[0]).equals("-pacman"))
+			this.addArrowsListener(scene);
 		primaryStage.show();
 
 		canvas.setOnMouseClicked(event -> {
@@ -64,6 +90,7 @@ public class VueFx extends Application {
 				e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
 			}
 
+
 			if(e != null){
 				action.getEnvironnement().getEspace()[x][y].setAgent(e);
 				action.getEnvironnement().getAgents().add(e);
@@ -71,40 +98,26 @@ public class VueFx extends Application {
 		});
 
 
-		//         Ajout des agents
-		for (int i = 0; i < this.action.getAgents().size(); i++) {
-
-
-			circleAgent.add(this.action.getAgents().get(i).getRepresentation());
-
-
-
-		}
-
-
-
-		circleObservable = FXCollections.observableArrayList(circleAgent);
-
-
 		VueController vue = new VueController(this.action, true, ((String)args[0]));
 		vue.setVueFx(this);
 
-		this.loop();
+		if(((String)args[0]).equals("-pacman")){
+			this.pacManLoop();
+		}else{
+			this.loop();
 
-
+		}
 	}
 
-	public void loop() {
-
+	public void pacManLoop() {
 		if(loop != null)
 			loop.stop();
 
 
-		loop = new Timeline(new KeyFrame(Duration.millis(action.getVitesse()), new EventHandler<ActionEvent>() {
+		loop = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
 
-
-			public void handle(final ActionEvent t) {
-
+			@Override
+			public void handle(ActionEvent event) {
 				action.round();
 
 				circleAgent.clear();
@@ -133,9 +146,83 @@ public class VueFx extends Application {
 
 	}
 
+	public void loop() {
 
+		if(loop != null)
+			loop.stop();
+
+
+		loop = new Timeline(new KeyFrame(Duration.millis(((SMASimulation)action).getVitesse()), new EventHandler<ActionEvent>() {
+
+
+			public void handle(final ActionEvent t) {
+
+				action.round();
+
+				circleAgent.clear();
+				canvas.getChildren().clear();
+				//	Ajout des agents
+				for (int i = 0; i < action.getAgents().size(); i++) {
+
+					circleAgent.add(action.getAgents().get(i).getRepresentation());
+
+				}
+
+				circleObservable = FXCollections.observableArrayList(circleAgent);
+				if(((SMASimulation)action).isVisibleGrid())
+				drawGrid();
+				canvas.getChildren().addAll(circleObservable);
+
+			}
+
+
+		}));
+
+
+
+
+		loop.setCycleCount(Timeline.INDEFINITE);
+		loop.play();
+
+	}
+
+
+	private void addArrowsListener(Scene scene) {
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				case UP:    ((SMAPacMan)action).getAvatar().changeDirection(Direction.OUEST);System.out.println("up");break;
+				case DOWN:  ((SMAPacMan)action).getAvatar().changeDirection(Direction.EST);System.out.println("down"); break;
+				case LEFT: ((SMAPacMan)action).getAvatar().changeDirection(Direction.NORD); System.out.println("left");break;
+				case RIGHT:((SMAPacMan)action).getAvatar().changeDirection(Direction.SUD);System.out.println("right"); break;
+
+				}
+			}
+		});
+
+
+
+	}
+
+	public void drawGrid(){
+		System.out.println("toc");
+		List<Shape> lineAgent = new ArrayList<Shape>();
+		for(int i = 0 ; i < this.action.getEnvironnement().getTaille();i++){
+			Rectangle r = new Rectangle(this.action.getEnvironnement().getTaille()*10,1.5,javafx.scene.paint.Color.LIGHTGRAY);
+			r.relocate( 0,i*10);
+			lineAgent.add(r);
+			r= new Rectangle(1.5,this.action.getEnvironnement().getTaille()*10,javafx.scene.paint.Color.LIGHTGRAY);
+			r.relocate(i*10,0);
+			lineAgent.add(r);
+
+		}
+		canvas.getChildren().addAll(lineAgent);
+	}
 
 	public static void run(String args[]){
 		launch(args);
 	}
+
+
 }

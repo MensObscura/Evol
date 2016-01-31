@@ -11,7 +11,7 @@ public abstract class SMA extends Observable{
 	protected Environnement environnement;
 	protected ArrayList<Agent> agents;
 	protected int tAgent; 
-	protected boolean running = false;//tmp false 
+	protected boolean running = false;
 	protected int taille ;
 	protected int tour;
 	protected int seed;

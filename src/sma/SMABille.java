@@ -67,5 +67,12 @@ public class SMABille  extends SMASimulation {
 
 			}
 	}
+	
+	@Override
+	public void setVitesse(int i){
+		if(i < 8)
+			i=8;
+		super.setVitesse(i);
+	}
 
 }

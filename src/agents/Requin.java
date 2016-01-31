@@ -21,7 +21,7 @@ public class Requin extends AgentReproductible {
 		this.lastMeal = 0;
 		this.checkTour = true;
 		this.color = Color.DARK_GRAY;
-		this.shape = new Circle(4, javafx.scene.paint.Color.BLACK);
+		this.shape = new Circle(this.environnement.getSMA().gettAgent()+1, javafx.scene.paint.Color.BLACK);
 		this.shape.relocate(posX *10, posY *10);
 	}
 
