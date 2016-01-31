@@ -4,6 +4,7 @@ package vue;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import agents.Agent;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,6 +33,7 @@ public class VueFx extends Application {
 
 	public static ObservableList<Shape> circleObservable;
 	public static Pane canvas;
+	private VueController vue;
 
 	public SMA action;
 	private Timeline loop;
@@ -86,6 +88,7 @@ public class VueFx extends Application {
 			}else if(((String)args[0]).equals("-billes")){
 				e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
 			}else if(((String)args[0]).equals("-pacman")){
+				if(!action.isRunning() && event.getButton() == MouseButton.SECONDARY)
 				e = AgentFactory.getInstance().getAgent("protecteur",action.getEnvironnement(),x,y,new String[0]);
 			}
 
@@ -97,7 +100,7 @@ public class VueFx extends Application {
 		});
 
 
-		VueController vue = new VueController(this.action, true, ((String)args[0]));
+		vue = new VueController(this.action, true, ((String)args[0]));
 		vue.setVueFx(this);
 
 		if(((String)args[0]).equals("-pacman")){
@@ -198,6 +201,7 @@ public class VueFx extends Application {
 				case RIGHT:((SMAPacMan)action).getAvatar().changeDirection(Direction.SUD); break;
 				case SPACE: if(((SMAPacMan)action).addVitesse(100)){pacManLoop();}break;
 				case  B: if(((SMAPacMan)action).slowVitesse(100)){pacManLoop();}break;
+				case CONTROL: vue.changeRunning(); break;
 				default: break;
 				}
 			}
@@ -210,10 +214,10 @@ public class VueFx extends Application {
 	public void drawGrid(){
 		List<Shape> lineAgent = new ArrayList<Shape>();
 		for(int i = 0 ; i < this.action.getEnvironnement().getTaille();i++){
-			Rectangle r = new Rectangle(this.action.getEnvironnement().getTaille()*10,1.5,javafx.scene.paint.Color.LIGHTGRAY);
+			Rectangle r = new Rectangle(this.action.getEnvironnement().getTaille()*10,1.5,javafx.scene.paint.Color.DARKGRAY);
 			r.relocate( 0,i*10);
 			lineAgent.add(r);
-			r= new Rectangle(1.5,this.action.getEnvironnement().getTaille()*10,javafx.scene.paint.Color.LIGHTGRAY);
+			r= new Rectangle(1.5,this.action.getEnvironnement().getTaille()*10,javafx.scene.paint.Color.DARKGRAY);
 			r.relocate(i*10,0);
 			lineAgent.add(r);
 

@@ -49,6 +49,7 @@ public class VueController extends JPanel implements Observer{
 	private JCheckBox visibleGrid;
 	private JCheckBox equitable;
 	private String mode;
+	private JButton start;
 
 	public VueController(SMA action, boolean isFx,String mode){
 
@@ -82,7 +83,7 @@ public class VueController extends JPanel implements Observer{
 		c.weighty = 0;
 		glob.add(controle,c);
 
-	
+
 		this.f.add(glob);
 		this.f.pack();
 		this.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,7 +111,7 @@ public class VueController extends JPanel implements Observer{
 
 		if(this.mode.equals("-pacman"))
 			initButtonPacMan(controle);
-		
+
 		JLabel labVite = new JLabel("vitesse");
 		if(!this.mode.equals("-pacman")){
 			this.vitesse = new JTextField(((SMASimulation)this.action).getVitesse()+"");
@@ -132,7 +133,7 @@ public class VueController extends JPanel implements Observer{
 					try{
 
 						int nbVitesse = Integer.parseInt(vitesse.getText());
-					
+
 						((SMASimulation)action).setVitesse(nbVitesse);
 						if(isFx && vueFx != null){
 							vueFx.loop();
@@ -199,26 +200,28 @@ public class VueController extends JPanel implements Observer{
 		} );
 
 		this.visibleGrid = new JCheckBox("Grille visible");
-	
+
 		this.visibleGrid.setSelected(this.action.isVisibleGrid());
-	
+
 		this.visibleGrid.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (visibleGrid.isSelected()){
 					action.setVisibleGrid(true);
-					resetGrid();
+
 				}else{
 					action.setVisibleGrid(false);
+
+				}
+				if(!isFx){
 					resetGrid();
 				}
-
 			}
 		} );
 		this.equitable = new JCheckBox("Equitable");
 		if(!this.mode.equals("-pacman")){
-		this.equitable.setSelected(((SMASimulation)this.action).isEquit());
+			this.equitable.setSelected(((SMASimulation)this.action).isEquit());
 		}else{
 			this.equitable.setSelected(false);
 		}
@@ -238,31 +241,12 @@ public class VueController extends JPanel implements Observer{
 
 
 
-		JButton start = new JButton("start");
+		start = new JButton("start");
 		start.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JButton source = ((JButton)	e.getSource());
-				String text = source.getText();
-
-				if( text.equals("start")){
-					source.setText("stop");
-
-					action.changeRunning();
-
-
-				}
-
-				if( text.equals("stop")){
-					source.setText("start");
-
-					action.changeRunning();
-
-				}
-
-
-
+				changeRunning();
 			}
 		});
 
@@ -284,8 +268,15 @@ public class VueController extends JPanel implements Observer{
 
 
 
+		if(this.mode.equals("-wator"))
+			controle.setLayout(new GridLayout(10,2));
 
-		controle.setLayout(new GridLayout(10,2));
+		if(this.mode.equals("-billes"))
+			controle.setLayout(new GridLayout(6,2));
+
+		if(this.mode.equals("-pacman"))
+			controle.setLayout(new GridLayout(13,2));
+	
 
 
 		if(!this.mode.equals("-pacman")){
@@ -297,12 +288,34 @@ public class VueController extends JPanel implements Observer{
 		controle.add(this.seed);
 		controle.add(this.torique);
 		controle.add(this.visibleGrid);	
-		controle.add(this.equitable);
+		if(!this.mode.equals("-pacman")){
+			controle.add(this.equitable);
+		}
 		controle.add(this.set);
 		controle.add(start);
 		controle.add(clean);
-
-
+		if(this.mode.equals("-pacman")){
+			JLabel rule = new JLabel("Reach the white case, whitout be catching be the hunters (reds one)");
+			JLabel arrow = new JLabel("ARROWS : to move the avatar (green one)");
+			JLabel ctrl = new JLabel("CTRL : to start and pause");
+			JLabel space = new JLabel("SPACE : speed the game");
+			JLabel b = new JLabel("KEY_B : slow the game");
+			JLabel leftClick = new JLabel("RIGHT_CLICK : to add a protector (violets one)");
+			
+			//dirty trick
+			controle.add(new JLabel(""));
+			controle.add(rule);
+			controle.add(new JLabel(""));
+			controle.add(arrow);
+			controle.add(new JLabel(""));
+			controle.add(ctrl);
+			controle.add(new JLabel(""));
+			controle.add(space);
+			controle.add(new JLabel(""));
+			controle.add(b);
+			controle.add(new JLabel(""));
+			controle.add(leftClick);
+		}
 
 
 
@@ -648,7 +661,7 @@ public class VueController extends JPanel implements Observer{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						
+
 						Agent e = null;
 						if(mode.equals("-wator"))
 							e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {((SMAWator)action).getReproductionRequin()+"",((SMAWator)action).getFaimRequin()+""});
@@ -720,25 +733,49 @@ public class VueController extends JPanel implements Observer{
 			}
 		}
 	}
-	
-	
-	
 
 
-		
-	
+
+
+
+
+
 
 	@Override
 	public void update(Observable o, Object arg) {
 
 		if(!this.isFx)
 			this.actualiseButton();
-		
+
 		if(this.mode.equals("-pacman")){
 			vueFx.pacManLoop();
 		}
 		repaint();
 	}
+
+
+	public void changeRunning() {
+		String text = start.getText();
+
+		if( text.equals("start")){
+			start.setText("stop");
+
+			action.changeRunning();
+
+
+		}
+
+		if( text.equals("stop")){
+			start.setText("start");
+
+			action.changeRunning();
+
+		}
+
+
+
+	}
+
 
 
 

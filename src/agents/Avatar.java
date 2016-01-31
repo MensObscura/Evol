@@ -23,8 +23,8 @@ public class Avatar extends Agent {
 		switch (dir) {
 		case SUD: if (canMoveontheBottom()) {this.setDir(dir);} break;
 		case NORD: if (canMoveontheTop()) {this.setDir(dir);} break;
-		case OUEST: if (canMoveontheRight()) {this.setDir(dir);} break;
-		case EST: if (canMoveontheLeft()) {this.setDir(dir);} break;
+		case OUEST: if (canMoveontheLeft()) {this.setDir(dir);} break;
+		case EST: if (canMoveontheRight()) {this.setDir(dir);} break;
 		default: break;
 		}
 	}
@@ -42,40 +42,6 @@ public class Avatar extends Agent {
 
 	public boolean canMoveontheLeft() {
 		if (this.environnement.isTorique()) {
-			if (this.posX == 0) {
-				return !(this.environnement.getEspace()[this.environnement.getTaille()-1][this.posY].getAgent()
-						instanceof Mur);
-			}
-		}
-		else {
-			if (this.posX == 0) {
-				return false;
-			}
-		}
-
-		return !(this.environnement.getEspace()[this.posX-1][this.posY].getAgent()
-				instanceof Mur);
-	}
-
-	public boolean canMoveontheRight() {
-		if (this.environnement.isTorique()) {
-			if (this.posX == this.environnement.getTaille()-1) {
-				return !(this.environnement.getEspace()[0][this.posY].getAgent()
-						instanceof Mur);
-			}
-		}
-		else {
-			if (this.posX == this.environnement.getTaille()-1) {
-				return false;
-			}
-		}
-
-		return !(this.environnement.getEspace()[this.posX+1][this.posY].getAgent()
-				instanceof Mur);
-	}
-
-	public boolean canMoveontheTop() {
-		if (this.environnement.isTorique()) {
 			if (this.posY == 0) {
 				return !(this.environnement.getEspace()[this.posX][this.environnement.getTaille()-1].getAgent()
 						instanceof Mur);
@@ -91,7 +57,7 @@ public class Avatar extends Agent {
 				instanceof Mur);
 	}
 
-	public boolean canMoveontheBottom() {
+	public boolean canMoveontheRight() {
 		if (this.environnement.isTorique()) {
 			if (this.posY == this.environnement.getTaille()-1) {
 				return !(this.environnement.getEspace()[this.posX][0].getAgent()
@@ -108,6 +74,40 @@ public class Avatar extends Agent {
 				instanceof Mur);
 	}
 
+	public boolean canMoveontheTop() {
+		if (this.environnement.isTorique()) {
+			if (this.posX == 0) {
+				return !(this.environnement.getEspace()[this.environnement.getTaille()-1][this.posY].getAgent()
+						instanceof Mur);
+			}
+		}
+		else {
+			if (this.posX == 0) {
+				return false;
+			}
+		}
+
+		return !(this.environnement.getEspace()[this.posX-1][this.posY].getAgent()
+				instanceof Mur);
+	}
+
+	public boolean canMoveontheBottom() {
+		if (this.environnement.isTorique()) {
+			if (this.posX == this.environnement.getTaille()-1) {
+				return !(this.environnement.getEspace()[0][this.posY].getAgent()
+						instanceof Mur);
+			}
+		}
+		else {
+			if (this.posX == this.environnement.getTaille()-1) {
+				return false;
+			}
+		}
+
+		return !(this.environnement.getEspace()[this.posX+1][this.posY].getAgent()
+				instanceof Mur);
+	}
+
 	public Cellule getNextCaseBeforeCalcul(){
 		switch(this.dir){
 
@@ -115,10 +115,6 @@ public class Avatar extends Agent {
 		case OUEST : this.nextX = this.posX; this.nextY = this.posY -1; break;
 		case NORD : this.nextX = this.posX -1 ; this.nextY = this.posY; break;
 		case SUD : this.nextX = this.posX +1 ; this.nextY = this.posY; break;
-		case NORDEST :  this.nextX = this.posX +1 ; this.nextY = this.posY +1; break;
-		case SUDEST : this.nextX = this.posX -1 ; this.nextY = this.posY +1; break;
-		case NORDOUEST : this.nextX = this.posX +1 ; this.nextY = this.posY -1; break;
-		case SUDOUEST : this.nextX = this.posX -1 ; this.nextY = this.posY -1; break;
 		}
 
 		if(this.environnement.isTorique()){

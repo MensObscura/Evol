@@ -78,4 +78,9 @@ public abstract class SMA extends Observable{
 		this.visibleGrid = b;
 
 	}
+	
+	public boolean isRunning(){
+		return running;
+		
+	}
 }
