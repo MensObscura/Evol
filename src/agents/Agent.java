@@ -21,7 +21,7 @@ public class Agent {
 	protected int nextX;
 	protected int nextY;
 
-	private Direction dir;
+	protected Direction dir;
 
 	protected Shape shape;
 

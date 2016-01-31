@@ -85,6 +85,8 @@ public class VueFx extends Application {
 				e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {((SMAWator)action).getReproductionRequin()+"",((SMAWator)action).getFaimRequin()+""});
 			}else if(((String)args[0]).equals("-billes")){
 				e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
+			}else if(((String)args[0]).equals("-pacman")){
+				e = AgentFactory.getInstance().getAgent("protecteur",action.getEnvironnement(),x,y,new String[0]);
 			}
 
 
@@ -111,7 +113,7 @@ public class VueFx extends Application {
 			loop.stop();
 
 
-		loop = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+		loop = new Timeline(new KeyFrame(Duration.millis(((SMAPacMan)action).getVitesse()), new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
@@ -190,10 +192,12 @@ public class VueFx extends Application {
 			@Override
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
-				case UP:    ((SMAPacMan)action).getAvatar().changeDirection(Direction.OUEST);System.out.println("up");break;
-				case DOWN:  ((SMAPacMan)action).getAvatar().changeDirection(Direction.EST);System.out.println("down"); break;
-				case LEFT: ((SMAPacMan)action).getAvatar().changeDirection(Direction.NORD); System.out.println("left");break;
-				case RIGHT:((SMAPacMan)action).getAvatar().changeDirection(Direction.SUD);System.out.println("right"); break;
+				case UP:    ((SMAPacMan)action).getAvatar().changeDirection(Direction.OUEST);break;
+				case DOWN:  ((SMAPacMan)action).getAvatar().changeDirection(Direction.EST); break;
+				case LEFT: ((SMAPacMan)action).getAvatar().changeDirection(Direction.NORD); break;
+				case RIGHT:((SMAPacMan)action).getAvatar().changeDirection(Direction.SUD); break;
+				case SPACE: if(((SMAPacMan)action).addVitesse(100)){pacManLoop();}break;
+				case  B: if(((SMAPacMan)action).slowVitesse(100)){pacManLoop();}break;
 				default: break;
 				}
 			}
@@ -204,7 +208,6 @@ public class VueFx extends Application {
 	}
 
 	public void drawGrid(){
-		System.out.println("toc");
 		List<Shape> lineAgent = new ArrayList<Shape>();
 		for(int i = 0 ; i < this.action.getEnvironnement().getTaille();i++){
 			Rectangle r = new Rectangle(this.action.getEnvironnement().getTaille()*10,1.5,javafx.scene.paint.Color.LIGHTGRAY);

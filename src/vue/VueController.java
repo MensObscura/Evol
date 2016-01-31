@@ -648,11 +648,14 @@ public class VueController extends JPanel implements Observer{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						
 						Agent e = null;
 						if(mode.equals("-wator"))
 							e = AgentFactory.getInstance().getAgent("requin",action.getEnvironnement(),x,y,new String[] {((SMAWator)action).getReproductionRequin()+"",((SMAWator)action).getFaimRequin()+""});
 						if(mode.equals("-billes"))
 							e= AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
+						if(mode.equals("-pacman"))
+							e= AgentFactory.getInstance().getAgent("protecteur",action.getEnvironnement(),x,y,new String[0]);
 
 						if(e!= null){
 							action.getEnvironnement().getEspace()[x][y].setAgent(e);
