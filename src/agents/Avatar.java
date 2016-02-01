@@ -6,12 +6,16 @@ import javafx.scene.shape.Circle;
 import model.Cellule;
 import model.Direction;
 import model.Environnement;
+import sma.SMAPacMan;
 
 public class Avatar extends Agent {
+
+	private int protege;
 
 	public Avatar(int posX, int posY, Environnement environnement) {
 		super(posX, posY, environnement);
 		this.checkTour = false;
+		this.protege=0;
 		this.color = Color.GREEN;
 		this.shape = new Circle(this.environnement.getSMA().gettAgent()+1, javafx.scene.paint.Color.LIMEGREEN);
 		this.shape.relocate(posX*10 , posY*10 );
@@ -30,13 +34,31 @@ public class Avatar extends Agent {
 	}
 
 	public void doIt(){
-		this.getNextCaseBeforeCalcul();
+		Cellule  next = this.getNextCaseBeforeCalcul();
+		protege --;
+		if(next != null && next.getAgent() instanceof Arrivee ){
+			((SMAPacMan)this.environnement.getSMA()).win();
+		}
+		if(next != null && next.getAgent() instanceof Protecteur ){
+			this.protege =  ((Protecteur)next.getAgent()).isAboutToDie()?30:20;
+			System.out.println(this.protege);
+			((Protecteur)next.getAgent()).die();
+			this.setProtected(true);
+			((SMAPacMan)this.environnement.getSMA()).upScore();
+			
+			
+		}
+		if(this.protege == 0){
+			this.setProtected(false);
+		}
+		
 		if(this.isNextCaseFree()){
-
+			this.environnement.getEspace()[this.nextX][this.nextY].setAgent(this);
+			this.environnement.getEspace()[this.posX][this.posY].removeAgent();
 			this.setPosX(this.nextX);
 			this.setPosY(this.nextY);
 		}
-
+		
 	}
 
 	public Cellule getNextCaseBeforeCalcul(){
@@ -80,6 +102,10 @@ public class Avatar extends Agent {
 			this.shape = new Circle(this.environnement.getSMA().gettAgent()+1, javafx.scene.paint.Color.LIMEGREEN);
 			this.shape.relocate(posX*10 , posY*10 );
 		}
+	}
+
+	public boolean isProtected() {
+		return this.protege >0;
 	}
 
 }

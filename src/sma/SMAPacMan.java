@@ -24,7 +24,7 @@ public class SMAPacMan extends SMA{
 	private String state;
 
 	private int distances [][];
-	private int protege;
+
 	private boolean protecteur;
 
 	public SMAPacMan(int nbChasseurs, int nbMurs, int taille, int tAgent, boolean torique, boolean grille, int seed) {
@@ -38,7 +38,6 @@ public class SMAPacMan extends SMA{
 		this.murs = nbMurs;
 		this.visibleGrid = visibleGrid;
 		this.vitesse = 550;
-		this.protege= 0;
 		this.protecteur=false;
 		this.state="";
 		// Init tableau des distances
@@ -88,21 +87,7 @@ public class SMAPacMan extends SMA{
 	public void round(){
 		if(running && !finish){
 			try{
-				Cellule  next = avatar.getNextCaseBeforeCalcul();
-				if(next != null && next.getAgent() instanceof Arrivee ){
-					this.finish = true;
-					this.state +=" Win";
-				}
-				if(next != null && next.getAgent() instanceof Protecteur ){
-					((Protecteur)next.getAgent()).die();
-					this.avatar.setProtected(true);
-					this.score++;
-					this.state = "Score : "+this.score;
-					this.protege = 20;
-				}
-				if(this.protege == 0){
-					this.avatar.setProtected(false);
-				}
+				
 				if(this.protecteur == false){
 					this.protecteur=true;
 					int x =this.environnement.getRandomCoord(-1);
@@ -118,10 +103,7 @@ public class SMAPacMan extends SMA{
 					for(Agent a : agentBis){
 						if(!( a instanceof Avatar) && !finish)
 							a.doIt();
-						if (a instanceof Chasseur && this.distances[a.getPosX()][a.getPosY()] <= 1) {
-							this.state +=" Loose";
-							finish = true;
-						}
+						
 
 					}
 
@@ -135,7 +117,6 @@ public class SMAPacMan extends SMA{
 			this.setChanged();
 			this.notifyObservers();
 			tour++;
-			this.protege --;
 		}
 	}
 
@@ -186,7 +167,7 @@ public class SMAPacMan extends SMA{
 	}
 
 	public boolean isProtege(){
-		return this.protege>0;
+		return this.avatar.isProtected();
 	}
 
 	public void calculDistancesVoisines(int x, int y) {
@@ -283,8 +264,18 @@ public class SMAPacMan extends SMA{
 		return this.state;
 	}
 	
+	public void win(){
+		this.finish = true;
+		this.state +=" Win";
+	}
+	public void loose(){
+		this.finish = true;
+		this.state +=" Loose";
+	}
 
-
-
+	public void upScore(){
+		this.score++;
+		this.state = "Score : "+this.score;
+	}
 
 }

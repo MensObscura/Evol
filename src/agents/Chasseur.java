@@ -23,6 +23,11 @@ public class Chasseur extends Agent {
 
 	public void doIt(){
 		int[] coord;
+		if ( ((SMAPacMan)this.environnement.getSMA()).getDistances()[this.getPosX()][this.getPosY()] <= 1 &&  !((SMAPacMan)this.environnement.getSMA()).isProtege()) {
+			((SMAPacMan)this.environnement.getSMA()).loose();
+			return;
+		}
+		
 		if(ifNotTooNearOfaProtector() && ((SMAPacMan)this.environnement.getSMA()).isProtege()){
 			coord = this.chooseBestWay();
 		}else{
@@ -40,7 +45,6 @@ public class Chasseur extends Agent {
 	
 
 	private boolean ifNotTooNearOfaProtector() {
-		System.out.println(((SMAPacMan)this.environnement.getSMA()).getDistances()[this.getPosX()][this.getPosY()]);
 		return ((SMAPacMan)this.environnement.getSMA()).getDistances()[this.getPosX()][this.getPosY()] <= this.securityDistance;
 
 	}
