@@ -71,7 +71,7 @@ public class VueFx extends Application {
 		if(((String)args[0]).equals("-wator")){
 		primaryStage.setTitle("Battle !");
 		}else if(((String)args[0]).equals("-billes")){
-			primaryStage.setTitle("Chambre à particule");
+			primaryStage.setTitle("Chambre ï¿½ particule");
 		}else if(((String)args[0]).equals("-pacman")){
 			primaryStage.setTitle("Run forest, run !");
 		}
@@ -202,6 +202,7 @@ public class VueFx extends Application {
 				case SPACE: if(((SMAPacMan)action).addVitesse(100)){pacManLoop();}break;
 				case  B: if(((SMAPacMan)action).slowVitesse(100)){pacManLoop();}break;
 				case CONTROL: vue.changeRunning(); break;
+				case S: vue.stopRunning(); vue.reset();; break;
 				default: break;
 				}
 			}

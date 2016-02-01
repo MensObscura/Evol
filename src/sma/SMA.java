@@ -83,4 +83,11 @@ public abstract class SMA extends Observable{
 		return running;
 		
 	}
+
+	public void stopRunning() {
+		this.running=false;
+		
+	}
+
+
 }

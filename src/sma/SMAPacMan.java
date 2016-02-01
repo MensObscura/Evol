@@ -20,9 +20,12 @@ public class SMAPacMan extends SMA{
 	private Arrivee arrivee;
 	private boolean finish;
 	private int vitesse;
+	private int score;
+	private String state;
 
 	private int distances [][];
-	private int[][] protecteur;
+	private int protege;
+	private boolean protecteur;
 
 	public SMAPacMan(int nbChasseurs, int nbMurs, int taille, int tAgent, boolean torique, boolean grille, int seed) {
 		super(taille, tAgent, torique, seed, grille);
@@ -35,10 +38,12 @@ public class SMAPacMan extends SMA{
 		this.murs = nbMurs;
 		this.visibleGrid = visibleGrid;
 		this.vitesse = 550;
-
+		this.protege= 0;
+		this.protecteur=false;
+		this.state="";
 		// Init tableau des distances
 		this.distances = new int[taille][taille];
-		this.protecteur = new int[taille][taille];
+
 
 		this.environnement = new Environnement(this, this.taille, torique, agents);
 
@@ -85,9 +90,27 @@ public class SMAPacMan extends SMA{
 			try{
 				Cellule  next = avatar.getNextCaseBeforeCalcul();
 				if(next != null && next.getAgent() instanceof Arrivee ){
-					finish = true;
+					this.finish = true;
+					this.state +=" Win";
 				}
-				avatar.doIt();
+				if(next != null && next.getAgent() instanceof Protecteur ){
+					((Protecteur)next.getAgent()).die();
+					this.avatar.setProtected(true);
+					this.score++;
+					this.state = "Score : "+this.score;
+					this.protege = 20;
+				}
+				if(this.protege == 0){
+					this.avatar.setProtected(false);
+				}
+				if(this.protecteur == false){
+					this.protecteur=true;
+					int x =this.environnement.getRandomCoord(-1);
+					int y =this.environnement.getRandomCoord(x);
+					Protecteur protecteur = new Protecteur(x,y,this.environnement);
+					this.environnement.addAgent(protecteur);
+				}
+				this.avatar.doIt();
 				if(!finish){
 					this.calculDistances();
 
@@ -95,14 +118,15 @@ public class SMAPacMan extends SMA{
 					for(Agent a : agentBis){
 						if(!( a instanceof Avatar) && !finish)
 							a.doIt();
-						if (a instanceof Chasseur && this.distances[a.getPosX()][a.getPosY()] == 1) {
+						if (a instanceof Chasseur && this.distances[a.getPosX()][a.getPosY()] <= 1) {
+							this.state +=" Loose";
 							finish = true;
 						}
 
 					}
 
 
-				
+
 				}
 			}catch(ConcurrentModificationException e){
 
@@ -111,6 +135,7 @@ public class SMAPacMan extends SMA{
 			this.setChanged();
 			this.notifyObservers();
 			tour++;
+			this.protege --;
 		}
 	}
 
@@ -130,9 +155,6 @@ public class SMAPacMan extends SMA{
 		return this.distances;
 	}
 
-	public int[][] getProtecteurDistances() {
-		return this.protecteur;
-	}
 
 	public void printDistance() {
 		for (int i=0; i < taille; i++) {
@@ -143,6 +165,7 @@ public class SMAPacMan extends SMA{
 		}
 	}
 
+
 	public void calculDistances() {
 
 		for (int i=0; i < taille; i++) {
@@ -151,25 +174,19 @@ public class SMAPacMan extends SMA{
 			}
 		}
 
+
 		int x_depart = avatar.getPosX();
 		int y_depart = avatar.getPosY();
 
 		this.distances[x_depart][y_depart] = 0;
 		calculDistancesVoisines(x_depart, y_depart);
-		for(int i = 0 ; i < protecteur.length; i++ ){
-			for(int j = 0 ; j < protecteur.length; j++ ){
-				this.protecteur[i][j]=0;
-			}
-		}
-		
-		for(Agent a : this.agents){
-			
-			if (a instanceof Protecteur ) {
-				calculDistancesVoisinesProtecteur(x_depart, y_depart);
-			}
 
-		}
+
 		//printDistance();
+	}
+
+	public boolean isProtege(){
+		return this.protege>0;
 	}
 
 	public void calculDistancesVoisines(int x, int y) {
@@ -234,78 +251,6 @@ public class SMAPacMan extends SMA{
 			}
 		}
 	}
-	
-	public void calculDistancesVoisinesProtecteur(int x, int y) {
-		int distance_actu = this.protecteur[x][y];
-		if (x == 0) {
-			if (environnement.isTorique()) {
-				if (!(environnement.getEspace()[this.taille-1][y].getAgent() instanceof Mur) && (this.protecteur[taille-1][y] == -1 || distance_actu + 1 < this.protecteur[taille-1][y])) {
-					if(this.protecteur[this.taille-1][y] == 0 || this.protecteur[this.taille-1][y] > distance_actu + 1 )
-					this.protecteur[this.taille-1][y] = distance_actu + 1;
-					calculDistancesVoisinesProtecteur(this.taille-1, y);
-				}
-			}
-		}
-		else {
-			if (!(environnement.getEspace()[x-1][y].getAgent() instanceof Mur) && (this.protecteur[x-1][y] == -1 || distance_actu + 1 < this.protecteur[x-1][y])) {
-				if(this.protecteur[x-1][y] == 0 || this.protecteur[x-1][y] > distance_actu + 1 )
-				this.protecteur[x-1][y] = distance_actu + 1;
-				calculDistancesVoisinesProtecteur(x-1, y);
-			}
-		}
-
-		if (x == taille-1) {
-			if (environnement.isTorique()) {
-				if (!(environnement.getEspace()[0][y].getAgent() instanceof Mur) && (this.protecteur[0][y] == -1 || distance_actu + 1 < this.protecteur[0][y])) {
-					if(this.protecteur[0][y] == 0 || this.protecteur[0][y] > distance_actu + 1 )
-					this.protecteur[0][y] = distance_actu + 1;
-					calculDistancesVoisinesProtecteur(0, y);
-				}
-			}
-		}
-		else {
-			if (!(environnement.getEspace()[x+1][y].getAgent() instanceof Mur) && (this.protecteur[x+1][y] == -1 || distance_actu + 1 < this.protecteur[x+1][y])) {
-				if(this.protecteur[x+1][y] == 0 || this.protecteur[x+1][y] > distance_actu + 1 )
-				this.protecteur[x+1][y] = distance_actu + 1;
-				calculDistancesVoisinesProtecteur(x+1, y);
-			}
-		}
-
-		if (y == 0) {
-			if (environnement.isTorique()) {
-				if (!(environnement.getEspace()[x][taille-1].getAgent() instanceof Mur) && (this.protecteur[x][taille-1] == -1 || distance_actu + 1 < this.protecteur[x][taille-1])) {
-					if(this.protecteur[x][taille-1] == 0 || this.protecteur[x][taille-1] > distance_actu + 1 )
-					this.protecteur[x][taille-1] = distance_actu + 1;
-					calculDistancesVoisinesProtecteur(x, taille-1);
-				}
-			}
-		}
-		else {
-			if (!(environnement.getEspace()[x][y-1].getAgent() instanceof Mur) && (this.protecteur[x][y-1] == -1 || distance_actu + 1 < this.protecteur[x][y-1])) {
-				if(this.protecteur[x][y-1] == 0 || this.protecteur[x][y-1] > distance_actu + 1 )
-				this.protecteur[x][y-1] = distance_actu + 1;
-				calculDistancesVoisinesProtecteur(x, y-1);
-			}
-		}
-
-		if (y == taille-1) {
-			if (environnement.isTorique()) {
-				if (!(environnement.getEspace()[x][0].getAgent() instanceof Mur) && (this.protecteur[x][0] == -1 || distance_actu + 1 < this.protecteur[x][0])) {
-					if(this.protecteur[x][0]  == 0 || this.protecteur[x][0]  > distance_actu + 1 )
-					this.protecteur[x][0] = distance_actu + 1;
-					calculDistancesVoisinesProtecteur(x, 0);
-				}
-			}
-		}
-		else {
-			if (!(environnement.getEspace()[x][y+1].getAgent() instanceof Mur) && (this.protecteur[x][y+1] == -1 || distance_actu + 1 < this.protecteur[x][y+1])) {
-				if(this.protecteur[x][y+1] == 0 || this.protecteur[x][y+1] > distance_actu + 1 )
-				this.protecteur[x][y+1] = distance_actu + 1;
-				calculDistancesVoisinesProtecteur(x, y+1);
-			}
-		}
-	}
-
 
 	public  int getVitesse(){
 		return this.vitesse;
@@ -313,9 +258,9 @@ public class SMAPacMan extends SMA{
 
 	public boolean addVitesse(int i) {
 		if(this.vitesse > 100){
-		this.vitesse = this.vitesse - i;
-		System.out.println("speed");
-		return true;
+			this.vitesse = this.vitesse - i;
+			System.out.println("speed");
+			return true;
 		}
 		return false;
 	}
@@ -323,14 +268,23 @@ public class SMAPacMan extends SMA{
 	public boolean slowVitesse(int i) {
 		if(this.vitesse < 1000){
 			System.out.println("slow");
-		this.vitesse = this.vitesse + i;
-		return true;
+			this.vitesse = this.vitesse + i;
+			return true;
 		}
 		return false;
 
 	}
 
+	public void notifyDeath() {
+		this.protecteur=false;		
+	}
 	
+	public String getState(){
+		return this.state;
+	}
+	
+
+
 
 
 }

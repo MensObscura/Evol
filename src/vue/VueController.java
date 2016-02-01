@@ -50,6 +50,7 @@ public class VueController extends JPanel implements Observer{
 	private JCheckBox equitable;
 	private String mode;
 	private JButton start;
+	private JLabel score ;
 
 	public VueController(SMA action, boolean isFx,String mode){
 
@@ -303,7 +304,8 @@ public class VueController extends JPanel implements Observer{
 			JLabel leftClick = new JLabel("RIGHT_CLICK :");
 			
 			//dirty trick
-			controle.add(new JLabel(""));
+			this.score = new JLabel(((SMAPacMan)action).getState());
+			controle.add(this.score);
 			controle.add(rule);
 			controle.add(new JLabel(" whitout be catching be the hunters (reds one)"));
 			controle.add(arrow);
@@ -316,6 +318,8 @@ public class VueController extends JPanel implements Observer{
 			controle.add(new JLabel("slow the game"));
 			controle.add(leftClick);
 			controle.add(new JLabel(" to add a protector (violets one)"));
+			controle.add(new JLabel("KEY_S : "));
+			controle.add(new JLabel(" Reset the game"));
 		}
 
 
@@ -404,6 +408,7 @@ public class VueController extends JPanel implements Observer{
 		controle.add(chasseur);
 		controle.add(labMur);
 		controle.add(mur);
+		
 	}
 
 	private void initButtonBilles(JPanel controle){
@@ -745,8 +750,10 @@ public class VueController extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 
+		this.score.setText(((SMAPacMan)action).getState());
 		if(!this.isFx)
 			this.actualiseButton();
+			
 
 		if(this.mode.equals("-pacman")){
 			vueFx.pacManLoop();
@@ -773,10 +780,20 @@ public class VueController extends JPanel implements Observer{
 
 		}
 
+		
 
 
 	}
+	public void reset(){
+		set.doClick();
+	}
 
+
+	public void stopRunning() {
+		start.setText("start");
+		action.stopRunning();
+		
+	}
 
 
 

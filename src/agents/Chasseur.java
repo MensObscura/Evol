@@ -23,7 +23,7 @@ public class Chasseur extends Agent {
 
 	public void doIt(){
 		int[] coord;
-		if(ifNotTooNearOfaProtector()){
+		if(ifNotTooNearOfaProtector() && ((SMAPacMan)this.environnement.getSMA()).isProtege()){
 			coord = this.chooseBestWay();
 		}else{
 			coord = this.runAways();
@@ -40,8 +40,8 @@ public class Chasseur extends Agent {
 	
 
 	private boolean ifNotTooNearOfaProtector() {
-		System.out.println(((SMAPacMan)this.environnement.getSMA()).getProtecteurDistances()[this.getPosX()][this.getPosY()]);
-		return ((SMAPacMan)this.environnement.getSMA()).getProtecteurDistances()[this.getPosX()][this.getPosY()] >= this.securityDistance;
+		System.out.println(((SMAPacMan)this.environnement.getSMA()).getDistances()[this.getPosX()][this.getPosY()]);
+		return ((SMAPacMan)this.environnement.getSMA()).getDistances()[this.getPosX()][this.getPosY()] <= this.securityDistance;
 
 	}
 
@@ -49,7 +49,7 @@ public class Chasseur extends Agent {
 
 		ArrayList<int[]> bestWays = new ArrayList<int[]>();
 
-		int[][] espace = ((SMAPacMan)this.environnement.getSMA()).getProtecteurDistances();
+		int[][] espace = ((SMAPacMan)this.environnement.getSMA()).getDistances();
 
 		int dmin = espace[this.posX][this.posY];
 
