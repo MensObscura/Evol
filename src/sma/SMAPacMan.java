@@ -87,12 +87,13 @@ public class SMAPacMan extends SMA{
 				if(next != null && next.getAgent() instanceof Arrivee ){
 					finish = true;
 				}
+				avatar.doIt();
 				if(!finish){
 					this.calculDistances();
 
 					ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
 					for(Agent a : agentBis){
-						if(!( a instanceof Avatar))
+						if(!( a instanceof Avatar) && !finish)
 							a.doIt();
 						if (a instanceof Chasseur && this.distances[a.getPosX()][a.getPosY()] == 1) {
 							finish = true;
@@ -101,7 +102,7 @@ public class SMAPacMan extends SMA{
 					}
 
 
-					avatar.doIt();
+				
 				}
 			}catch(ConcurrentModificationException e){
 

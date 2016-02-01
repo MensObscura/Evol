@@ -295,26 +295,27 @@ public class VueController extends JPanel implements Observer{
 		controle.add(start);
 		controle.add(clean);
 		if(this.mode.equals("-pacman")){
-			JLabel rule = new JLabel("Reach the white case, whitout be catching be the hunters (reds one)");
-			JLabel arrow = new JLabel("ARROWS : to move the avatar (green one)");
-			JLabel ctrl = new JLabel("CTRL : to start and pause");
-			JLabel space = new JLabel("SPACE : speed the game");
-			JLabel b = new JLabel("KEY_B : slow the game");
-			JLabel leftClick = new JLabel("RIGHT_CLICK : to add a protector (violets one)");
+			JLabel rule = new JLabel("Reach the white case");
+			JLabel arrow = new JLabel("ARROWS : ");
+			JLabel ctrl = new JLabel("CTRL :");
+			JLabel space = new JLabel("SPACE :");
+			JLabel b = new JLabel("KEY_B : ");
+			JLabel leftClick = new JLabel("RIGHT_CLICK :");
 			
 			//dirty trick
 			controle.add(new JLabel(""));
 			controle.add(rule);
-			controle.add(new JLabel(""));
+			controle.add(new JLabel(" whitout be catching be the hunters (reds one)"));
 			controle.add(arrow);
-			controle.add(new JLabel(""));
+			controle.add(new JLabel("to move the avatar (green one)"));
 			controle.add(ctrl);
-			controle.add(new JLabel(""));
+			controle.add(new JLabel(" to start and pause"));
 			controle.add(space);
-			controle.add(new JLabel(""));
+			controle.add(new JLabel("speed the game"));
 			controle.add(b);
-			controle.add(new JLabel(""));
+			controle.add(new JLabel("slow the game"));
 			controle.add(leftClick);
+			controle.add(new JLabel(" to add a protector (violets one)"));
 		}
 
 

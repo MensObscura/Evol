@@ -51,79 +51,79 @@ public class Chasseur extends Agent {
 
 		int[][] espace = ((SMAPacMan)this.environnement.getSMA()).getProtecteurDistances();
 
-		int dmax = espace[this.posX][this.posY];
+		int dmin = espace[this.posX][this.posY];
 
 		if (this.posX == 0) {
-			if (this.environnement.isTorique() && dmax <= espace[espace.length-1][this.posY] && espace[espace.length-1][this.posY] != -1) {
-				if (dmax != espace[espace.length-1][this.posY]) {
+			if (this.environnement.isTorique() && dmin <= espace[espace.length-1][this.posY] && espace[espace.length-1][this.posY] != -1) {
+				if (dmin != espace[espace.length-1][this.posY]) {
 					bestWays.clear();
-					dmax = espace[espace.length-1][this.posY];
+					dmin = espace[espace.length-1][this.posY];
 				}
 				bestWays.add(new int[]{espace.length-1, this.posY});
 			}
 		}
 		else {
-			if ( dmax <= espace[this.posX-1][this.posY] && espace[this.posX-1][this.posY] != -1) {
-				if (dmax != espace[this.posX-1][this.posY]) {
+			if ( dmin <= espace[this.posX-1][this.posY] && espace[this.posX-1][this.posY] != -1) {
+				if (dmin != espace[this.posX-1][this.posY]) {
 					bestWays.clear();
-					dmax = espace[this.posX-1][this.posY];
+					dmin = espace[this.posX-1][this.posY];
 				}
 				bestWays.add(new int[]{this.posX-1, this.posY});
 			}
 		}
 
 		if (this.posX == espace.length-1) {
-			if (this.environnement.isTorique() &&  dmax <= espace[0][this.posY] && espace[0][this.posY] != -1) {
-				if (dmax != espace[0][this.posY]) {
+			if (this.environnement.isTorique() &&  dmin <= espace[0][this.posY] && espace[0][this.posY] != -1) {
+				if (dmin != espace[0][this.posY]) {
 					bestWays.clear();
-					dmax = espace[0][this.posY];
+					dmin = espace[0][this.posY];
 				}
 				bestWays.add(new int[]{0, this.posY});
 			}
 		}
 		else {
-			if ( dmax <= espace[this.posX+1][this.posY] && espace[this.posX+1][this.posY] != -1) {
-				if (dmax != espace[this.posX+1][this.posY]) {
+			if ( dmin <= espace[this.posX+1][this.posY] && espace[this.posX+1][this.posY] != -1) {
+				if (dmin != espace[this.posX+1][this.posY]) {
 					bestWays.clear();
-					dmax = espace[this.posX+1][this.posY];
+					dmin = espace[this.posX+1][this.posY];
 				}
 				bestWays.add(new int[]{this.posX+1, this.posY});
 			}
 		}
 
 		if (this.posY == 0) {
-			if (this.environnement.isTorique() &&  dmax <= espace[this.posX][espace.length-1] && espace[this.posX][espace.length-1] != -1) {
-				if (dmax != espace[this.posX][espace.length-1]) {
+			if (this.environnement.isTorique() &&  dmin <= espace[this.posX][espace.length-1] && espace[this.posX][espace.length-1] != -1) {
+				if (dmin != espace[this.posX][espace.length-1]) {
 					bestWays.clear();
-					dmax = espace[this.posX][espace.length-1];
+					dmin = espace[this.posX][espace.length-1];
 				}
 				bestWays.add(new int[]{this.posX, espace.length-1});
 			}
 		}
 		else {
-			if ( dmax <= espace[this.posX][this.posY-1] && espace[this.posX][this.posY-1] != -1) {
-				if (dmax != espace[this.posX][this.posY-1]) {
+			if ( dmin <= espace[this.posX][this.posY-1] && espace[this.posX][this.posY-1] != -1) {
+				if (dmin != espace[this.posX][this.posY-1]) {
 					bestWays.clear();
-					dmax = espace[this.posX][this.posY-1];
+					dmin = espace[this.posX][this.posY-1];
 				}
 				bestWays.add(new int[]{this.posX, this.posY-1});
 			}
 		}
 
 		if (this.posY == espace.length-1) {
-			if (this.environnement.isTorique() && dmax <= espace[this.posX][0] && espace[this.posX][0] != -1) {
-				if (dmax != espace[this.posX][0]) {
+			if (this.environnement.isTorique() && dmin <= espace[this.posX][0] && espace[this.posX][0] != -1) {
+				if (dmin != espace[this.posX][0]) {
 					bestWays.clear();
-					dmax = espace[this.posX][0];
+					dmin = espace[this.posX][0];
 				}
 				bestWays.add(new int[]{this.posX, 0});
 			}
 		}
 		else {
-			if ( dmax <= espace[this.posX][this.posY+1] && espace[this.posX][this.posY+1] != -1) {
-				if (dmax != espace[this.posX][this.posY+1]) {
+			if ( dmin <= espace[this.posX][this.posY+1] && espace[this.posX][this.posY+1] != -1) {
+				if (dmin != espace[this.posX][this.posY+1]) {
 					bestWays.clear();
-					dmax = espace[this.posX][this.posY+1];
+					dmin = espace[this.posX][this.posY+1];
 				}
 				bestWays.add(new int[]{this.posX, this.posY+1});
 
@@ -137,79 +137,79 @@ public class Chasseur extends Agent {
 
 		int[][] espace = ((SMAPacMan)this.environnement.getSMA()).getDistances();
 
-		int dmin = espace[this.posX][this.posY];
+		int dmax = espace[this.posX][this.posY];
 
 		if (this.posX == 0) {
-			if (this.environnement.isTorique() && dmin >= espace[espace.length-1][this.posY] && espace[espace.length-1][this.posY] != -1) {
-				if (dmin != espace[espace.length-1][this.posY]) {
+			if (this.environnement.isTorique() && dmax >= espace[espace.length-1][this.posY] && espace[espace.length-1][this.posY] != -1) {
+				if (dmax != espace[espace.length-1][this.posY]) {
 					bestWays.clear();
-					dmin = espace[espace.length-1][this.posY];
+					dmax = espace[espace.length-1][this.posY];
 				}
 				bestWays.add(new int[]{espace.length-1, this.posY});
 			}
 		}
 		else {
-			if (dmin >= espace[this.posX-1][this.posY] && espace[this.posX-1][this.posY] != -1) {
-				if (dmin != espace[this.posX-1][this.posY]) {
+			if (dmax >= espace[this.posX-1][this.posY] && espace[this.posX-1][this.posY] != -1) {
+				if (dmax != espace[this.posX-1][this.posY]) {
 					bestWays.clear();
-					dmin = espace[this.posX-1][this.posY];
+					dmax = espace[this.posX-1][this.posY];
 				}
 				bestWays.add(new int[]{this.posX-1, this.posY});
 			}
 		}
 
 		if (this.posX == espace.length-1) {
-			if (this.environnement.isTorique() && dmin >= espace[0][this.posY] && espace[0][this.posY] != -1) {
-				if (dmin != espace[0][this.posY]) {
+			if (this.environnement.isTorique() && dmax >= espace[0][this.posY] && espace[0][this.posY] != -1) {
+				if (dmax != espace[0][this.posY]) {
 					bestWays.clear();
-					dmin = espace[0][this.posY];
+					dmax = espace[0][this.posY];
 				}
 				bestWays.add(new int[]{0, this.posY});
 			}
 		}
 		else {
-			if (dmin >= espace[this.posX+1][this.posY] && espace[this.posX+1][this.posY] != -1) {
-				if (dmin != espace[this.posX+1][this.posY]) {
+			if (dmax >= espace[this.posX+1][this.posY] && espace[this.posX+1][this.posY] != -1) {
+				if (dmax != espace[this.posX+1][this.posY]) {
 					bestWays.clear();
-					dmin = espace[this.posX+1][this.posY];
+					dmax = espace[this.posX+1][this.posY];
 				}
 				bestWays.add(new int[]{this.posX+1, this.posY});
 			}
 		}
 
 		if (this.posY == 0) {
-			if (this.environnement.isTorique() && dmin >= espace[this.posX][espace.length-1] && espace[this.posX][espace.length-1] != -1) {
-				if (dmin != espace[this.posX][espace.length-1]) {
+			if (this.environnement.isTorique() && dmax >= espace[this.posX][espace.length-1] && espace[this.posX][espace.length-1] != -1) {
+				if (dmax != espace[this.posX][espace.length-1]) {
 					bestWays.clear();
-					dmin = espace[this.posX][espace.length-1];
+					dmax = espace[this.posX][espace.length-1];
 				}
 				bestWays.add(new int[]{this.posX, espace.length-1});
 			}
 		}
 		else {
-			if (dmin >= espace[this.posX][this.posY-1] && espace[this.posX][this.posY-1] != -1) {
-				if (dmin != espace[this.posX][this.posY-1]) {
+			if (dmax >= espace[this.posX][this.posY-1] && espace[this.posX][this.posY-1] != -1) {
+				if (dmax != espace[this.posX][this.posY-1]) {
 					bestWays.clear();
-					dmin = espace[this.posX][this.posY-1];
+					dmax = espace[this.posX][this.posY-1];
 				}
 				bestWays.add(new int[]{this.posX, this.posY-1});
 			}
 		}
 
 		if (this.posY == espace.length-1) {
-			if (this.environnement.isTorique() && dmin >= espace[this.posX][0] && espace[this.posX][0] != -1) {
-				if (dmin != espace[this.posX][0]) {
+			if (this.environnement.isTorique() && dmax >= espace[this.posX][0] && espace[this.posX][0] != -1) {
+				if (dmax != espace[this.posX][0]) {
 					bestWays.clear();
-					dmin = espace[this.posX][0];
+					dmax = espace[this.posX][0];
 				}
 				bestWays.add(new int[]{this.posX, 0});
 			}
 		}
 		else {
-			if (dmin >= espace[this.posX][this.posY+1] && espace[this.posX][this.posY+1] != -1) {
-				if (dmin != espace[this.posX][this.posY+1]) {
+			if (dmax >= espace[this.posX][this.posY+1] && espace[this.posX][this.posY+1] != -1) {
+				if (dmax != espace[this.posX][this.posY+1]) {
 					bestWays.clear();
-					dmin = espace[this.posX][this.posY+1];
+					dmax = espace[this.posX][this.posY+1];
 				}
 				bestWays.add(new int[]{this.posX, this.posY+1});
 
