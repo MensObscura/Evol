@@ -9,7 +9,6 @@ import agents.Avatar;
 import agents.Chasseur;
 import agents.Mur;
 import agents.Protecteur;
-import model.Cellule;
 import model.Environnement;
 
 public class SMAPacMan extends SMA{
@@ -39,6 +38,7 @@ public class SMAPacMan extends SMA{
 		this.visibleGrid = visibleGrid;
 		this.vitesse = 550;
 		this.protecteur=false;
+		this.score=0;
 		this.state="";
 		// Init tableau des distances
 		this.distances = new int[taille][taille];
