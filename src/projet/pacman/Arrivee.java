@@ -1,9 +1,9 @@
-package agents;
+package projet.pacman;
 
 import java.awt.Color;
 
+import core.model.Environnement;
 import javafx.scene.shape.Rectangle;
-import model.Environnement;
 
 public class Arrivee extends Mur{
 

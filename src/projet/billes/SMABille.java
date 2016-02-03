@@ -1,12 +1,12 @@
-package sma;
+package projet.billes;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 
-import agents.Agent;
-import agents.Bille;
-import model.Environnement;
+import core.agents.Agent;
+import core.model.Environnement;
+import core.sma.SMASimulation;
 
 public class SMABille  extends SMASimulation {
 	

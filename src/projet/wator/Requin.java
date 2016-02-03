@@ -1,13 +1,15 @@
-package agents;
+package projet.wator;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import core.agents.Agent;
+import core.agents.AgentReproductible;
+import core.model.Cellule;
+import core.model.Environnement;
 import javafx.scene.shape.Circle;
-import model.Cellule;
-import model.Environnement;
 
 public class Requin extends AgentReproductible {
 

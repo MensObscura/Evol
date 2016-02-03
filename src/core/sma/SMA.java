@@ -1,15 +1,16 @@
-package sma;
+package core.sma;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
-import agents.Agent;
-import model.Environnement;
+import core.agents.Agent;
+import core.model.Environnement;
 
 public abstract class SMA extends Observable{
 
 	protected Environnement environnement;
-	protected ArrayList<Agent> agents;
+	protected List<Agent> agents;
 	protected int tAgent; 
 	protected boolean running = false;
 	protected int taille ;
@@ -35,7 +36,7 @@ public abstract class SMA extends Observable{
 	}
 
 
-	public ArrayList<Agent> getAgents() {
+	public List<Agent> getAgents() {
 		return agents;
 	}
 

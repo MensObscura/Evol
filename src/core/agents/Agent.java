@@ -1,11 +1,11 @@
-package agents;
+package core.agents;
 
 import java.awt.Color;
 import java.util.Random;
 
-import model.Cellule;
-import model.Direction;
-import model.Environnement;
+import core.model.Cellule;
+import core.model.Direction;
+import core.model.Environnement;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;

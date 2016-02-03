@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
-import agents.Agent;
+import core.agents.Agent;
+import core.agents.AgentFactory;
+import core.model.Direction;
+import core.sma.SMA;
+import core.sma.SMASimulation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -19,13 +23,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.AgentFactory;
-import model.Direction;
-import sma.SMA;
-import sma.SMABille;
-import sma.SMAPacMan;
-import sma.SMASimulation;
-import sma.SMAWator;
+import projet.billes.SMABille;
+import projet.pacman.SMAPacMan;
+import projet.wator.SMAWator;
 
 public class VueFx extends Application {
 
@@ -67,9 +67,9 @@ public class VueFx extends Application {
 		}
 
 		final Scene scene = new Scene(canvas, this.action.getEnvironnement().getTaille() *10, this.action.getEnvironnement().getTaille()*10 );
-		
+
 		if(((String)args[0]).equals("-wator")){
-		primaryStage.setTitle("Battle !");
+			primaryStage.setTitle("Battle !");
 		}else if(((String)args[0]).equals("-billes")){
 			primaryStage.setTitle("Chambre � particule");
 		}else if(((String)args[0]).equals("-pacman")){
@@ -89,20 +89,25 @@ public class VueFx extends Application {
 				e = AgentFactory.getInstance().getAgent("bille",action.getEnvironnement(),x,y,new String[0]);
 			}else if(((String)args[0]).equals("-pacman")){
 				if(!action.isRunning() && event.getButton() == MouseButton.SECONDARY)
-				e = AgentFactory.getInstance().getAgent("protecteur",action.getEnvironnement(),x,y,new String[0]);
+					e = AgentFactory.getInstance().getAgent("protecteur",action.getEnvironnement(),x,y,new String[0]);
 			}
 
 
-			if(e != null){
-				action.getEnvironnement().getEspace()[x][y].setAgent(e);
-				action.getEnvironnement().getAgents().add(e);
+			if(e != null ){
+				if((action.getEnvironnement().getEspace()[x][y].isEmpty() && action instanceof SMAPacMan)){
+					action.getEnvironnement().getEspace()[x][y].setAgent(e);
+					action.getEnvironnement().getAgents().add(e);
+				}
+				if(!( action instanceof SMAPacMan)){
+					action.getEnvironnement().getEspace()[x][y].setAgent(e);
+					action.getEnvironnement().getAgents().add(e);
+				}
 			}
 		});
 
 
 		vue = new VueController(this.action, true, ((String)args[0]));
 		vue.setVueFx(this);
-
 		if(((String)args[0]).equals("-pacman")){
 			this.pacManLoop();
 		}else{
@@ -125,6 +130,7 @@ public class VueFx extends Application {
 				circleAgent.clear();
 				canvas.getChildren().clear();
 				//	Ajout des agents
+
 				for (int i = 0; i < action.getAgents().size(); i++) {
 
 					circleAgent.add(action.getAgents().get(i).getRepresentation());
@@ -154,12 +160,10 @@ public class VueFx extends Application {
 		if(loop != null)
 			loop.stop();
 
-
 		loop = new Timeline(new KeyFrame(Duration.millis(((SMASimulation)action).getVitesse()), new EventHandler<ActionEvent>() {
 
 
 			public void handle(final ActionEvent t) {
-
 				action.round();
 
 				circleAgent.clear();
@@ -173,7 +177,7 @@ public class VueFx extends Application {
 
 				circleObservable = FXCollections.observableArrayList(circleAgent);
 				if(action.isVisibleGrid())
-				drawGrid();
+					drawGrid();
 				canvas.getChildren().addAll(circleObservable);
 
 			}
@@ -200,9 +204,11 @@ public class VueFx extends Application {
 				case LEFT: ((SMAPacMan)action).getAvatar().changeDirection(Direction.NORD); break;
 				case RIGHT:((SMAPacMan)action).getAvatar().changeDirection(Direction.SUD); break;
 				case SPACE: if(((SMAPacMan)action).addVitesse(100)){pacManLoop();}break;
-				case  B: if(((SMAPacMan)action).slowVitesse(100)){pacManLoop();}break;
-				case CONTROL: vue.changeRunning(); break;
-				case S: vue.stopRunning(); vue.reset();; break;
+				case S: if(((SMAPacMan)action).slowVitesse(100)){pacManLoop();}break;
+				case Z: vue.changeRunning(); break;
+				case CONTROL: vue.stopRunning(); vue.reset(); break;
+				case F:if(((SMAPacMan)action).speedChasseurSpeed()){pacManLoop();}break;
+				case D:if(((SMAPacMan)action).slowChasseurSpeed()){pacManLoop();}break;
 				default: break;
 				}
 			}

@@ -1,6 +1,6 @@
-package model;
+package core.model;
 
-import agents.Agent;
+import core.agents.Agent;
 
 public class Cellule {
 

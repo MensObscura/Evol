@@ -1,22 +1,23 @@
-package model;
+package core.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import agents.Agent;
-import sma.SMA;
+import core.agents.Agent;
+import core.sma.SMA;
 
 public class Environnement {
 
 	protected Cellule espace [][];
-	protected ArrayList<Agent> agents;
+	protected List<Agent> agents;
 	private int taille;
 	private int nbAgents;
 	private boolean torique;
 	private SMA sma;
 	
 	
-	public Environnement(SMA sma,int taille, boolean torique, ArrayList<Agent> agents){
+	public Environnement(SMA sma,int taille, boolean torique, List<Agent> agents){
 
 		this.espace= new Cellule [taille][taille];
 		this.sma = sma;
@@ -38,7 +39,6 @@ public class Environnement {
 		if( this.nbAgents > 0)
 			switch(seed){
 			case 0 : randomPut(); break;
-			case 1 : binaryPut(); break;
 			default :randomPut();
 
 			}
@@ -74,32 +74,8 @@ public class Environnement {
 	}
 
 
-	/**
-	 * on set les Agent au hasard
-	 */
-	public void  binaryPut(){
-
-		int x = 0;
-		int y = 0;
-
-
-		for (int i = 0 ; i < this.nbAgents; i++){
-
-		
-			Agent a = this.sma.getNewAgent(i);
-			a.setPosX(x);
-			a.setPosY(y);
-
-			this.agents.add(a);
-			this.espace[x][y].setAgent(a);
-
-			x =( (x+2 ) % (this.espace.length));
-			if( x == 0){
-				y ++;
-			}
-
-		}
-	}
+	
+	
 
 	public int getRandomCoord(int x){
 
@@ -119,7 +95,7 @@ public class Environnement {
 
 	}
 
-	public ArrayList<Agent> getAgents() {
+	public List<Agent> getAgents() {
 		return agents;
 	}
 

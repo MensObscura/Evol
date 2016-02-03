@@ -1,12 +1,12 @@
-package agents;
+package projet.pacman;
 
 import java.awt.Color;
 
+import core.agents.Agent;
+import core.model.Cellule;
+import core.model.Direction;
+import core.model.Environnement;
 import javafx.scene.shape.Circle;
-import model.Cellule;
-import model.Direction;
-import model.Environnement;
-import sma.SMAPacMan;
 
 public class Avatar extends Agent {
 
@@ -35,9 +35,11 @@ public class Avatar extends Agent {
 
 	public void doIt(){
 		Cellule  next = this.getNextCaseBeforeCalcul();
-		protege --;
+		if(this.protege >0)
+		this.protege --;
 		if(next != null && next.getAgent() instanceof Arrivee ){
 			((SMAPacMan)this.environnement.getSMA()).win();
+			return;
 		}
 		if(next != null && next.getAgent() instanceof Protecteur ){
 			this.protege =  ((Protecteur)next.getAgent()).isAboutToDie()?30:20;
@@ -106,6 +108,10 @@ public class Avatar extends Agent {
 
 	public boolean isProtected() {
 		return this.protege >0;
+	}
+	
+	public int roundProtected() {
+		return this.protege;
 	}
 
 }

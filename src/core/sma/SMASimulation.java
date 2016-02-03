@@ -1,6 +1,6 @@
-package sma;
+package core.sma;
 
-import agents.Agent;
+import core.agents.Agent;
 
 public abstract class SMASimulation extends SMA {
 
@@ -21,7 +21,7 @@ public abstract class SMASimulation extends SMA {
 		
 		while (running || !running){
 		 this.round();
-			try {
+		 try {
 				Thread.sleep(this.vitesse);
 			} catch (InterruptedException e) {
 				System.out.println("Sleep fail : "+e);

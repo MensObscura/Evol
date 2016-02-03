@@ -1,15 +1,12 @@
-package sma;
+package projet.pacman;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.Random;
 
-import agents.Agent;
-import agents.Arrivee;
-import agents.Avatar;
-import agents.Chasseur;
-import agents.Mur;
-import agents.Protecteur;
-import model.Environnement;
+import core.agents.Agent;
+import core.model.Environnement;
+import core.sma.SMA;
 
 public class SMAPacMan extends SMA{
 
@@ -21,10 +18,11 @@ public class SMAPacMan extends SMA{
 	private int vitesse;
 	private int score;
 	private String state;
+	private int decalage;
+	private int chasseurSpeed; 
 
 	private int distances [][];
 
-	private boolean protecteur;
 
 	public SMAPacMan(int nbChasseurs, int nbMurs, int taille, int tAgent, boolean torique, boolean grille, int seed) {
 		super(taille, tAgent, torique, seed, grille);
@@ -37,7 +35,8 @@ public class SMAPacMan extends SMA{
 		this.murs = nbMurs;
 		this.visibleGrid = visibleGrid;
 		this.vitesse = 550;
-		this.protecteur=false;
+		this.chasseurSpeed = 0;
+		this.decalage = this.chasseurSpeed;
 		this.score=0;
 		this.state="";
 		// Init tableau des distances
@@ -47,17 +46,29 @@ public class SMAPacMan extends SMA{
 		this.environnement = new Environnement(this, this.taille, torique, agents);
 
 		this.environnement.init(seed);
+		
 
 		// On place le joueur :
 		int x =this.environnement.getRandomCoord(-1);
 		int y =this.environnement.getRandomCoord(x);
 		avatar = new Avatar(x,y,this.environnement);
+		this.placeProtector();
 		this.environnement.addAgent(avatar);
-		x =this.environnement.getRandomCoord(-1);
-		y =this.environnement.getRandomCoord(x);
-		arrivee = new Arrivee(x,y,this.environnement);
-		this.environnement.addAgent(arrivee);
 
+
+
+	}
+
+	
+
+	private void placeProtector() {
+		int r = new Random().nextInt((this.taille/10)) +3;
+		for(int i=0; i<r; i++ ){
+			int x =this.environnement.getRandomCoord(-1);
+			int y =this.environnement.getRandomCoord(x);
+			Protecteur protecteur = new Protecteur(x,y,this.environnement);
+			this.environnement.addAgent(protecteur);
+		}
 	}
 
 	@Override
@@ -86,25 +97,32 @@ public class SMAPacMan extends SMA{
 	@Override
 	public void round(){
 		if(running && !finish){
+
 			try{
-				
-				if(this.protecteur == false){
-					this.protecteur=true;
+
+				if(score > 3 && !this.agents.contains(arrivee)){
 					int x =this.environnement.getRandomCoord(-1);
 					int y =this.environnement.getRandomCoord(x);
-					Protecteur protecteur = new Protecteur(x,y,this.environnement);
-					this.environnement.addAgent(protecteur);
+					arrivee = new Arrivee(x,y,this.environnement);
+					this.environnement.addAgent(arrivee);
 				}
-				this.avatar.doIt();
+				this.calculDistances();
+
+
 				if(!finish){
-					this.calculDistances();
+					if(this.decalage >= 0){
+						this.avatar.doIt();
+					}
+				}
+				if(!finish){
+					if(this.decalage <= 0){
+						ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
+						for(Agent a : agentBis){
+							if(!( a instanceof Avatar) && !finish)
+								a.doIt();
 
-					ArrayList<Agent> agentBis = new ArrayList<Agent>(agents); 
-					for(Agent a : agentBis){
-						if(!( a instanceof Avatar) && !finish)
-							a.doIt();
-						
 
+						}
 					}
 
 
@@ -113,11 +131,18 @@ public class SMAPacMan extends SMA{
 			}catch(ConcurrentModificationException e){
 
 			}
+			if(this.decalage > 0){
+				decalage --;
+			}else if(this.decalage < 0){
+				this.decalage ++;
+			}else if(this.decalage == 0 && this.chasseurSpeed != 0){
+				this.decalage = -( this.chasseurSpeed);
+			}
 
-			this.setChanged();
-			this.notifyObservers();
-			tour++;
+
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	public int getNbChasseurs() {
@@ -240,7 +265,7 @@ public class SMAPacMan extends SMA{
 	public boolean addVitesse(int i) {
 		if(this.vitesse > 100){
 			this.vitesse = this.vitesse - i;
-			System.out.println("speed");
+			System.out.println("speedGame");
 			return true;
 		}
 		return false;
@@ -248,7 +273,7 @@ public class SMAPacMan extends SMA{
 
 	public boolean slowVitesse(int i) {
 		if(this.vitesse < 1000){
-			System.out.println("slow");
+			System.out.println("slowGame");
 			this.vitesse = this.vitesse + i;
 			return true;
 		}
@@ -256,26 +281,46 @@ public class SMAPacMan extends SMA{
 
 	}
 
-	public void notifyDeath() {
-		this.protecteur=false;		
-	}
-	
 	public String getState(){
+		if(!finish)
+			this.state = "Score : "+this.score+", Speed Hunters : "+ this.chasseurSpeed +", immune : "+this.avatar.roundProtected()+" round(s)";
 		return this.state;
 	}
-	
+
 	public void win(){
 		this.finish = true;
-		this.state +=" Win";
+		this.state ="Score : "+this.score+", Win";
 	}
 	public void loose(){
 		this.finish = true;
-		this.state +=" Loose";
+		this.state = "Score : "+this.score+", Loose";
 	}
 
 	public void upScore(){
 		this.score++;
-		this.state = "Score : "+this.score;
 	}
 
+	public boolean slowChasseurSpeed(){
+		if(this.chasseurSpeed > -5){
+			System.out.println("slowChasseur");
+			this.chasseurSpeed --;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean speedChasseurSpeed(){
+		if(this.chasseurSpeed < 5){
+			System.out.println("speedChasseur");
+			this.chasseurSpeed ++;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isFinnish(){
+		return this.finish;
+	}
 }

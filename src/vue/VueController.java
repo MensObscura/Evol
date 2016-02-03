@@ -24,14 +24,14 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import agents.Agent;
-import model.AgentFactory;
-import model.Direction;
-import sma.SMAWator;
-import sma.SMA;
-import sma.SMAPacMan;
-import sma.SMABille;
-import sma.SMASimulation;
+import core.agents.Agent;
+import core.agents.AgentFactory;
+import core.model.Direction;
+import core.sma.SMA;
+import core.sma.SMASimulation;
+import projet.billes.SMABille;
+import projet.pacman.SMAPacMan;
+import projet.wator.SMAWator;
 
 public class VueController extends JPanel implements Observer{
 
@@ -44,7 +44,6 @@ public class VueController extends JPanel implements Observer{
 	private VueFx vueFx;
 	private JButton set;
 	private JTextField vitesse;
-	private JTextField seed;
 	private JCheckBox torique;
 	private JCheckBox visibleGrid;
 	private JCheckBox equitable;
@@ -156,35 +155,7 @@ public class VueController extends JPanel implements Observer{
 		});
 
 
-		JLabel labSeed = new JLabel("Seed");
-		this.seed = new JTextField(this.action.getSeed()+"");
-		this.seed.setPreferredSize(new Dimension(50,20));
-		this.seed.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if(seed.getText().length() >0 )
-					try{
-						Integer.parseInt(seed.getText());
-					}catch(Exception ex){
-						seed.setText("0");
-					}
-
-
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		
 		this.torique = new JCheckBox("Torique");
 		this.torique.setSelected(this.action.getEnvironnement().isTorique());
 		this.torique.addActionListener(new ActionListener() {
@@ -270,13 +241,13 @@ public class VueController extends JPanel implements Observer{
 
 
 		if(this.mode.equals("-wator"))
-			controle.setLayout(new GridLayout(10,2));
+			controle.setLayout(new GridLayout(9,2));
 
 		if(this.mode.equals("-billes"))
-			controle.setLayout(new GridLayout(6,2));
+			controle.setLayout(new GridLayout(5,2));
 
 		if(this.mode.equals("-pacman"))
-			controle.setLayout(new GridLayout(13,2));
+			controle.setLayout(new GridLayout(14,2));
 	
 
 
@@ -285,8 +256,6 @@ public class VueController extends JPanel implements Observer{
 			controle.add(this.vitesse);
 		}
 
-		controle.add(labSeed);
-		controle.add(this.seed);
 		controle.add(this.torique);
 		controle.add(this.visibleGrid);	
 		if(!this.mode.equals("-pacman")){
@@ -296,29 +265,33 @@ public class VueController extends JPanel implements Observer{
 		controle.add(start);
 		controle.add(clean);
 		if(this.mode.equals("-pacman")){
-			JLabel rule = new JLabel("Reach the white case");
+			JLabel rule = new JLabel("Eat 4 violets balls Reach the white case");
 			JLabel arrow = new JLabel("ARROWS : ");
-			JLabel ctrl = new JLabel("CTRL :");
+			JLabel s = new JLabel("KEY_S :");
 			JLabel space = new JLabel("SPACE :");
-			JLabel b = new JLabel("KEY_B : ");
+			JLabel z = new JLabel("KEY_Z : ");
 			JLabel leftClick = new JLabel("RIGHT_CLICK :");
 			
 			//dirty trick
 			this.score = new JLabel(((SMAPacMan)action).getState());
 			controle.add(this.score);
 			controle.add(rule);
-			controle.add(new JLabel(" whitout be catching be the hunters (reds one)"));
+			controle.add(new JLabel(" whitout be catching by the hunters (reds one)"));
 			controle.add(arrow);
 			controle.add(new JLabel("to move the avatar (green one)"));
-			controle.add(ctrl);
+			controle.add(z);
 			controle.add(new JLabel(" to start and pause"));
 			controle.add(space);
 			controle.add(new JLabel("speed the game"));
-			controle.add(b);
+			controle.add(s);
 			controle.add(new JLabel("slow the game"));
+			controle.add(new JLabel("KEY_D"));
+			controle.add(new JLabel("slow the hunters"));
+			controle.add(new JLabel("KEY_F"));
+			controle.add(new JLabel("speed the hunters"));
 			controle.add(leftClick);
 			controle.add(new JLabel(" to add a protector (violets one)"));
-			controle.add(new JLabel("KEY_S : "));
+			controle.add(new JLabel("CTRL : "));
 			controle.add(new JLabel(" Reset the game"));
 		}
 
@@ -395,7 +368,7 @@ public class VueController extends JPanel implements Observer{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), Integer.parseInt(seed.getText()), visibleGrid.isSelected());
+				((SMAPacMan)action).launch(Integer.parseInt(chasseur.getText()),Integer.parseInt(mur.getText()), torique.isSelected(), 0, visibleGrid.isSelected());
 				if(!isFx){
 					resetGrid();
 					actualiseButton();			
@@ -449,7 +422,7 @@ public class VueController extends JPanel implements Observer{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((SMABille)action).launch(Integer.parseInt(billes.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected());
+				((SMABille)action).launch(Integer.parseInt(billes.getText()),0,Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected());
 				if(!isFx){
 					resetGrid();
 					actualiseButton();			
@@ -626,7 +599,7 @@ public class VueController extends JPanel implements Observer{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((SMAWator)action).launch(Integer.parseInt(nemo.getText()),Integer.parseInt(requin.getText()),Integer.parseInt(seed.getText()),Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected(), Integer.parseInt(nemoRepro.getText()), Integer.parseInt(requinRepro.getText()), Integer.parseInt(requinFaim.getText()));
+				((SMAWator)action).launch(Integer.parseInt(nemo.getText()),Integer.parseInt(requin.getText()), 0,Integer.parseInt(vitesse.getText()), torique.isSelected(), visibleGrid.isSelected(), equitable.isSelected(), Integer.parseInt(nemoRepro.getText()), Integer.parseInt(requinRepro.getText()), Integer.parseInt(requinFaim.getText()));
 				if(!isFx){
 					resetGrid();
 					actualiseButton();			
@@ -749,7 +722,7 @@ public class VueController extends JPanel implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-
+		if(this.action instanceof SMAPacMan)
 		this.score.setText(((SMAPacMan)action).getState());
 		if(!this.isFx)
 			this.actualiseButton();

@@ -1,13 +1,13 @@
-package model;
+package core.agents;
 
-import agents.Agent;
-import agents.Arrivee;
-import agents.Bille;
-import agents.Chasseur;
-import agents.Mur;
-import agents.Nemo;
-import agents.Protecteur;
-import agents.Requin;
+import core.model.Environnement;
+import projet.billes.Bille;
+import projet.pacman.Arrivee;
+import projet.pacman.Chasseur;
+import projet.pacman.Mur;
+import projet.pacman.Protecteur;
+import projet.wator.Nemo;
+import projet.wator.Requin;
 
 public class AgentFactory {
 

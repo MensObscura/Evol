@@ -1,7 +1,7 @@
-package agents;
+package core.agents;
 
-import model.Cellule;
-import model.Environnement;
+import core.model.Cellule;
+import core.model.Environnement;
 
 public abstract class AgentReproductible extends Agent {
 	

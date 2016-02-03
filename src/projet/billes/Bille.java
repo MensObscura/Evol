@@ -1,6 +1,7 @@
-package agents;
+package projet.billes;
 
-import model.Environnement;
+import core.agents.Agent;
+import core.model.Environnement;
 
 public class Bille extends Agent {
 

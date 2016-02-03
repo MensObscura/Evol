@@ -1,9 +1,11 @@
-package agents;
+package projet.wator;
 
 import java.awt.Color;
 
+import core.agents.Agent;
+import core.agents.AgentReproductible;
+import core.model.Environnement;
 import javafx.scene.shape.Circle;
-import model.Environnement;
 
 public class Nemo extends AgentReproductible {
 

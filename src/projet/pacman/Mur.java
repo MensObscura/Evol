@@ -1,9 +1,10 @@
-package agents;
+package projet.pacman;
 
 import java.awt.Color;
 
+import core.agents.Agent;
+import core.model.Environnement;
 import javafx.scene.shape.Rectangle;
-import model.Environnement;
 
 public class Mur extends Agent {
 

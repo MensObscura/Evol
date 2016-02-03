@@ -1,11 +1,11 @@
-package agents;
+package projet.pacman;
 
 import java.awt.Color;
 import java.util.Random;
 
+import core.model.Environnement;
 import javafx.scene.shape.Circle;
-import model.Environnement;
-import sma.SMAPacMan;
+import projet.billes.Bille;
 
 public class Protecteur extends Bille {
 
@@ -35,8 +35,11 @@ public class Protecteur extends Bille {
 
 	public void die() {
 		this.environnement.removeAgent(this);
-		((SMAPacMan)this.environnement.getSMA()).notifyDeath();
-	}
+			int x =this.environnement.getRandomCoord(-1);
+			int y =this.environnement.getRandomCoord(x);
+			Protecteur protecteur = new Protecteur(x,y,this.environnement);
+			this.environnement.addAgent(protecteur);
+		}	
 	
 	public boolean isAboutToDie(){
 		return this.isAboutToDie;

@@ -1,13 +1,12 @@
-package sma;
+package projet.wator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 
-import agents.Agent;
-import agents.Nemo;
-import agents.Requin;
-import model.Environnement;
+import core.agents.Agent;
+import core.model.Environnement;
+import core.sma.SMASimulation;
 
 public class SMAWator extends SMASimulation {
 

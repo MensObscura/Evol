@@ -13,7 +13,7 @@ public class Main {
 	
 		}else{
 			System.out.println("Error nb argument : main -billes nbBilles  taille  tAgent vitesse torique visibleGrid equit seed");
-			System.out.println("Exemple d'options : main -billes   100      10 0      3     100     true      true     true   0");
+			System.out.println("Exemple d'options : main -billes   100      100       3     100     true      true     true   0");
 		
 			System.out.println("Error nb argument : main -wator nbNemos	nbRequins  taille  tAgent vitesse torique visibleGrid equit seed	ageReproductionNemo	ageReproductionNemo	faimRequin");
 			System.out.println("Exemple d'options : main -wator   100       100    100       3      100    true     true     true   0				5                 7	               3	");

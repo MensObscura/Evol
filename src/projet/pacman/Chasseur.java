@@ -1,11 +1,11 @@
-package agents;
+package projet.pacman;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
+import core.agents.Agent;
+import core.model.Environnement;
 import javafx.scene.shape.Circle;
-import model.Environnement;
-import sma.SMAPacMan;
 
 public class Chasseur extends Agent {
 
