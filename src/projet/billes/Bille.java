@@ -11,4 +11,15 @@ public class Bille extends Agent {
 		
 	}
 
+	@Override
+	public void doIt() {
+		this.calculateNextCase(0);
+		this.environnement.getEspace()[this.posX][this.posY].removeAgent();;
+
+		this.setPosX(this.nextX);
+		this.setPosY(this.nextY);
+
+		this.environnement.getEspace()[this.posX][this.posY].setAgent(this);
+	}
+
 }

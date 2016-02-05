@@ -137,6 +137,32 @@ public abstract class AgentReproductible extends Agent {
 		return getFreeCellule() != null;
 	}
 	
-	protected abstract Agent popBaby();
+	protected Agent popBaby(Agent a) {
+		int[] c = getFreeCellule();
+
+		if (c != null) {
+			a.setPosX(c[0]);
+			a.setPosY(c[1]);
+			this.environnement.getEspace()[c[0]][c[1]].setAgent(a);
+			this.environnement.addAgent(a);
+			this.repos = 3;
+			
+			return a;
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public void randomWay() {
+		this.dir = this.getRandomDirection(null);
+		this.calculateNextCase(0);
+		this.environnement.getEspace()[this.posX][this.posY].removeAgent();;
+
+		this.setPosX(this.nextX);
+		this.setPosY(this.nextY);
+
+		this.environnement.getEspace()[this.posX][this.posY].setAgent(this);
+	}
 
 }

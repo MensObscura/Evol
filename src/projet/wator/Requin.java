@@ -27,8 +27,6 @@ public class Requin extends AgentReproductible {
 		this.shape.relocate(posX *10, posY *10);
 	}
 
-
-
 	public void doIt(){
 
 		if(!this.starve()){
@@ -41,9 +39,10 @@ public class Requin extends AgentReproductible {
 		}
 		else{
 			if(this.timeToHaveChild() && this.canImove()){
-				if (this.popBaby() == null) {
+				Agent baby = new Requin(0,0,this.environnement, this.reproduction, this.manger);
+				if (this.popBaby(baby) == null) {
 					if (this.canImove()) {
-						super.doIt();
+						randomWay();
 					}
 					if (repos != 0)
 						repos--;
@@ -51,7 +50,7 @@ public class Requin extends AgentReproductible {
 			}
 			else{
 				if (this.canImove()) {
-					super.doIt();
+					randomWay();
 				}
 				if (repos != 0)
 					repos--;
@@ -239,24 +238,5 @@ public class Requin extends AgentReproductible {
 		}
 		return null;
 	}
-
-	protected Agent popBaby() {
-		int[] c = getFreeCellule();
-		Agent baby = new Requin(0,0,this.environnement, this.reproduction, this.manger);
-
-		if (c != null) {
-			baby.setPosX(c[0]);
-			baby.setPosY(c[1]);
-			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
-			this.environnement.addAgent(baby);
-			this.repos = 2;
-			
-			return baby;
-		}
-		else {
-			return null;
-		}
-	}
-
 
 }

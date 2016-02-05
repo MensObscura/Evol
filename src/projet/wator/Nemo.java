@@ -30,9 +30,10 @@ public class Nemo extends AgentReproductible {
 	public void doIt(){
 
 		if(this.timeToHaveChild() && this.canImove()) {
-			if (this.popBaby() == null) {
+			Agent baby = new Nemo(0,0,this.environnement, this.reproduction);
+			if (this.popBaby(baby) == null) {
 				if (this.canImove()) {
-					super.doIt();
+					randomWay();
 				}
 				if (repos != 0)
 					repos--;
@@ -40,32 +41,13 @@ public class Nemo extends AgentReproductible {
 		}
 		else{
 			if (this.canImove()) {
-				super.doIt();
+				randomWay();
 			}
 			if (repos != 0)
 				repos--;
 		}
 		age ++;
 		this.shape.relocate(posX*10, posY*10);
-	}
-
-	protected Agent popBaby() {
-		
-		int[] c = getFreeCellule();
-		Agent baby = new Nemo(0,0,this.environnement, this.reproduction);
-
-		if (c != null) {
-			baby.setPosX(c[0]);
-			baby.setPosY(c[1]);
-			this.environnement.getEspace()[c[0]][c[1]].setAgent(baby);
-			this.environnement.addAgent(baby);
-			this.repos = 3;
-			
-			return baby;
-		}
-		else {
-			return null;
-		}
 	}
 
 }

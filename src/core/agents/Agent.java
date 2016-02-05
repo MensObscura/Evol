@@ -10,7 +10,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-public class Agent {
+public abstract class Agent {
 
 	protected int posX;
 	protected  int posY;
@@ -118,18 +118,71 @@ public class Agent {
 		}
 	}
 
-	public void doIt(){
-		this.calculateNextCase(0);
-		this.environnement.getEspace()[this.posX][this.posY].removeAgent();;
+	public abstract void doIt();
 
-		this.setPosX(this.nextX);
-		this.setPosY(this.nextY);
+	protected void setDir(Direction dir) {
+		this.dir = dir;
+	}
 
-		this.environnement.getEspace()[this.posX][this.posY].setAgent(this);
+	public Direction getDir() {
+		return this.dir;
+	}
+
+
+	/** choisi un nouvelle direction en fonction de l'ancienne
+	 * 
+	 * @return une direction
+	 */
+	public Direction getRandomDirection(Direction origine){
+
+		int rand = r.nextInt(8);
+		Direction out =  null;
+		switch(rand){
+		case 0 : out = Direction.EST; break;
+		case 1 : out = Direction.OUEST; break;
+		case 2 : out = Direction.NORD; break;
+		case 3 : out = Direction.SUD; break;
+		case 4 : out = Direction.NORDEST; break;
+		case 5 : out = Direction.SUDEST; break;
+		case 6 : out = Direction.NORDOUEST; break;
+		case 7 : out = Direction.SUDOUEST; break;
+		default :
+		}
+		if(origine != null && origine.equals(out)){
+			return this.getRandomDirection(origine);
+		}
+
+		return out;
+	}
+	
+	/**
+	 * On regarde l'état de la case suivante
+	 * @return
+	 */
+	public boolean isNextCaseFree(){
+
+		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
+
+			return this.environnement.getEspace()[this.nextX][this.nextY].isEmpty();
+
+		}
+		return false;
 
 
 	}
+	
+	/**
+	 * prochiane case selon le dernier calcul
+	 */
+	public Cellule nextCase(){
+		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
 
+			return this.environnement.getEspace()[this.nextX][this.nextY];
+
+		}
+		return null;
+	}
+	
 	/**
 	 * On cherche la prochiane case, et on vérifie si elle est libre, sinon on change de direction et on recherche
 	 */
@@ -183,73 +236,7 @@ public class Agent {
 		
 
 	}
-
-	protected void setDir(Direction dir) {
-		this.dir = dir;
-	}
-
-	public Direction getDir() {
-		return this.dir;
-	}
-
-
-
-	/**
-	 * On regarde l'état de la case suivante
-	 * @return
-	 */
-	public boolean isNextCaseFree(){
-
-		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
-
-			return this.environnement.getEspace()[this.nextX][this.nextY].isEmpty();
-
-		}
-		return false;
-
-
-	}
-
-
-	/**
-	 * prochiane case selon le dernier calcul
-	 */
-	public Cellule nextCase(){
-		if(this.nextY < this.environnement.getEspace().length && this.nextX  < this.environnement.getEspace().length && this.nextX >= 0 && this.nextY >= 0){
-
-			return this.environnement.getEspace()[this.nextX][this.nextY];
-
-		}
-		return null;
-	}
-
-	/** choisi un nouvelle direction en fonction de l'ancienne
-	 * 
-	 * @return une direction
-	 */
-	public Direction getRandomDirection(Direction origine){
-
-		int rand = r.nextInt(8);
-		Direction out =  null;
-		switch(rand){
-		case 0 : out = Direction.EST; break;
-		case 1 : out = Direction.OUEST; break;
-		case 2 : out = Direction.NORD; break;
-		case 3 : out = Direction.SUD; break;
-		case 4 : out = Direction.NORDEST; break;
-		case 5 : out = Direction.SUDEST; break;
-		case 6 : out = Direction.NORDOUEST; break;
-		case 7 : out = Direction.SUDOUEST; break;
-		default :
-		}
-		if(origine != null && origine.equals(out)){
-			return this.getRandomDirection(origine);
-		}
-
-		return out;
-	}
-
-
+	
 	public Direction getDirectionWithOpponentDirection(Direction origine){
 
 		if(this.nextCase() != null && !this.nextCase().isEmpty()){
@@ -324,6 +311,5 @@ public class Agent {
 
 		return getRandomDirection(origine);
 	}
-
 
 }
