@@ -47,6 +47,9 @@ public class Requin extends AgentReproductible {
 					if (repos != 0)
 						repos--;
 				}
+				else {
+					this.repos = r.nextInt(5);
+				}
 			}
 			else{
 				if (this.canImove()) {

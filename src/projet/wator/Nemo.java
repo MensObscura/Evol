@@ -17,16 +17,6 @@ public class Nemo extends AgentReproductible {
 		this.shape.relocate(posX*10 , posY*10 );
 	}
 
-	protected boolean timeToHaveChild() {
-		boolean res = super.timeToHaveChild();
-		
-		if (res && r.nextInt(5) != 0)
-			return false;
-		else
-			return res;
-	}
-
-
 	public void doIt(){
 
 		if(this.timeToHaveChild() && this.canImove()) {
@@ -37,6 +27,9 @@ public class Nemo extends AgentReproductible {
 				}
 				if (repos != 0)
 					repos--;
+			}
+			else {
+				this.repos = r.nextInt(5) + 5;
 			}
 		}
 		else{

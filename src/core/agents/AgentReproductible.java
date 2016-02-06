@@ -145,7 +145,6 @@ public abstract class AgentReproductible extends Agent {
 			a.setPosY(c[1]);
 			this.environnement.getEspace()[c[0]][c[1]].setAgent(a);
 			this.environnement.addAgent(a);
-			this.repos = 3;
 			
 			return a;
 		}
