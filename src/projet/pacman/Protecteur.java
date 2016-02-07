@@ -3,9 +3,9 @@ package projet.pacman;
 import java.awt.Color;
 import java.util.Random;
 
+import core.agents.Agent;
 import core.model.Environnement;
 import javafx.scene.shape.Circle;
-import projet.billes.Bille;
 
 public class Protecteur extends Agent {
 
