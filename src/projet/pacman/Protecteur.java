@@ -7,7 +7,7 @@ import core.model.Environnement;
 import javafx.scene.shape.Circle;
 import projet.billes.Bille;
 
-public class Protecteur extends Bille {
+public class Protecteur extends Agent {
 
 	
 	private int age;
