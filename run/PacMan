@@ -1,0 +1,3 @@
+#!/bin/bash
+java -jar simulation.jar -pacman 100 4  
+

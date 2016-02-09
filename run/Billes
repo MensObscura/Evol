@@ -1,0 +1,4 @@
+#!/bin/bash
+java -jar simulation.jar -billes 100 4 
+
+

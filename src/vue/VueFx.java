@@ -48,11 +48,11 @@ public class VueFx extends Application {
 		Object args [] =list.getRaw().toArray();
 
 		if(((String)args[0]).equals("-wator")){
-			this.action = new SMAWator(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Integer.parseInt((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Boolean.parseBoolean((String)args[8]),Integer.parseInt((String)args[9]),Integer.parseInt((String)args[10]),Integer.parseInt((String)args[11]),Integer.parseInt((String)args[12]));
+			this.action = new SMAWator(1000,100,Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),100,true,true,true,0,3,10,7);
 		}else if(((String)args[0]).equals("-billes")){
-			this.action =  new SMABille(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]),Boolean.parseBoolean((String)args[6]),Boolean.parseBoolean((String)args[7]),Integer.parseInt((String)args[8]));
+			this.action =  new SMABille(100,Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),100,true,true,true,0);
 		}else if(((String)args[0]).equals("-pacman")){
-			this.action =  new SMAPacMan(Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),Integer.parseInt((String)args[3]),Integer.parseInt((String)args[4]),Boolean.parseBoolean((String)args[5]), Boolean.parseBoolean((String)args[6]),Integer.parseInt((String)args[7]));
+			this.action =  new SMAPacMan(10,500,Integer.parseInt((String)args[1]),Integer.parseInt((String)args[2]),true,true,0);
 
 		}
 		circleAgent = new ArrayList<Shape>();

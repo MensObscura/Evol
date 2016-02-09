@@ -1,0 +1,4 @@
+#!/bin/bash
+java -jar simulation.jar -wator 100 4  > releve.dat 
+
+gnuplot wator.plot
